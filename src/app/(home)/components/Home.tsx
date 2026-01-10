@@ -134,7 +134,7 @@ export default function Home() {
 						}
 
 						gsap.set(".header", {
-							transform: `translateZ(${translateZ}px)`,
+							z: translateZ,
 							opacity,
 						});
 					} else {
@@ -145,28 +145,21 @@ export default function Home() {
 
 					if (progress < 0.6) {
 						gsap.set(".hero-img", {
-							transform: "translateZ(1000px)",
+							scale: 0.5,
 							opacity: 0,
 						});
 					} else if (progress >= 0.6 && progress <= 0.9) {
 						const imgProgress = (progress - 0.6) / 0.3;
-						const translateZ = 1000 - imgProgress * 1000;
-
-						let opacity = 0;
-						if (progress <= 0.8) {
-							const opacityProgress = (progress - 0.6) / 0.2;
-							opacity = opacityProgress;
-						} else {
-							opacity = 1;
-						}
+						const scale = 0.5 + imgProgress * 0.5;
+						const opacity = Math.min(imgProgress * 2, 1);
 
 						gsap.set(".hero-img", {
-							transform: `translateZ(${translateZ}px)`,
+							scale,
 							opacity,
 						});
 					} else {
 						gsap.set(".hero-img", {
-							transform: "translateZ(0px)",
+							scale: 1,
 							opacity: 1,
 						});
 					}
@@ -196,29 +189,23 @@ export default function Home() {
 					ref={canvasRef}
 					className="w-full h-full object-cover absolute inset-0"
 				/>
-				<div className="absolute inset-0 flex flex-col items-center justify-center perspective-[1000px] px-4">
-					<div
-						className="header w-full flex justify-center mt-20"
-						style={{ transformStyle: "preserve-3d" }}
-					>
+				<div className="absolute inset-0 grid place-items-center perspective-[1000px] transform-3d">
+					<div className="header absolute transform-3d">
 						<Img
-							className="object-contain h-auto mt-20"
+							className="object-contain h-auto"
 							src="/logo/AKHYAR V+.webp"
 							alt="akhyar-logo"
 							height={500}
 							width={500}
 						/>
 					</div>
-					<div
-						className="hero-img w-full flex justify-center opacity-0 will-change-[transform,opacity]"
-						style={{ transformStyle: "preserve-3d" }}
-					>
+					<div className="hero-img absolute opacity-0 will-change-[transform,opacity] shadow-2xl rounded-lg">
 						<Img
-							className="h-auto"
+							className="h-auto rounded-lg"
 							src="/background/White Texture Background.png"
 							alt="bg-akhyar"
-							height={1080}
-							width={1080}
+							height={1500}
+							width={1500}
 						/>
 					</div>
 				</div>
