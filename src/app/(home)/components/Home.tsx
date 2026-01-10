@@ -192,23 +192,29 @@ export default function Home() {
 	return (
 		<div ref={parentRef}>
 			<section className="hero relative w-full h-svh overflow-hidden">
-				<canvas ref={canvasRef} className="w-full h-full object-cover" />
-				<div className="hero-content absolute top-[25%] left-[50%] translate-x-[-50%] transform-3d perspective-[1000px] px-2 py-0">
-					<div className="header w-full h-full">
-						<div className="flex justify-center items-center w-full h-full p-4">
-							<Img
-								className="object-contain"
-								src="/logo/AKHYAR V+.webp"
-								alt="akhyar-logo"
-								height={600}
-								width={600}
-							/>
-						</div>
-					</div>
-				</div>
-				<div className="hero-img-container absolute top-[50%] left-[50%] translate-[-50%] w-[50%] transform-3d perspective-[1000px]">
-					<div className="hero-img relative w-full h-full translate-z-250 opacity-0 will-change-[transform,opacity]">
+				<canvas
+					ref={canvasRef}
+					className="w-full h-full object-cover absolute inset-0"
+				/>
+				<div className="absolute inset-0 flex flex-col items-center justify-center perspective-[1000px] px-4">
+					<div
+						className="header w-full flex justify-center mt-20"
+						style={{ transformStyle: "preserve-3d" }}
+					>
 						<Img
+							className="object-contain h-auto mt-20"
+							src="/logo/AKHYAR V+.webp"
+							alt="akhyar-logo"
+							height={500}
+							width={500}
+						/>
+					</div>
+					<div
+						className="hero-img w-full flex justify-center opacity-0 will-change-[transform,opacity]"
+						style={{ transformStyle: "preserve-3d" }}
+					>
+						<Img
+							className="h-auto"
 							src="/background/White Texture Background.png"
 							alt="bg-akhyar"
 							height={1080}
