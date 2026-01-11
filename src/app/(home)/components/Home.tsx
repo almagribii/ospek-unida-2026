@@ -9,7 +9,7 @@ import { ScrollDown } from "./ScrollDown";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const FRAME_COUNT = 96;
+const FRAME_COUNT = 90;
 const currentFrame = (index: number) =>
 	`/bg-frame/hd/${(index + 1).toString()}.jpg`;
 
@@ -211,7 +211,7 @@ export default function Home() {
 	}, [setCanvasSize, render]);
 	return (
 		<div ref={parentRef}>
-			<section className="hero relative w-full h-svh overflow-hidden">
+			<section className="hero relative w-full h-dvh overflow-hidden">
 				<canvas
 					ref={canvasRef}
 					className="w-full h-full object-cover absolute inset-0"
@@ -220,7 +220,7 @@ export default function Home() {
 					<div className="header absolute transform-3d p-4">
 						<Img
 							className="object-contain h-auto"
-							src="/logo/AKHYAR V+.webp"
+							src="/logo/akhyar_col.webp"
 							alt="akhyar-logo"
 							height={500}
 							width={500}
@@ -229,28 +229,34 @@ export default function Home() {
 					<div className="absolute inset-x-0 bottom-14 z-20 flex justify-center scroll-down-animate">
 						<ScrollDown />
 					</div>
-					<div className="hero-img absolute will-change-[transform,opacity] rounded-lg space-y-4">
-						<Img
-							className="h-auto shadow-2xl rounded-lg"
-							src="/background/White Texture Background.png"
-							alt="bg-akhyar"
-							height={300}
-							width={700}
-						/>
-						<Img
-							className="h-auto shadow-2xl rounded-lg"
-							src="/background/White Texture Background.png"
-							alt="bg-akhyar"
-							height={150}
-							width={700}
-						/>
-						<Img
-							className="h-auto shadow-2xl rounded-lg"
-							src="/background/White Texture Background.png"
-							alt="bg-akhyar"
-							height={300}
-							width={700}
-						/>
+					<div className="hero-img absolute top-32 will-change-[transform,opacity] rounded-lg">
+						<div className="w-125 h-18.75 lg:h-31.25 scale-50 lg:scale-100 flex justify-center">
+							<Img
+								className="object-contain"
+								src="/assets/TOTALITY.webp"
+								alt="bg-akhyar"
+								height={150}
+								width={500}
+							/>
+						</div>
+						<div className="w-125 h-18.75 lg:h-31.25 scale-50 lg:scale-100 flex justify-center">
+							<Img
+								className="object-contain"
+								src="/assets/MORALITY.webp"
+								alt="bg-akhyar"
+								height={165}
+								width={500}
+							/>
+						</div>
+						<div className="w-125 h-18.75 lg:h-31.25 scale-50 lg:scale-100 flex justify-center">
+							<Img
+								className="object-contain"
+								src="/assets/AGILITY.webp"
+								alt="bg-akhyar"
+								height={150}
+								width={375}
+							/>
+						</div>
 					</div>
 				</div>
 			</section>
