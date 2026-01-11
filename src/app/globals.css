@@ -162,6 +162,10 @@
 @theme inline {
 	--color-background: var(--background);
 	--color-foreground: var(--foreground);
+	--color-primary: var(--primary);
+	--color-primary-muted: var(--primary-muted);
+	--color-secondary: var(--secondary);
+	--color-secondary-muted: var(--secondary-muted);
 
 	/* Custom Fonts */
 	--font-mirage: "Mirage", sans-serif;
