@@ -43,7 +43,8 @@ const StyledWrapper = styled.div`
     align-items: center;
     justify-content: center;
     gap: 10px;
-    transition-duration: .3s;
+    transition-duration: .5s;
+		delay: .5s;
   }
 
   .bars {
