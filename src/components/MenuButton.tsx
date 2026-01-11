@@ -1,25 +1,42 @@
+"use client";
+
+import { useState } from "react";
 import styled from "styled-components";
 
-const MenuButton = ({ Color }: { Color: string }) => {
+const MenuButton = ({
+	Color,
+	onClick,
+	defaultOpen = false,
+}: {
+	Color: string;
+	onClick?: () => void;
+	defaultOpen?: boolean;
+}) => {
+	const [isOpen, setIsOpen] = useState(defaultOpen);
+
 	return (
-		<StyledWrapper>
+		<StyledWrapper data-open={isOpen}>
 			<div className="scale-75">
-				<input type="checkbox" id="checkbox" />
-				<label htmlFor="checkbox" className="toggle">
+				<button
+					type="button"
+					className="toggle"
+					aria-label="Toggle menu"
+					aria-pressed={isOpen}
+					onClick={() => {
+						setIsOpen((prev) => !prev);
+						onClick?.();
+					}}
+				>
 					<div className={`bars ${Color}`} id="bar1" />
 					<div className={`bars ${Color}`} id="bar2" />
 					<div className={`bars ${Color}`} id="bar3" />
-				</label>
+				</button>
 			</div>
 		</StyledWrapper>
 	);
 };
 
 const StyledWrapper = styled.div`
-  #checkbox {
-    display: none;
-  }
-
   .toggle {
     position: relative;
     width: 40px;
@@ -40,24 +57,24 @@ const StyledWrapper = styled.div`
     transition-duration: .3s;
   }
 
-  #checkbox:checked + .toggle .bars {
+  &[data-open='true'] .toggle .bars {
     margin-left: 13px;
   }
 
-  #checkbox:checked + .toggle #bar2 {
+  &[data-open='true'] .toggle #bar2 {
     transform: rotate(135deg);
     margin-left: 0;
     transform-origin: center;
     transition-duration: .3s;
   }
 
-  #checkbox:checked + .toggle #bar1 {
+  &[data-open='true'] .toggle #bar1 {
     transform: rotate(45deg);
     transition-duration: .3s;
     transform-origin: left center;
   }
 
-  #checkbox:checked + .toggle #bar3 {
+  &[data-open='true'] .toggle #bar3 {
     transform: rotate(-45deg);
     transition-duration: .3s;
     transform-origin: left center;
