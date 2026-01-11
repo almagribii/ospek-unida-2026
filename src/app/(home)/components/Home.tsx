@@ -1,15 +1,18 @@
 "use client";
 
 import { useGSAP } from "@gsap/react";
+import { IconMenu2 } from "@tabler/icons-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Img from "next/image";
-import { useCallback, useEffect, useRef } from "react";
+import Link from "next/link";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ScrollDown } from "./ScrollDown";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const FRAME_COUNT = 90;
+const TOP_THRESHOLD = 1350;
 const currentFrame = (index: number) =>
 	`/bg-frame/hd/${(index + 1).toString()}.jpg`;
 
@@ -20,6 +23,24 @@ export default function Home() {
 	const videoFramesRef = useRef({ frame: 0 });
 	const isLoadedRef = useRef(false);
 	const heroImgTimelineRef = useRef<gsap.core.Timeline | null>(null);
+	const isInHeroRef = useRef(true);
+	const isUserScrollingRef = useRef(false);
+	const scrollStopTimeoutRef = useRef<number | null>(null);
+	const navShownRef = useRef<boolean | null>(null);
+	const [isAtTop, setIsAtTop] = useState(true);
+	const isAtTopRef = useRef<boolean | null>(null);
+
+	const updateNavVisibility = useCallback(() => {
+		const shouldShowNav = !isInHeroRef.current || !isUserScrollingRef.current;
+		if (navShownRef.current === shouldShowNav) return;
+		navShownRef.current = shouldShowNav;
+		gsap.to(".nav", {
+			autoAlpha: shouldShowNav ? 1 : 0,
+			duration: 0.18,
+			ease: "power1.out",
+			overwrite: true,
+		});
+	}, []);
 
 	const render = useCallback(() => {
 		const canvas = canvasRef.current;
@@ -102,11 +123,16 @@ export default function Home() {
 
 	useGSAP(
 		() => {
+			ScrollTrigger.getById("hero-sequence")?.kill();
+			gsap.killTweensOf(".nav");
+
 			gsap.set(".scroll-down-animate", {
 				autoAlpha: 1,
 				scale: 1,
 				transformOrigin: "50% 50%",
 			});
+
+			gsap.set(".nav", { autoAlpha: 1 });
 
 			// Create a single timeline once. We'll scrub its progress via the ScrollTrigger below.
 			const heroImgItems = gsap.utils.toArray<HTMLElement>(".hero-img img");
@@ -129,17 +155,48 @@ export default function Home() {
 						y: 0,
 						duration: 1,
 						stagger: 1,
-						ease: "power2.out",
+						ease: "back.out",
 					});
 			}
 
-			ScrollTrigger.create({
+			gsap.fromTo(
+				".header",
+				{
+					autoAlpha: 0,
+					scale: 2,
+				},
+				{
+					autoAlpha: 1,
+					scale: 1,
+					duration: 1,
+					ease: "power4.out",
+				},
+			);
+
+			const heroTrigger = ScrollTrigger.create({
+				id: "hero-sequence",
 				trigger: ".hero",
 				start: "top top",
 				end: `+=${window.innerHeight * 7}px`,
 				pin: true,
 				pinSpacing: true,
 				scrub: 1,
+				onEnter: () => {
+					isInHeroRef.current = true;
+					updateNavVisibility();
+				},
+				onEnterBack: () => {
+					isInHeroRef.current = true;
+					updateNavVisibility();
+				},
+				onLeave: () => {
+					isInHeroRef.current = false;
+					updateNavVisibility();
+				},
+				onLeaveBack: () => {
+					isInHeroRef.current = false;
+					updateNavVisibility();
+				},
 				onUpdate: (self) => {
 					const progress = self.progress;
 
@@ -147,14 +204,6 @@ export default function Home() {
 					const targetFrame = Math.round(animationProgress * (FRAME_COUNT - 1));
 					videoFramesRef.current.frame = targetFrame;
 					render();
-
-					if (progress <= 0.1) {
-						const navProgress = progress / 0.1;
-						const opacity = 1 - navProgress;
-						gsap.set(".nav", { opacity });
-					} else {
-						gsap.set(".nav", { opacity: 0 });
-					}
 
 					if (progress <= 0.25) {
 						const zProgress = progress / 0.25;
@@ -192,9 +241,58 @@ export default function Home() {
 					});
 				},
 			});
+
+			isInHeroRef.current = heroTrigger.isActive;
+			updateNavVisibility();
 		},
 		{ scope: parentRef, dependencies: [render] },
 	);
+
+	useEffect(() => {
+		const syncIsAtTop = () => {
+			const nextIsAtTop = window.scrollY <= TOP_THRESHOLD;
+			if (isAtTopRef.current === nextIsAtTop) return;
+			isAtTopRef.current = nextIsAtTop;
+			setIsAtTop(nextIsAtTop);
+		};
+
+		const onScroll = () => {
+			syncIsAtTop();
+
+			if (!isInHeroRef.current) {
+				if (scrollStopTimeoutRef.current !== null) {
+					window.clearTimeout(scrollStopTimeoutRef.current);
+					scrollStopTimeoutRef.current = null;
+				}
+				isUserScrollingRef.current = false;
+				updateNavVisibility();
+				return;
+			}
+
+			isUserScrollingRef.current = true;
+			updateNavVisibility();
+
+			if (scrollStopTimeoutRef.current !== null) {
+				window.clearTimeout(scrollStopTimeoutRef.current);
+			}
+			scrollStopTimeoutRef.current = window.setTimeout(() => {
+				isUserScrollingRef.current = false;
+				updateNavVisibility();
+			}, 320);
+		};
+
+		window.addEventListener("scroll", onScroll, { passive: true });
+		syncIsAtTop();
+		updateNavVisibility();
+
+		return () => {
+			window.removeEventListener("scroll", onScroll);
+			if (scrollStopTimeoutRef.current !== null) {
+				window.clearTimeout(scrollStopTimeoutRef.current);
+				scrollStopTimeoutRef.current = null;
+			}
+		};
+	}, [updateNavVisibility]);
 
 	useEffect(() => {
 		const handleResize = () => {
@@ -211,6 +309,35 @@ export default function Home() {
 	}, [setCanvasSize, render]);
 	return (
 		<div ref={parentRef}>
+			<nav className="nav fixed top-0 left-0 z-50 flex flex-row justify-between items-stretch w-full py-4 px-6 bg-transparent">
+				<Link href="/">
+					<div
+						className={`group relative inline-flex w-[8em] h-[2.6em] items-center justify-center overflow-hidden cursor-pointer border rounded-md text-[17px] font-medium select-none before:content-[''] before:absolute before:top-full before:left-full before:h-40 before:w-50 before:rounded-full before:transition-[top,left] before:duration-700 before:-z-10 hover:before:-top-8 hover:before:-left-8 active:before:bg-foreground active:before:duration-0 drop-shadow-xl shadow-xl ${
+							isAtTop
+								? "lg:text-background text-foreground border-foreground lg:border-background before:bg-background hover:text-foreground"
+								: "text-foreground border-foreground before:bg-foreground hover:text-background"
+						}`}
+					>
+						<p className="font-mirage font-bold text-xl tracking-[0.2em] transition-[letter-spacing] duration-500 ease-out group-hover:tracking-normal">
+							AKHYAR
+						</p>
+					</div>
+				</Link>
+				<div
+					className={`flex gap-4 justify-center items-center ${
+						isAtTop ? "lg:text-background text-foreground" : "text-foreground"
+					}`}
+				>
+					<div className="cursor-pointer">
+						<p className="hidden lg:block uppercase font-thin font-product-sans tracking-[0.3em] transition-[letter-spacing] duration-500 ease-out hover:tracking-widest text-shadow-md">
+							MENU
+						</p>
+					</div>
+					<div className="cursor-pointer">
+						<IconMenu2 />
+					</div>
+				</div>
+			</nav>
 			<section className="hero relative w-full h-dvh overflow-hidden">
 				<canvas
 					ref={canvasRef}
@@ -260,7 +387,7 @@ export default function Home() {
 					</div>
 				</div>
 			</section>
-			<section className="outro relative w-full h-svh overflow-hidden flex justify-center items-center text-center p-4 bg-background text-foreground">
+			<section className="outro relative w-full h-dvh overflow-hidden flex justify-center items-center text-center p-4 bg-background text-foreground">
 				<h1>Selamat datang di akhyarr!!</h1>
 			</section>
 		</div>
