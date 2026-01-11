@@ -374,13 +374,15 @@ export default function Navbar({
 					} relative z-60`} // Increased z-index to stay above overlay
 				>
 					<button type="button" onClick={toggleMenu} className="cursor-pointer">
-						<p className="nav-fade hidden font-product-sans font-thin uppercase tracking-[0.3em] transition-[letter-spacing] duration-500 ease-out hover:tracking-widest text-shadow-md lg:block">
+						<p
+							className={`nav-fade hidden font-product-sans font-thin uppercase tracking-[0.3em] transition-all duration-500 ease-out hover:tracking-widest text-shadow-md lg:block ${isAtTop ? "lg:text-background" : ""} ${isMenuOpen ? "text-background delay-500" : "text-foreground"}`}
+						>
 							{isMenuOpen ? "CLOSE" : "MENU"}
 						</p>
 					</button>
 					<div className="nav-fade">
 						<MenuButton
-							Color={`${isAtTop || isMenuOpen ? "lg:bg-background bg-foreground" : "bg-foreground"}`}
+							Color={`${isAtTop ? "lg:bg-background" : ""} ${isMenuOpen ? "bg-background" : "bg-foreground"}`}
 							onClick={toggleMenu}
 							menuStatus={isMenuOpen}
 							// Assuming MenuButton handles its own internal "X" state visualization if passed a prop
