@@ -5,10 +5,11 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Img from "next/image";
 import { useCallback, useEffect, useRef } from "react";
+import { ScrollDown } from "./ScrollDown";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const FRAME_COUNT = 96;
+const FRAME_COUNT = 90;
 const currentFrame = (index: number) =>
 	`/bg-frame/hd/${(index + 1).toString()}.jpg`;
 
@@ -18,6 +19,7 @@ export default function Home() {
 	const imagesRef = useRef<HTMLImageElement[]>([]);
 	const videoFramesRef = useRef({ frame: 0 });
 	const isLoadedRef = useRef(false);
+	const heroImgTimelineRef = useRef<gsap.core.Timeline | null>(null);
 
 	const render = useCallback(() => {
 		const canvas = canvasRef.current;
@@ -100,6 +102,37 @@ export default function Home() {
 
 	useGSAP(
 		() => {
+			gsap.set(".scroll-down-animate", {
+				autoAlpha: 1,
+				scale: 1,
+				transformOrigin: "50% 50%",
+			});
+
+			// Create a single timeline once. We'll scrub its progress via the ScrollTrigger below.
+			const heroImgItems = gsap.utils.toArray<HTMLElement>(".hero-img img");
+			if (heroImgItems.length > 0) {
+				gsap.set(".hero-img", { autoAlpha: 0 });
+				gsap.set(heroImgItems, {
+					autoAlpha: 0,
+					scale: 0.75,
+					y: 24,
+					transformOrigin: "50% 50%",
+					force3D: true,
+				});
+
+				heroImgTimelineRef.current = gsap
+					.timeline({ paused: true })
+					.set(".hero-img", { autoAlpha: 1 })
+					.to(heroImgItems, {
+						autoAlpha: 1,
+						scale: 1,
+						y: 0,
+						duration: 1,
+						stagger: 1,
+						ease: "power2.out",
+					});
+			}
+
 			ScrollTrigger.create({
 				trigger: ".hero",
 				start: "top top",
@@ -143,26 +176,20 @@ export default function Home() {
 						});
 					}
 
-					if (progress < 0.6) {
-						gsap.set(".hero-img", {
-							scale: 0.5,
-							opacity: 0,
-						});
-					} else if (progress >= 0.6 && progress <= 0.9) {
-						const imgProgress = (progress - 0.6) / 0.3;
-						const scale = 0.5 + imgProgress * 0.5;
-						const opacity = Math.min(imgProgress * 2, 1);
-
-						gsap.set(".hero-img", {
-							scale,
-							opacity,
-						});
-					} else {
-						gsap.set(".hero-img", {
-							scale: 1,
-							opacity: 1,
-						});
+					const heroImgTl = heroImgTimelineRef.current;
+					if (heroImgTl) {
+						const t = (progress - 0.6) / 0.3;
+						const clamped = Math.min(1, Math.max(0, t));
+						heroImgTl.progress(clamped);
 					}
+
+					gsap.to(".scroll-down-animate", {
+						autoAlpha: progress >= 0.15 ? 0 : 1,
+						scale: progress >= 0.15 ? 0.8 : 1,
+						duration: 0.2,
+						ease: "power1.out",
+						overwrite: "auto",
+					});
 				},
 			});
 		},
@@ -184,29 +211,52 @@ export default function Home() {
 	}, [setCanvasSize, render]);
 	return (
 		<div ref={parentRef}>
-			<section className="hero relative w-full h-svh overflow-hidden">
+			<section className="hero relative w-full h-dvh overflow-hidden">
 				<canvas
 					ref={canvasRef}
 					className="w-full h-full object-cover absolute inset-0"
 				/>
 				<div className="absolute inset-0 grid place-items-center perspective-[1000px] transform-3d">
-					<div className="header absolute transform-3d">
+					<div className="header absolute transform-3d p-4">
 						<Img
 							className="object-contain h-auto"
-							src="/logo/AKHYAR V+.webp"
+							src="/logo/akhyar_col.webp"
 							alt="akhyar-logo"
 							height={500}
 							width={500}
 						/>
 					</div>
-					<div className="hero-img absolute opacity-0 will-change-[transform,opacity] shadow-2xl rounded-lg">
-						<Img
-							className="h-auto rounded-lg"
-							src="/background/White Texture Background.png"
-							alt="bg-akhyar"
-							height={1500}
-							width={1500}
-						/>
+					<div className="absolute inset-x-0 bottom-14 z-20 flex justify-center scroll-down-animate">
+						<ScrollDown />
+					</div>
+					<div className="hero-img absolute top-32 will-change-[transform,opacity] rounded-lg">
+						<div className="w-125 h-18.75 lg:h-31.25 scale-50 lg:scale-100 flex justify-center">
+							<Img
+								className="object-contain"
+								src="/assets/TOTALITY.webp"
+								alt="bg-akhyar"
+								height={150}
+								width={500}
+							/>
+						</div>
+						<div className="w-125 h-18.75 lg:h-31.25 scale-50 lg:scale-100 flex justify-center">
+							<Img
+								className="object-contain"
+								src="/assets/MORALITY.webp"
+								alt="bg-akhyar"
+								height={165}
+								width={500}
+							/>
+						</div>
+						<div className="w-125 h-18.75 lg:h-31.25 scale-50 lg:scale-100 flex justify-center">
+							<Img
+								className="object-contain"
+								src="/assets/AGILITY.webp"
+								alt="bg-akhyar"
+								height={150}
+								width={375}
+							/>
+						</div>
 					</div>
 				</div>
 			</section>
