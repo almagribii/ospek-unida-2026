@@ -5,7 +5,7 @@ import Image from "next/image";
 import type React from "react";
 import { useEffect, useRef } from "react";
 
-const AkhyarLandingSmooth: React.FC = () => {
+const HeroSection: React.FC = () => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const logoRef = useRef<HTMLImageElement>(null);
 	const textRef = useRef<HTMLImageElement>(null); 
@@ -183,7 +183,7 @@ const AkhyarLandingSmooth: React.FC = () => {
 			ref={containerRef}
 			className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden"
 			style={{
-				backgroundImage: `url('/background/White Texture Background.png')`,
+				backgroundImage: `url('/background/white_texture.webp')`,
 				backgroundSize: "cover",
 				backgroundPosition: "center",
 				backgroundRepeat: "no-repeat",
@@ -310,16 +310,8 @@ const AkhyarLandingSmooth: React.FC = () => {
 					height={100}
 					className="w-40 lg:w-60 h-auto mb-8 drop-shadow-xl opacity-0"
 				/>
-
-				{/* Title AKHYAR (using CSS gradient to simulate metal) */}
-				<Image
-					ref={textRef}
-					src="/logo/teks-akhyar.png"
-					alt="Akhyar Logo"
-					width={1000}
-					height={1000}
-					className="w-100 lg:w-200 h-auto mb-8 drop-shadow-xl opacity-0"
-				/>
+				Tentang Akhyar
+		
 
 				{/* Triple Line Accent */}
 				<div className="flex space-x-2 my-4 w-64 h-2">
@@ -348,4 +340,4 @@ const AkhyarLandingSmooth: React.FC = () => {
 	);
 };
 
-export default AkhyarLandingSmooth;
+export default HeroSection;

@@ -1,24 +1,23 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
-
-// Import komponen slide
-import Hero from "./HeroSection";
-import {Slide1} from "./(filosofi)/Slide1";
+import { useEffect, useRef, useState } from "react";
+import Slide1 from "./(filosofi)/Slide1";
 import Slide2 from "./(filosofi)/Slide2";
 import Slide3 from "./(filosofi)/Slide3";
 import Slide4 from "./(filosofi)/Slide4";
 import Slide5 from "./(filosofi)/Slide5";
 import Slide6 from "./(filosofi)/Slide6";
 import Slide7 from "./(filosofi)/Slide7";
+// Import komponen slide
+import Hero from "./HeroSection";
 
 // Definisikan array objek dengan ID unik (bukan cuma array komponen)
 const SLIDE_COMPONENTS = [
 	{ id: "intro-perjalanan", Component: Hero },
-	{ id: "intro-perjalanan", Component: Slide1 },
+	{ id: "filosofi-nama-akhyar", Component: Slide1 },
 	{ id: "jelajah-ruang", Component: Slide2 },
 	{ id: "cahaya-jalan", Component: Slide3 },
 	{ id: "ritme-tenang", Component: Slide4 },
@@ -100,7 +99,7 @@ export default function ScrollSlider() {
 							className="flex items-center gap-4"
 						>
 							<div
-								className={`h-px bg-white transition-all duration-500 ${
+								className={`h-px transition-all duration-500 ${
 									activeSlide === i ? "w-10 opacity-100" : "w-4 opacity-30"
 								}`}
 							/>
@@ -115,9 +114,9 @@ export default function ScrollSlider() {
 					))}
 				</div>
 				{/* Vertical Progress Bar */}
-				<div className="relative w-px h-64 bg-white/20">
+				<div className="relative w-px h-64 bg-black0">
 					<div
-						className="absolute top-0 -left-px w-0.75 bg-white transition-transform duration-300 origin-top"
+						className="absolute top-0 -left-px w-0.75 bg-black transition-transform duration-300 origin-top"
 						style={{
 							height: "100%",
 							transform: `scaleY(${(activeSlide + 1) / SLIDE_COMPONENTS.length})`,
