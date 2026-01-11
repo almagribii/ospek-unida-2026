@@ -1,29 +1,25 @@
 "use client";
 
-import { useState } from "react";
 import styled from "styled-components";
 
 const MenuButton = ({
 	Color,
 	onClick,
-	defaultOpen = false,
+	menuStatus,
 }: {
 	Color: string;
 	onClick?: () => void;
-	defaultOpen?: boolean;
+	menuStatus: boolean;
 }) => {
-	const [isOpen, setIsOpen] = useState(defaultOpen);
-
 	return (
-		<StyledWrapper data-open={isOpen}>
+		<StyledWrapper data-open={menuStatus}>
 			<div className="scale-75">
 				<button
 					type="button"
 					className="toggle"
 					aria-label="Toggle menu"
-					aria-pressed={isOpen}
+					aria-pressed={menuStatus}
 					onClick={() => {
-						setIsOpen((prev) => !prev);
 						onClick?.();
 					}}
 				>

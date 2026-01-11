@@ -122,9 +122,11 @@ export default function Navbar({
 		isAnimating.current = true;
 
 		const tl = gsap.timeline({
+			onUpdate: () => {
+				setIsMenuOpen(!isMenuOpen);
+			},
 			onComplete: () => {
 				isAnimating.current = false;
-				setIsMenuOpen(!isMenuOpen);
 			},
 		});
 
@@ -357,7 +359,7 @@ export default function Navbar({
 							isHidden
 								? "bg-transparent backdrop-blur-none"
 								: "bg-background/10 backdrop-blur-md"
-						}`}
+						} ${isMenuOpen ? "opacity-0" : "opacity-100 delay-200 ease-out duration-500"}`}
 					>
 						<p className="nav-fade font-mirage font-bold text-xl tracking-[0.2em] transition-[letter-spacing] duration-500 ease-out group-hover:tracking-normal">
 							{brandText}
@@ -380,6 +382,7 @@ export default function Navbar({
 						<MenuButton
 							Color={`${isAtTop || isMenuOpen ? "lg:bg-background bg-foreground" : "bg-foreground"}`}
 							onClick={toggleMenu}
+							menuStatus={isMenuOpen}
 							// Assuming MenuButton handles its own internal "X" state visualization if passed a prop
 						/>
 					</div>
