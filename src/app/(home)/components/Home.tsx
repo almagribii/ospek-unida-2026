@@ -1,12 +1,13 @@
 "use client";
 
 import { useGSAP } from "@gsap/react";
-import { IconMenu2 } from "@tabler/icons-react";
+import { IconMenu2, IconX } from "@tabler/icons-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Img from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
+import MenuButton from "@/components/MenuButton";
 import { ScrollDown } from "./ScrollDown";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -26,20 +27,16 @@ export default function Home() {
 	const isInHeroRef = useRef(true);
 	const isUserScrollingRef = useRef(false);
 	const scrollStopTimeoutRef = useRef<number | null>(null);
-	const navShownRef = useRef<boolean | null>(null);
+	const [isNavHidden, setIsNavHidden] = useState(false);
+	const isNavHiddenRef = useRef<boolean | null>(null);
 	const [isAtTop, setIsAtTop] = useState(true);
 	const isAtTopRef = useRef<boolean | null>(null);
 
-	const updateNavVisibility = useCallback(() => {
-		const shouldShowNav = !isInHeroRef.current || !isUserScrollingRef.current;
-		if (navShownRef.current === shouldShowNav) return;
-		navShownRef.current = shouldShowNav;
-		gsap.to(".nav", {
-			autoAlpha: shouldShowNav ? 1 : 0,
-			duration: 0.18,
-			ease: "power1.out",
-			overwrite: true,
-		});
+	const syncNavHidden = useCallback(() => {
+		const nextIsHidden = isInHeroRef.current && isUserScrollingRef.current;
+		if (isNavHiddenRef.current === nextIsHidden) return;
+		isNavHiddenRef.current = nextIsHidden;
+		setIsNavHidden(nextIsHidden);
 	}, []);
 
 	const render = useCallback(() => {
@@ -124,7 +121,7 @@ export default function Home() {
 	useGSAP(
 		() => {
 			ScrollTrigger.getById("hero-sequence")?.kill();
-			gsap.killTweensOf(".nav");
+			syncNavHidden();
 
 			gsap.set(".scroll-down-animate", {
 				autoAlpha: 1,
@@ -132,16 +129,15 @@ export default function Home() {
 				transformOrigin: "50% 50%",
 			});
 
-			gsap.set(".nav", { autoAlpha: 1 });
-
 			// Create a single timeline once. We'll scrub its progress via the ScrollTrigger below.
 			const heroImgItems = gsap.utils.toArray<HTMLElement>(".hero-img img");
 			if (heroImgItems.length > 0) {
-				gsap.set(".hero-img", { autoAlpha: 0 });
+				gsap.set(".hero-img", { autoAlpha: 0, transformStyle: "preserve-3d" });
 				gsap.set(heroImgItems, {
 					autoAlpha: 0,
-					scale: 0.75,
-					y: 24,
+					// Start closer to the camera (bigger + positive z), then "zoom out" to the final layout.
+					scale: 5,
+					y: -140,
 					transformOrigin: "50% 50%",
 					force3D: true,
 				});
@@ -153,9 +149,9 @@ export default function Home() {
 						autoAlpha: 1,
 						scale: 1,
 						y: 0,
-						duration: 1,
+						duration: 1.5,
 						stagger: 1,
-						ease: "back.out",
+						ease: "power4.out",
 					});
 			}
 
@@ -183,19 +179,19 @@ export default function Home() {
 				scrub: 1,
 				onEnter: () => {
 					isInHeroRef.current = true;
-					updateNavVisibility();
+					syncNavHidden();
 				},
 				onEnterBack: () => {
 					isInHeroRef.current = true;
-					updateNavVisibility();
+					syncNavHidden();
 				},
 				onLeave: () => {
 					isInHeroRef.current = false;
-					updateNavVisibility();
+					syncNavHidden();
 				},
 				onLeaveBack: () => {
 					isInHeroRef.current = false;
-					updateNavVisibility();
+					syncNavHidden();
 				},
 				onUpdate: (self) => {
 					const progress = self.progress;
@@ -243,9 +239,9 @@ export default function Home() {
 			});
 
 			isInHeroRef.current = heroTrigger.isActive;
-			updateNavVisibility();
+			syncNavHidden();
 		},
-		{ scope: parentRef, dependencies: [render] },
+		{ scope: parentRef, dependencies: [render, syncNavHidden] },
 	);
 
 	useEffect(() => {
@@ -265,25 +261,25 @@ export default function Home() {
 					scrollStopTimeoutRef.current = null;
 				}
 				isUserScrollingRef.current = false;
-				updateNavVisibility();
+				syncNavHidden();
 				return;
 			}
 
 			isUserScrollingRef.current = true;
-			updateNavVisibility();
+			syncNavHidden();
 
 			if (scrollStopTimeoutRef.current !== null) {
 				window.clearTimeout(scrollStopTimeoutRef.current);
 			}
 			scrollStopTimeoutRef.current = window.setTimeout(() => {
 				isUserScrollingRef.current = false;
-				updateNavVisibility();
+				syncNavHidden();
 			}, 320);
 		};
 
 		window.addEventListener("scroll", onScroll, { passive: true });
 		syncIsAtTop();
-		updateNavVisibility();
+		syncNavHidden();
 
 		return () => {
 			window.removeEventListener("scroll", onScroll);
@@ -292,7 +288,7 @@ export default function Home() {
 				scrollStopTimeoutRef.current = null;
 			}
 		};
-	}, [updateNavVisibility]);
+	}, [syncNavHidden]);
 
 	useEffect(() => {
 		const handleResize = () => {
@@ -308,17 +304,26 @@ export default function Home() {
 		};
 	}, [setCanvasSize, render]);
 	return (
-		<div ref={parentRef}>
-			<nav className="nav fixed top-0 left-0 z-50 flex flex-row justify-between items-stretch w-full py-4 px-6 bg-transparent">
+		<>
+			<nav
+				className={`nav fixed top-0 left-0 z-50 flex flex-row justify-between items-stretch w-full py-4 px-6 bg-transparent transition-opacity duration-200 ease-out ${
+					isNavHidden ? "opacity-0 pointer-events-none" : "opacity-100"
+				}`}
+			>
 				<Link href="/">
 					<div
-						className={`group relative inline-flex w-[8em] h-[2.6em] items-center justify-center overflow-hidden cursor-pointer border rounded-md text-[17px] font-medium select-none before:content-[''] before:absolute before:top-full before:left-full before:h-40 before:w-50 before:rounded-full before:transition-[top,left] before:duration-700 before:-z-10 hover:before:-top-8 hover:before:-left-8 active:before:bg-foreground active:before:duration-0 drop-shadow-xl shadow-xl ${
-							isAtTop
-								? "lg:text-background text-foreground border-foreground lg:border-background before:bg-background hover:text-foreground"
-								: "text-foreground border-foreground before:bg-foreground hover:text-background"
-						}`}
+						className={`group relative inline-flex w-[8em] h-[2.6em] items-center justify-center overflow-hidden cursor-pointer border rounded-md text-[17px] font-medium select-none before:content-[''] before:absolute before:top-full before:left-full before:h-40 before:w-50 before:rounded-full before:transition-[top,left] before:duration-700 before:-z-10 hover:before:-top-8 hover:before:-left-8 active:before:bg-foreground active:before:duration-0 drop-shadow-xl shadow-xl transition-all
+							${
+								isAtTop
+									? "lg:text-background text-foreground border-foreground lg:border-background before:bg-background hover:text-foreground"
+									: "text-foreground border-foreground before:bg-foreground hover:text-background"
+							} ${
+								isNavHidden
+									? "bg-transparent backdrop-blur-none"
+									: "bg-background/10 backdrop-blur-md"
+							}`}
 					>
-						<p className="font-mirage font-bold text-xl tracking-[0.2em] transition-[letter-spacing] duration-500 ease-out group-hover:tracking-normal">
+						<p className="nav-fade font-mirage font-bold text-xl tracking-[0.2em] transition-[letter-spacing] duration-500 ease-out group-hover:tracking-normal">
 							AKHYAR
 						</p>
 					</div>
@@ -329,67 +334,74 @@ export default function Home() {
 					}`}
 				>
 					<div className="cursor-pointer">
-						<p className="hidden lg:block uppercase font-thin font-product-sans tracking-[0.3em] transition-[letter-spacing] duration-500 ease-out hover:tracking-widest text-shadow-md">
+						<p className="nav-fade hidden lg:block uppercase font-thin font-product-sans tracking-[0.3em] transition-[letter-spacing] duration-500 ease-out hover:tracking-widest text-shadow-md">
 							MENU
 						</p>
 					</div>
-					<div className="cursor-pointer">
-						<IconMenu2 />
+					<div className="nav-fade cursor-pointer ">
+						<MenuButton
+							Color={`${
+								isAtTop ? "lg:bg-background bg-foreground" : "bg-foreground"
+							}`}
+						/>
 					</div>
 				</div>
 			</nav>
-			<section className="hero relative w-full h-dvh overflow-hidden">
-				<canvas
-					ref={canvasRef}
-					className="w-full h-full object-cover absolute inset-0"
-				/>
-				<div className="absolute inset-0 grid place-items-center perspective-[1000px] transform-3d">
-					<div className="header absolute transform-3d p-4">
-						<Img
-							className="object-contain h-auto"
-							src="/logo/akhyar_col.webp"
-							alt="akhyar-logo"
-							height={500}
-							width={500}
-						/>
-					</div>
-					<div className="absolute inset-x-0 bottom-14 z-20 flex justify-center scroll-down-animate">
-						<ScrollDown />
-					</div>
-					<div className="hero-img absolute top-32 will-change-[transform,opacity] rounded-lg">
-						<div className="w-125 h-18.75 lg:h-31.25 scale-50 lg:scale-100 flex justify-center">
+
+			<div ref={parentRef}>
+				<section className="hero relative w-full h-dvh overflow-hidden">
+					<canvas
+						ref={canvasRef}
+						className="w-full h-full object-cover absolute inset-0"
+					/>
+					<div className="absolute inset-0 grid place-items-center perspective-[1000px] transform-3d">
+						<div className="header absolute transform-3d p-4">
 							<Img
-								className="object-contain"
-								src="/assets/TOTALITY.webp"
-								alt="bg-akhyar"
-								height={150}
+								className="object-contain h-auto"
+								src="/logo/akhyar_col.webp"
+								alt="akhyar-logo"
+								height={500}
 								width={500}
 							/>
 						</div>
-						<div className="w-125 h-18.75 lg:h-31.25 scale-50 lg:scale-100 flex justify-center">
-							<Img
-								className="object-contain"
-								src="/assets/MORALITY.webp"
-								alt="bg-akhyar"
-								height={165}
-								width={500}
-							/>
+						<div className="absolute inset-x-0 bottom-14 z-20 flex justify-center scroll-down-animate">
+							<ScrollDown />
 						</div>
-						<div className="w-125 h-18.75 lg:h-31.25 scale-50 lg:scale-100 flex justify-center">
-							<Img
-								className="object-contain"
-								src="/assets/AGILITY.webp"
-								alt="bg-akhyar"
-								height={150}
-								width={375}
-							/>
+						<div className="hero-img absolute top-32 will-change-[transform,opacity] rounded-lg">
+							<div className="w-125 h-18.75 lg:h-31.25 scale-50 lg:scale-100 flex justify-center">
+								<Img
+									className="object-contain"
+									src="/assets/TOTALITY.webp"
+									alt="bg-akhyar"
+									height={150}
+									width={500}
+								/>
+							</div>
+							<div className="w-125 h-18.75 lg:h-31.25 scale-50 lg:scale-100 flex justify-center">
+								<Img
+									className="object-contain"
+									src="/assets/MORALITY.webp"
+									alt="bg-akhyar"
+									height={165}
+									width={500}
+								/>
+							</div>
+							<div className="w-125 h-18.75 lg:h-31.25 scale-50 lg:scale-100 flex justify-center">
+								<Img
+									className="object-contain"
+									src="/assets/AGILITY.webp"
+									alt="bg-akhyar"
+									height={150}
+									width={375}
+								/>
+							</div>
 						</div>
 					</div>
-				</div>
-			</section>
-			<section className="outro relative w-full h-dvh overflow-hidden flex justify-center items-center text-center p-4 bg-background text-foreground">
-				<h1>Selamat datang di akhyarr!!</h1>
-			</section>
-		</div>
+				</section>
+				<section className="outro relative w-full h-dvh overflow-hidden flex justify-center items-center text-center p-4 bg-background text-foreground">
+					<h1>Selamat datang di akhyarr!!</h1>
+				</section>
+			</div>
+		</>
 	);
 }
