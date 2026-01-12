@@ -404,7 +404,7 @@ export default function Navbar({
 				{/* Top Content (Addresses etc) */}
 				<div
 					ref={menuContentRef}
-					className="absolute top-[25%] lg:top-[45%] -translate-y-1/2 w-full px-8 flex justify-between items-center font-product-sans text-sm font-semibold uppercase"
+					className="absolute top-[25%] lg:top-[45%] -translate-y-1/2 w-full px-8 hidden lg:flex justify-between items-center font-product-sans text-sm font-semibold uppercase"
 				>
 					<div className="text-left space-y-4">
 						{CONTACT_INFO.col1.map((line, i) => (
@@ -458,10 +458,12 @@ export default function Navbar({
 				{/* Center Image */}
 				<div
 					ref={menuImageRef}
-					className="absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-37.5 hidden lg:flex lg:flex-col lg:justify-center lg:items-center lg:gap-4 pointer-events-none text-primary"
+					className="absolute lg:top-[45%] top-[20%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full flex flex-col justify-center items-center lg:gap-4 pointer-events-none text-primary"
 				>
-					<LogoSvg />
-					<div className="scale-75">
+					<div className="scale-[35%] lg:scale-100 h-31.25 lg:h-auto">
+						<LogoSvg />
+					</div>
+					<div className="scale-[35%] lg:scale-75">
 						<AkhyarTextSvg />
 					</div>
 				</div>
@@ -469,7 +471,7 @@ export default function Navbar({
 				{/* Links Wrapper */}
 				<div
 					ref={linksWrapperRef}
-					className="absolute left-0 bottom-0 w-full lg:w-max px-8 pb-8 flex justify-between gap-8 flex-col lg:flex-row lg:gap-16 will-change-transform"
+					className="absolute left-0 lg:bottom-0 bottom-12 w-full lg:w-max px-8 pb-8 flex justify-between gap-8 flex-col lg:flex-row lg:gap-16 will-change-transform"
 				>
 					{MENU_LINKS.map((link) => (
 						<button
