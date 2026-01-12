@@ -91,20 +91,22 @@ export default function ScrollSlider() {
 			</div>
 
 			{/* Side Indicators */}
-			<div className="absolute top-1/2 right-8 -translate-y-1/2 flex items-center gap-6 z-30">
-				<div className="flex flex-col gap-4 items-end">
+			<div className="absolute top-1/2 right-2 sm:right-3 md:right-6 lg:right-8 -translate-y-1/2 flex items-center gap-1.5 sm:gap-2 md:gap-4 lg:gap-6 z-30">
+				<div className="flex flex-col gap-1.5 sm:gap-2 md:gap-3 lg:gap-4 items-end">
 					{SLIDE_COMPONENTS.map(({ id }, i) => (
 						<div
 							key={`indicator-${id}`} // PERBAIKAN: Key unik untuk indikator
-							className="flex items-center gap-4"
+							className="flex items-center gap-1.5 sm:gap-2 md:gap-3 lg:gap-4"
 						>
 							<div
-								className={`h-px transition-all duration-500 ${
-									activeSlide === i ? "w-10 opacity-100" : "w-4 opacity-30"
+								className={`h-px bg-gray-400 transition-all duration-500 ${
+									activeSlide === i
+										? "w-4 sm:w-6 md:w-8 lg:w-10 opacity-100"
+										: "w-1.5 sm:w-2 md:w-3 lg:w-4 opacity-30"
 								}`}
 							/>
 							<span
-								className={`font-mono text-[10px] ${
+								className={`font-mono text-[8px] sm:text-[9px] md:text-[10px] text-gray-600 ${
 									activeSlide === i ? "opacity-100" : "opacity-30"
 								}`}
 							>
@@ -114,9 +116,9 @@ export default function ScrollSlider() {
 					))}
 				</div>
 				{/* Vertical Progress Bar */}
-				<div className="relative w-px h-64 bg-black0">
+				<div className="relative w-px h-40 sm:h-48 md:h-56 lg:h-64 bg-gray-300/60">
 					<div
-						className="absolute top-0 -left-px w-0.75 bg-black transition-transform duration-300 origin-top"
+						className="absolute top-0 left-0 w-px bg-gray-600 transition-transform duration-300 origin-top"
 						style={{
 							height: "100%",
 							transform: `scaleY(${(activeSlide + 1) / SLIDE_COMPONENTS.length})`,
