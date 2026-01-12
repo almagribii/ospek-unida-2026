@@ -26,7 +26,6 @@ const HeroSection: React.FC = () => {
 		const ctx = gsap.context(() => {
 			const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-			// Initial state: hide everything
 			gsap.set(
 				[
 					logoRef.current,
@@ -40,7 +39,6 @@ const HeroSection: React.FC = () => {
 				{ opacity: 0 },
 			);
 
-			// 1. Big Feathers appear from top corners
 			tl.fromTo(
 				bigFeatherLeftRef.current,
 				{ x: -100, y: -100, opacity: 0, scale: 0.8 },
@@ -52,9 +50,8 @@ const HeroSection: React.FC = () => {
 				{ x: 100, y: -100, opacity: 0, scale: 0.8 },
 				{ x: 0, y: 0, opacity: 1, scale: 1, duration: 1.25 },
 				"<",
-			); // "<" starts at the same time as previous tween
+			); 
 
-			// 3. Logo (Akhyar Box) scales up and fades in
 			tl.fromTo(
 				logoRef.current,
 				{ y: 50, scale: 0.7, opacity: 0 },
@@ -62,7 +59,6 @@ const HeroSection: React.FC = () => {
 				"-=0.8",
 			);
 
-			// 4. Main Text "AKHYAR" (assuming it's HTML text with gradient)
 			tl.fromTo(
 				textRef.current,
 				{ y: 30, opacity: 0, scale: 0.8 },
@@ -70,7 +66,6 @@ const HeroSection: React.FC = () => {
 				"-=0.5",
 			);
 
-			// 5. Triple Accent Lines (staggered appearance)
 			tl.fromTo(
 				accentLineRefs.current,
 				{ scaleX: 0, opacity: 0 },
@@ -85,7 +80,6 @@ const HeroSection: React.FC = () => {
 				"-=0.7",
 			);
 
-			// 6. Subtitle "OSPEK UNIDA GONTOR 2026"
 			tl.fromTo(
 				subTextRef.current,
 				{ y: 20, opacity: 0, letterSpacing: "10px" },
@@ -99,7 +93,6 @@ const HeroSection: React.FC = () => {
 				"-=0.6",
 			);
 
-			// 7. Small Feathers at bottom - appear after main content (now 6)
 			smallFeatherRefs.current.slice(0, 6).forEach((feather, index) => {
 				tl.fromTo(
 					feather,
@@ -114,7 +107,6 @@ const HeroSection: React.FC = () => {
 				);
 			});
 
-			// Continuous gentle float for bottom feathers (6)
 			smallFeatherRefs.current.slice(0, 6).forEach((feather, index) => {
 				gsap.to(feather, {
 					y: "+=" + (8 + Math.random() * 6),
@@ -128,16 +120,15 @@ const HeroSection: React.FC = () => {
 				});
 			});
 
-			// 8. Floating Small Feathers Animation (background decorative feathers)
 			smallFeatherRefs.current.slice(6).forEach((feather, index) => {
 				gsap.from(feather, {
-					x: (index % 2 === 0 ? -50 : 50) + (Math.random() * 50 - 25), // Random initial horizontal offset
-					y: Math.random() * 100 + 50, // Start from random Y position
-					rotation: Math.random() * 90 - 45, // Random initial rotation
+					x: (index % 2 === 0 ? -50 : 50) + (Math.random() * 50 - 25), 
+					y: Math.random() * 100 + 50, 
+					rotation: Math.random() * 90 - 45, 
 					opacity: 0,
-					scale: Math.random() * 0.5 + 0.5, // Random scale
-					duration: 2 + Math.random() * 1, // Random duration
-					delay: 2 + Math.random() * 1, // Staggered start delay after main animation
+					scale: Math.random() * 0.5 + 0.5, 
+					duration: 2 + Math.random() * 1, 
+					delay: 2 + Math.random() * 1, 
 					ease: "power1.out",
 				});
 
@@ -145,36 +136,27 @@ const HeroSection: React.FC = () => {
 					y: "+=" + (20 + Math.random() * 10), // Random floating distance
 					x: "+=" + (10 + Math.random() * 5) * (index % 2 === 0 ? 1 : -1), // Slight horizontal drift
 					rotation: "+=" + (10 + Math.random() * 5),
-					duration: 4 + Math.random() * 2, // Random duration for loop
+					duration: 4 + Math.random() * 2, 
 					repeat: -1,
 					yoyo: true,
 					ease: "sine.inOut",
-					delay: 2.5 + Math.random() * 0.5, // Start loop slightly later
+					delay: 2.5 + Math.random() * 0.5, 
 				});
 			});
 
-			// Add remaining floating feathers to DOM if they exist
 			if (smallFeatherRefs.current.length > 6) {
 				smallFeatherRefs.current.slice(6).forEach((feather) => {
 					gsap.set(feather, { opacity: 1 });
 				});
 			}
-		}, containerRef); // Scope the GSAP animations to the containerRef
+		}, containerRef); 
 
-		return () => ctx.revert(); // Cleanup GSAP animations on component unmount
+		return () => ctx.revert(); 
 	}, []);
 
-	// Helper for accent line refs
 	const addAccentLineRef = (el: HTMLDivElement | null) => {
 		if (el && !accentLineRefs.current.includes(el)) {
 			accentLineRefs.current.push(el);
-		}
-	};
-
-	// Helper for small feather refs
-	const addSmallFeatherRef = (el: HTMLImageElement | null) => {
-		if (el && !smallFeatherRefs.current.includes(el)) {
-			smallFeatherRefs.current.push(el);
 		}
 	};
 
@@ -190,7 +172,6 @@ const HeroSection: React.FC = () => {
 				backgroundColor: "#ffffff",
 			}}
 		>
-			{/* Preload building background to avoid flash of empty state on reload */}
 			<Image
 				src="/background/Gedung Terpadu Background.png"
 				alt=""
@@ -219,7 +200,6 @@ const HeroSection: React.FC = () => {
 				/>
 			))}
 
-			{/* Secondary background only on the lower half, matching the provided reference */}
 			<div
 				className="pointer-events-none absolute inset-x-0 bottom-0 h-[62%] bg-cover bg-bottom bg-no-repeat"
 				style={{
@@ -232,55 +212,7 @@ const HeroSection: React.FC = () => {
 			/>
 			<div className="pointer-events-none absolute inset-x-0 bottom-0 h-[60%] bg-linear-to-t from-white/80 via-white/35 to-transparent blur-[1px] z-10" />
 
-			{/* Small Feathers at bottom - visible after animation */}
-			<Image
-				ref={addSmallFeatherRef}
-				src={featherSprites[0]}
-				width={100}
-				height={100}
-				alt="small decorative feather"
-				className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-auto z-40 object-contain opacity-0 drop-shadow-md pb-4"
-			/>
-			<Image
-				ref={addSmallFeatherRef}
-				src={featherSprites[1]}
-				width={100}
-				height={100}
-				alt="small decorative feather"
-				className="absolute bottom-2 left-1/4 transform -translate-x-1/2 w-24 h-auto z-40 object-contain opacity-0 drop-shadow-md pb-4"
-			/>
-			<Image
-				ref={addSmallFeatherRef}
-				src={featherSprites[2]}
-				width={100}
-				height={100}
-				alt="small decorative feather"
-				className="absolute bottom-2 right-1/4 transform translate-x-1/2 w-24 h-auto z-40 object-contain opacity-0 drop-shadow-md pb-4"
-			/>
-			<Image
-				ref={addSmallFeatherRef}
-				src={featherSprites[3]}
-				width={100}
-				height={100}
-				alt="small decorative feather"
-				className="absolute bottom-2 left-[12%] w-24 h-auto z-40 object-contain opacity-0 drop-shadow-md pb-4"
-			/>
-			<Image
-				ref={addSmallFeatherRef}
-				src={featherSprites[0]}
-				width={100}
-				height={100}
-				alt="small decorative feather"
-				className="absolute bottom-2 left-[38%] w-20 h-auto z-40 object-contain opacity-0 drop-shadow-md pb-4"
-			/>
-			<Image
-				ref={addSmallFeatherRef}
-				src={featherSprites[1]}
-				width={100}
-				height={100}
-				alt="small decorative feather"
-				className="absolute bottom-2 right-[12%] w-20 h-auto z-40 object-contain opacity-0 drop-shadow-md pb-4"
-			/>
+			
 			{/* Big Feathers */}
 			<Image
 				ref={bigFeatherLeftRef}
@@ -329,7 +261,6 @@ const HeroSection: React.FC = () => {
 					></div>
 				</div>
 
-				{/* Subtitle */}
 				<div ref={subTextRef} className="text-center mt-6 opacity-0">
 					<p className="text-xl md:text-2xl font-bold text-gray-800 tracking-widest uppercase">
 						OSPEK UNIDA GONTOR 2026

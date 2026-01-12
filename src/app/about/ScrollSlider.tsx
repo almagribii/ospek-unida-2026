@@ -40,14 +40,14 @@ export default function ScrollSlider() {
 		});
 
 		const totalSlides = SLIDE_COMPONENTS.length;
-		const pinDistance = window.innerHeight * totalSlides * 1.2;
+		const pinDistance = window.innerHeight * totalSlides * 0.8;
 
 		const ctx = gsap.context(() => {
 			ScrollTrigger.create({
 				trigger: containerRef.current,
 				start: "top top",
 				end: () => `+=${pinDistance}`,
-				scrub: 1,
+				scrub: 0.5,
 				pin: true,
 				onUpdate: (self) => {
 					const progress = self.progress;

@@ -28,125 +28,45 @@ export default function Slide1({ isActive }: SlideProps) {
 				className="object-cover object-bottom opacity-80"
 			/>
 
-			<div className="absolute inset-0 bg-linear-to-t from-white via-white/80 to-white/40" />
-			<div className="absolute inset-0 bg-linear-to-br from-emerald-100/40 via-transparent to-red-100/40" />
-
+			{/* Top Left Feather */}
 			<Image
-				src="/logo/Bulu Transparan.png"
-				alt="Feather ornament"
+				src="/assets/kanan.png"
+				alt="Feather ornament top left"
 				width={280}
 				height={280}
-				className="absolute -left-6 -top-10 w-48 opacity-70 drop-shadow-lg md:w-72"
+				className={`absolute -left-3 -top-6 w-32 opacity-70 drop-shadow-lg sm:w-40 md:w-56 lg:w-72 transition-all duration-1000 ${
+					isActive
+						? "translate-x-0 translate-y-0 opacity-70"
+						: "-translate-x-32 -translate-y-32 opacity-0"
+				}`}
 			/>
+
+			{/* Top Right Feather */}
 			<Image
-				src="/logo/Bulu Transparan.png"
-				alt="Feather ornament"
-				width={220}
-				height={220}
-				className="absolute -right-10 bottom-4 w-40 rotate-180 opacity-70 drop-shadow-lg md:w-64"
+				src="/assets/kiri.png"
+				alt="Feather ornament top right"
+				width={280}
+				height={280}
+				className={`absolute -right-3 -top-6 w-32 opacity-70 drop-shadow-lg sm:w-40 md:w-56 lg:w-72 transition-all duration-1000 ${
+					isActive
+						? "translate-x-0 translate-y-0 opacity-70"
+						: "translate-x-32 -translate-y-32 opacity-0"
+				}`}
 			/>
 
-			{/* <div className="relative z-10 flex h-full items-center justify-center px-6 py-12">
-				<div className="grid w-full max-w-6xl gap-8 rounded-3xl border border-white/60 bg-white/70 p-8 shadow-2xl backdrop-blur-xl md:gap-12 md:grid-cols-[1fr_1.1fr] md:p-12">
-					<div className="space-y-6 text-gray-800">
-						<div>
-							<p className="text-[11px] uppercase tracking-[0.32em] text-gray-500">
-								Filosofi Nama
-							</p>
-							<h1 className="mt-3 text-4xl font-bold leading-tight text-gray-900 md:text-6xl">
-								AKHYAR
-							</h1>
-						</div>
-
-						<div className="flex w-32 items-center gap-2">
-							<span className="h-1.5 flex-1 rounded-full bg-red-600" />
-							<span className="h-1.5 flex-1 rounded-full bg-emerald-700" />
-							<span className="h-1.5 flex-[0.6] rounded-full bg-gray-700" />
-						</div>
-
-						<div className="space-y-4">
-							<p className="text-base leading-relaxed text-gray-700 md:text-lg">
-								Diambil dari akar kata{" "}
-								<span className="font-semibold text-emerald-700">al-khayr</span>{" "}
-								yang berarti{" "}
-								<span className="font-semibold">kebaikan terbaik</span>. Nama
-								ini menjadi pengingat agar setiap langkah kader membawa manfaat,
-								mencari ridha Allah, dan menghadirkan keteladanan yang
-								menyejukkan.
-							</p>
-							<p className="text-sm text-gray-600 leading-relaxed">
-								Tiga garis warna terinspirasi dari identitas UNIDA Gontor:
-								<span className="block mt-2 text-red-600 font-semibold">
-									🔴 Keberanian
-								</span>
-								<span className="block text-emerald-700 font-semibold">
-									🟢 Keteguhan
-								</span>
-								<span className="block text-gray-700 font-semibold">
-									🔘 Kejernihan tujuan
-								</span>
-							</p>
-						</div>
-					</div>
-
-					<div className="space-y-6">
-						<div className="rounded-2xl border border-white/60 bg-gradient-to-br from-emerald-50/80 to-red-50/80 p-6 shadow-lg backdrop-blur-lg overflow-hidden">
-							<Image
-								src="/filosofi/nama1.png"
-								alt="Filosofi Nama AKHYAR"
-								width={300}
-								height={300}
-								className="w-full h-auto object-contain"
-								priority
-							/>
-						</div>
-
-						<div className="rounded-2xl border border-white/60 bg-white/70 p-5 shadow-lg backdrop-blur-lg">
-							<p className="text-[10px] uppercase tracking-[0.28em] text-gray-500 font-semibold">
-								Ayat Rujukan
-							</p>
-							<p className="mt-4 text-lg font-semibold leading-loose text-gray-900 md:text-xl text-right">
-								وَلْتَكُنْ مِنْكُمْ أُمَّةٌ يَدْعُونَ إِلَى الْخَيْرِ
-							</p>
-							<p className="mt-2 text-sm font-semibold text-gray-700">
-								QS Ali Imran (3): 104
-							</p>
-							<p className="mt-3 text-sm leading-relaxed text-gray-700">
-								"Hendaklah ada di antara kamu segolongan umat yang menyeru
-								kepada kebaikan, memerintahkan yang makruf, dan mencegah dari
-								yang mungkar; mereka itulah orang-orang yang beruntung."
-							</p>
-						</div>
-
-						<div className="rounded-2xl border border-white/50 bg-emerald-50/70 p-5 shadow-md backdrop-blur">
-							<p className="text-sm font-bold text-emerald-900">
-								✨ Makna Singkat
-							</p>
-							<p className="mt-2 text-sm leading-relaxed text-emerald-900">
-								Akhyar adalah ajakan terus-menerus untuk memilih jalan terbaik,
-								mengisi hidup dengan amal salih, dan mengajak sesama menuju
-								kebaikan bersama.
-							</p>
-						</div>
-					</div>
-				</div>
-			</div> */}
-
-			<div className="min-h-screen bg-[#f3f4f6] flex items-center justify-center p-4 font-sans text-slate-800">
+			<div className="min-h-screen flex items-center justify-center p-3 sm:p-4 relative z-20">
 				<div className="max-w-4xl w-full text-center">
-					{/* Judul Utama */}
-					<h1 className="text-4xl md:text-5xl font-serif font-bold mb-8 tracking-tight">
+					<h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 md:mb-8 text-black relative z-30">
 						Filosofi Nama
 					</h1>
 
 					{/* Kartu Konten */}
-					<div className="bg-white rounded-[40px] shadow-2xl p-8 md:p-12 relative overflow-hidden border border-slate-100">
-						{/* Efek Gradasi di Pinggir (Opsional) */}
-						<div className="absolute inset-0 border-[3px] border-transparent rounded-[40px] pointer-events-none bg-linear-to-br from-blue-100/20 via-transparent to-blue-200/20" />
+					<div className="bg-white rounded-[20px] sm:rounded-[30px] md:rounded-[40px] shadow-2xl p-4 sm:p-6 md:p-8 lg:p-12 relative overflow-hidden border border-slate-100">
+						<div className="absolute inset-0 border-[3px] border-transparent rounded-[20px] sm:rounded-[30px] md:rounded-[40px] pointer-events-none bg-linear-to-br from-blue-100/20 via-transparent to-blue-200/20" />
 
-						<div className="relative z-10 space-y-8">
+						<div className="relative z-10 space-y-4 sm:space-y-6 md:space-y-8">
 							{/* Paragraf Pembuka */}
-							<p className="text-lg leading-relaxed md:px-6">
+							<p className="text-sm sm:text-base md:text-lg leading-relaxed md:px-6">
 								Nama <span className="font-bold italic">"Al-Akhyaar"</span>{" "}
 								(الأَخْيَار) berarti
 								<span className="font-medium italic">
@@ -160,9 +80,9 @@ export default function Slide1({ isActive }: SlideProps) {
 							</p>
 
 							{/* Kaligrafi / Teks Arab */}
-							<div className="py-4">
+							<div className="py-2 sm:py-3 md:py-4">
 								<h2
-									className="text-3xl md:text-5xl font-serif leading-loose"
+									className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl leading-loose font-amiri"
 									dir="rtl"
 								>
 									وَإِنَّهُمْ عِنْدَنَا لَمِنَ الْمُصْطَفَيْنَ الْأَخْيَارِ ﴿٤٧﴾
@@ -170,15 +90,15 @@ export default function Slide1({ isActive }: SlideProps) {
 							</div>
 
 							{/* Terjemahan */}
-							<p className="italic text-slate-600 text-lg">
+							<p className="italic text-slate-600 text-sm sm:text-base md:text-lg">
 								"Sesungguhnya mereka di sisi Kami termasuk orang-orang pilihan
 								lagi baik."
 							</p>
 
 							{/* Deskripsi Konteks */}
-							<div className="text-justify md:text-center text-slate-700 leading-relaxed space-y-4 pt-4 border-t border-slate-50">
+							<div className="text-justify md:text-center text-slate-700 text-sm sm:text-base leading-relaxed space-y-3 sm:space-y-4 pt-3 sm:pt-4 border-t border-slate-50">
 								<p>
-									Dalam konteks Ospek Mahasiswa UNIDA 2026,{" "}
+									Dalam konteks OSPEK Mahasiswa UNIDA 2026,{" "}
 									<span className="font-bold">"Al-Akhyaar"</span> melambangkan
 									para mahasiswa baru sebagai generasi pilihan yang datang bukan
 									hanya untuk menuntut ilmu, tetapi juga untuk mewarisi misi
