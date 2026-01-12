@@ -26,10 +26,10 @@ const MENU_LINKS = [
 	{ label: "Home", href: "/" },
 	{ label: "Jurusan", href: "/jurusan" },
 	{ label: "Timeline", href: "/timeline" },
-	{ label: "Pembayaran", href: "/pembayaran" },
-	{ label: "Tentang", href: "/about" },
-	{ label: "Kontak", href: "/kontak" },
 	{ label: "Informasi", href: "/informasi" },
+	{ label: "Pembayaran", href: "/pembayaran" },
+	{ label: "Kontak", href: "/kontak" },
+	{ label: "Tentang", href: "/about" },
 ];
 
 const CONTACT_INFO = {
@@ -232,6 +232,16 @@ export default function Navbar({
 		const lerpFactor = 0.05;
 		let requestID: number;
 
+		const hideScrollBar = () => {
+			setTimeout(() => {
+				if (isMenuOpen) {
+					document.body.style.overflow = "hidden";
+				} else {
+					document.body.style.overflow = "auto";
+				}
+			}, 1000);
+		};
+
 		const animateLoop = () => {
 			// Lerp calculations
 			currentX.current += (targetX.current - currentX.current) * lerpFactor;
@@ -254,9 +264,10 @@ export default function Navbar({
 			requestID = requestAnimationFrame(animateLoop);
 		};
 
+		hideScrollBar();
 		animateLoop();
 		return () => cancelAnimationFrame(requestID);
-	}, []);
+	}, [isMenuOpen]);
 
 	// --------------------------------------------------------
 	// Event Handlers
