@@ -26,8 +26,8 @@ const MENU_LINKS = [
 	{ label: "Home", href: "/" },
 	{ label: "Jurusan", href: "/jurusan" },
 	{ label: "Timeline", href: "/timeline" },
-	{ label: "Pembayaran", href: "pembayaran" },
-	{ label: "FAQ", href: "/faq" },
+	{ label: "Pembayaran", href: "/pembayaran" },
+	{ label: "Tentang", href: "/about" },
 	{ label: "Kontak", href: "/kontak" },
 	{ label: "Informasi", href: "/informasi" },
 ];
@@ -471,7 +471,7 @@ export default function Navbar({
 				{/* Links Wrapper */}
 				<div
 					ref={linksWrapperRef}
-					className="absolute left-0 lg:bottom-0 bottom-12 w-full lg:w-max px-8 pb-8 flex justify-between gap-8 flex-col lg:flex-row lg:gap-16 will-change-transform"
+					className="absolute lg:bottom-0 w-full lg:w-max px-8 pb-8 flex lg:justify-between h-dvh lg:h-auto justify-end gap-8 flex-col lg:flex-row lg:gap-16 will-change-transform"
 				>
 					{MENU_LINKS.map((link) => (
 						<button

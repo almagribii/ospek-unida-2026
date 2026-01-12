@@ -23,9 +23,9 @@ export default function RootLayout({
 		return () => gsap.ticker.remove(update);
 	}, []);
 	return (
-		<html lang="en">
+		<>
 			<ReactLenis root />
-			<body>{children}</body>
-		</html>
+			<div>{children}</div>
+		</>
 	);
 }
