@@ -44,14 +44,14 @@ const CONTACT_INFO = {
 		"[ +62 821 3970 3726 ]",
 	],
 	col2: [
-		"UNIDA Gontor Website",
-		"https://unida.gontor.ac.id",
-		"UNIDA Gontor Instagram",
-		"https://www.instagram.com/unida.gontor/",
 		"Instagram",
 		"https://www.instagram.com/ospek.unidagontor/",
 		"Youtube",
 		"https://www.youtube.com/@unidagontortv",
+		"UNIDA Gontor Instagram",
+		"https://www.instagram.com/unida.gontor/",
+		"UNIDA Gontor Website",
+		"https://unida.gontor.ac.id",
 	],
 };
 
@@ -496,7 +496,7 @@ export default function Navbar({
 										))}
 									</span>
 									{/* Animated Text (Hidden initially) */}
-									<span className="absolute top-0 left-0 block text-primary-muted">
+									<span className="absolute lg:top-0 left-[15%] right-[15%] lg:right-0 lg:left-0 block text-primary-muted">
 										{link.label.split("").map((char, i) => (
 											<span
 												key={`${link.label}-animated-${i}`}
