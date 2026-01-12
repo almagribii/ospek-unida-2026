@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@layer base {
+	@import url("https://fonts.googleapis.com/css2?family=Amiri:ital@0;1&display=swap");
+}
+
 /* Mirage Font Family */
 @font-face {
 	font-family: "Mirage";
@@ -171,6 +175,7 @@
 	--font-mirage: "Mirage", sans-serif;
 	--font-perfectly-nineties: "Perfectly Nineties", sans-serif;
 	--font-product-sans: "Product Sans", sans-serif;
+	--font-amiri: "Amiri", serif;
 }
 
 body {
