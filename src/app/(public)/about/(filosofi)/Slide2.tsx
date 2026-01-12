@@ -4,7 +4,7 @@ type SlideProps = {
 	isActive: boolean;
 };
 
-export default function Slide4({ isActive }: SlideProps) {
+export default function Slide2({ isActive }: SlideProps) {
 	return (
 		<div
 			className={`relative h-full w-full overflow-hidden transition-all duration-1000 ${isActive ? "opacity-100 scale-100" : "opacity-0 scale-110"}`}
@@ -20,7 +20,7 @@ export default function Slide4({ isActive }: SlideProps) {
 			/>
 
 			<Image
-				src="/background/Gedung Terpadu Background.png"
+				src="/background/geter.webp"
 				alt="Silhouette gedung UNIDA"
 				fill
 				priority
@@ -30,7 +30,7 @@ export default function Slide4({ isActive }: SlideProps) {
 
 			{/* Top Left Feather */}
 			<Image
-				src="/assets/kanan.png"
+				src="/assets/bulu-kiri.webp"
 				alt="Feather ornament top left"
 				width={280}
 				height={280}
@@ -43,7 +43,7 @@ export default function Slide4({ isActive }: SlideProps) {
 
 			{/* Top Right Feather */}
 			<Image
-				src="/assets/kiri.png"
+				src="/assets/bulu-kanan.webp"
 				alt="Feather ornament top right"
 				width={280}
 				height={280}

@@ -4,7 +4,7 @@ type SlideProps = {
 	isActive: boolean;
 };
 
-export default function Slide9({ isActive }: SlideProps) {
+export default function Slide1({ isActive }: SlideProps) {
 	return (
 		<div
 			className={`relative h-full w-full overflow-hidden transition-all duration-1000 ${isActive ? "opacity-100 scale-100" : "opacity-0 scale-110"}`}
@@ -30,7 +30,7 @@ export default function Slide9({ isActive }: SlideProps) {
 
 			{/* Top Left Feather */}
 			<Image
-				src="/assets/kanan.png"
+				src="/assets/bulu-kiri.webp"
 				alt="Feather ornament top left"
 				width={280}
 				height={280}
@@ -43,7 +43,7 @@ export default function Slide9({ isActive }: SlideProps) {
 
 			{/* Top Right Feather */}
 			<Image
-				src="/assets/kiri.png"
+				src="/assets/bulu-kanan.webp"
 				alt="Feather ornament top right"
 				width={280}
 				height={280}
@@ -55,7 +55,7 @@ export default function Slide9({ isActive }: SlideProps) {
 			/>
 
 			<div className="min-h-screen flex items-center justify-center p-3 sm:p-4 relative z-20">
-				<div className="max-w-4xl w-full text-center">
+				<div className="max-w-7xl w-full text-center">
 					<h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 md:mb-8 text-black relative z-30">
 						Filosofi Nama
 					</h1>
