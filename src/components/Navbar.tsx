@@ -4,8 +4,9 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { SplitText } from "gsap/SplitText";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import type React from "react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import MenuButton from "@/components/MenuButton"; // Keep your existing component
 import AkhyarTextSvg from "./AkhyarTextSvg";
 import LogoSvg from "./LogoSvg";
@@ -68,6 +69,8 @@ export default function Navbar({
 	// State & Refs
 	// --------------------------------------------------------
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const pathname = usePathname();
+	const lastPathnameRef = useRef<string | null>(null);
 	const containerRef = useRef<HTMLDivElement>(null);
 	const overlayRef = useRef<HTMLDivElement>(null);
 	const linksWrapperRef = useRef<HTMLDivElement>(null);
@@ -91,6 +94,8 @@ export default function Navbar({
 	// --------------------------------------------------------
 	useGSAP(
 		() => {
+			const q = gsap.utils.selector(containerRef);
+
 			// Initial Setup
 			gsap.set(menuContentRef.current, { y: "50%", opacity: 0 });
 			gsap.set(menuImageRef.current, { scale: 0.5, opacity: 0 });
@@ -101,9 +106,7 @@ export default function Navbar({
 			});
 
 			// Initialize highlighter position to the first link
-			const firstLink = document.querySelector(
-				".menu-link-container:first-child",
-			);
+			const firstLink = q(".menu-link-container:first-child")[0];
 			if (firstLink && linksWrapperRef.current) {
 				const linkRect = firstLink.getBoundingClientRect();
 				const wrapperRect = linksWrapperRef.current.getBoundingClientRect();
@@ -114,7 +117,9 @@ export default function Navbar({
 				currentHighlighterX.current = linkRect.left - wrapperRect.left;
 			}
 
-			const splitMenu = SplitText.create(".nav-fade", { type: "words, chars" });
+			const splitMenu = SplitText.create(q(".nav-fade"), {
+				type: "words, chars",
+			});
 
 			gsap.from(splitMenu.chars, {
 				duration: 1,
@@ -123,34 +128,50 @@ export default function Navbar({
 				ease: "power2.out",
 			});
 
-			gsap.from(".nav-menu-extra", {
+			gsap.from(q(".nav-menu-extra"), {
 				duration: 1,
 				y: 100,
 				stagger: 0.05,
 				ease: "power2.out",
 				autoAlpha: 0,
 			});
+
+			return () => {
+				splitMenu.revert();
+			};
 		},
 		{ scope: containerRef },
 	);
+
+	const closeMenuImmediate = useCallback(() => {
+		isAnimating.current = false;
+		setIsMenuOpen(false);
+		document.body.style.overflow = "auto";
+		gsap.set(overlayRef.current, {
+			clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
+		});
+		gsap.set(".menu-link-item-holder", { y: "150%" });
+		gsap.set(highlighterRef.current, { y: "150%" });
+		gsap.set(menuContentRef.current, { y: "50%", opacity: 0 });
+		gsap.set(menuImageRef.current, { y: "0%", scale: 0.5, opacity: 0 });
+	}, []);
 
 	// --------------------------------------------------------
 	// Toggle Animation
 	// --------------------------------------------------------
 	const toggleMenu = () => {
 		if (isAnimating.current) return;
+		const willOpen = !isMenuOpen;
+		setIsMenuOpen(willOpen);
 		isAnimating.current = true;
 
 		const tl = gsap.timeline({
-			onUpdate: () => {
-				setIsMenuOpen(!isMenuOpen);
-			},
 			onComplete: () => {
 				isAnimating.current = false;
 			},
 		});
 
-		if (!isMenuOpen) {
+		if (willOpen) {
 			// OPEN ANIMATION
 			// Optional: Animate main site container if you have a ref to it (omitted for safety)
 
@@ -246,21 +267,72 @@ export default function Navbar({
 	};
 
 	// --------------------------------------------------------
+	// Close menu on route change
+	// --------------------------------------------------------
+	useEffect(() => {
+		if (lastPathnameRef.current === null) {
+			lastPathnameRef.current = pathname;
+			return;
+		}
+
+		if (lastPathnameRef.current !== pathname) {
+			lastPathnameRef.current = pathname;
+			closeMenuImmediate();
+		}
+	}, [pathname, closeMenuImmediate]);
+
+	// --------------------------------------------------------
+	// Prevent Scrolling When Menu is Open
+	// --------------------------------------------------------
+	useEffect(() => {
+		const preventWheel = (e: WheelEvent) => {
+			e.preventDefault();
+		};
+
+		const preventKeyScroll = (e: KeyboardEvent) => {
+			const scrollKeys = [
+				"Space",
+				"PageUp",
+				"PageDown",
+				"Home",
+				"End",
+				"ArrowUp",
+				"ArrowDown",
+				"ArrowLeft",
+				"ArrowRight",
+			];
+
+			if (scrollKeys.includes(e.code)) {
+				e.preventDefault();
+			}
+		};
+
+		if (isMenuOpen) {
+			const delay = () => {
+				setTimeout(() => {
+					document.body.style.overflow = "hidden";
+				}, 1000);
+			};
+			delay();
+			window.addEventListener("wheel", preventWheel, { passive: false });
+			window.addEventListener("keydown", preventKeyScroll);
+		} else {
+			document.body.style.overflow = "auto";
+		}
+
+		return () => {
+			document.body.style.overflow = "auto";
+			window.removeEventListener("wheel", preventWheel);
+			window.removeEventListener("keydown", preventKeyScroll);
+		};
+	}, [isMenuOpen]);
+
+	// --------------------------------------------------------
 	// Loop for Mouse Interaction (Parallax & Highlighter)
 	// --------------------------------------------------------
 	useEffect(() => {
 		const lerpFactor = 0.05;
 		let requestID: number;
-
-		const hideScrollBar = () => {
-			setTimeout(() => {
-				if (isMenuOpen) {
-					document.body.style.overflow = "hidden";
-				} else {
-					document.body.style.overflow = "auto";
-				}
-			}, 1000);
-		};
 
 		const animateLoop = () => {
 			// Lerp calculations
@@ -284,10 +356,9 @@ export default function Navbar({
 			requestID = requestAnimationFrame(animateLoop);
 		};
 
-		hideScrollBar();
 		animateLoop();
 		return () => cancelAnimationFrame(requestID);
-	}, [isMenuOpen]);
+	}, []);
 
 	// --------------------------------------------------------
 	// Event Handlers
@@ -415,7 +486,7 @@ export default function Navbar({
 							{isMenuOpen ? "CLOSE" : "MENU"}
 						</p>
 					</button>
-					<div className="nav-fade nav-menu-extra overflow-hidden">
+					<div className="nav-menu-extra overflow-hidden">
 						<MenuButton
 							Color={`${isAtTop ? "lg:bg-background" : ""} ${isMenuOpen ? "bg-background" : "bg-foreground"}`}
 							onClick={toggleMenu}
@@ -432,7 +503,9 @@ export default function Navbar({
 			{/** biome-ignore lint/a11y/noStaticElementInteractions: ntah lah */}
 			<div
 				ref={overlayRef}
-				className="fixed top-0 left-0 w-screen h-screen bg-foreground text-[#ffdda1] z-40 overflow-hidden pointer-events-auto"
+				className={`fixed top-0 left-0 w-screen h-screen bg-foreground text-[#ffdda1] z-40 overflow-hidden ${
+					isMenuOpen ? "pointer-events-auto" : "pointer-events-none"
+				}`}
 				style={{ clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)" }} // Initial state
 				onMouseMove={handleMouseMove}
 			>
@@ -519,6 +592,9 @@ export default function Navbar({
 							<div className="menu-link-item-holder relative block">
 								<Link
 									href={link.href}
+									onClick={() => {
+										if (isMenuOpen) closeMenuImmediate();
+									}}
 									className="relative block text-background px-4 font-mirage font-medium text-[2rem] lg:text-[8rem] leading-[0.9] tracking-tighter uppercase"
 								>
 									{/* Visible Text */}
