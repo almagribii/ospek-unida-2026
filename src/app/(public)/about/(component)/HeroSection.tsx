@@ -4,6 +4,7 @@ import gsap from "gsap";
 import Image from "next/image";
 import type React from "react";
 import { useEffect, useRef } from "react";
+import { ScrollDown } from "@/app/(home)/components/ScrollDown";
 import { Background } from "./Background";
 
 const HeroSection: React.FC<{ isActive?: boolean }> = ({ isActive = true }) => {
@@ -83,11 +84,9 @@ const HeroSection: React.FC<{ isActive?: boolean }> = ({ isActive = true }) => {
 			ref={containerRef}
 			className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden"
 		>
-			{/* Background Component */}
 			<Background isActive={isActive} />
 
-			{/* Main Content */}
-			<div className="z-30 flex flex-col items-center p-4">
+			<div className="z-30 flex flex-col items-center p-4 font-mirage">
 				{/* Logo */}
 				<Image
 					ref={logoRef}
@@ -125,6 +124,9 @@ const HeroSection: React.FC<{ isActive?: boolean }> = ({ isActive = true }) => {
 					<p className="text-xl md:text-2xl font-bold text-gray-800 tracking-widest uppercase">
 						OSPEK UNIDA GONTOR 2026
 					</p>
+				</div>
+				<div className="scroll-down-animate absolute inset-x-0 bottom-14 z-20 flex justify-center">
+					<ScrollDown />
 				</div>
 			</div>
 		</div>
