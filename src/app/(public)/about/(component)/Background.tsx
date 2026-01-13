@@ -19,7 +19,7 @@ export const Background = ({ isActive }: BackgroundProps) => {
 			/>
 
 			<Image
-				src="/background/Gedung Terpadu Background.png"
+				src="/background/geter.webp"
 				alt="Silhouette gedung UNIDA"
 				fill
 				priority

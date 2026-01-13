@@ -16,15 +16,17 @@ export default function Slide2({ isActive }: BackgroundProps) {
 				<div className="w-full">
 					<div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-center lg:px-30">
 						<div className="relative group lg:col-span-2 order-2 lg:order-1 flex justify-center lg:justify-start lg:pr-10">
-							<div className="relative aspect-video lg:aspect-video overflow-hidden rounded-2xl border border-white/10 shadow-2xl w-full max-w-md lg:max-w-none">
-								<Image
-									src="/filosofi/monogram.webp"
-									height={450}
-									width={800}
-									alt="Penjelasan Monogram"
-									className="object-cover w-full h-full transition-transform duration-1000 group-hover:scale-105"
-									priority
-								/>
+							<div className="relative aspect-video lg:aspect-video overflow-hidden rounded-2xl border-2 border-transparent bg-linear-to-r from-[#4270ED] via-[#91167c] to-[#e2b870] shadow-2xl w-full max-w-md lg:max-w-none p-0.5">
+								<div className="relative w-full h-full overflow-hidden rounded-xl bg-white">
+									<Image
+										src="/filosofi/monogram.webp"
+										height={450}
+										width={800}
+										alt="Penjelasan Monogram"
+										className="object-cover w-full h-full transition-transform duration-1000 group-hover:scale-105"
+										priority
+									/>
+								</div>
 							</div>
 						</div>
 
