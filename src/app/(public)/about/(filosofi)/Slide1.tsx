@@ -13,7 +13,7 @@ export default function Slide1({ isActive }: SlideProps) {
 
 			<div className="min-h-screen flex items-center justify-center p-3 sm:p-4 relative z-20">
 				<div className="max-w-7xl w-full text-center">
-					<h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 md:mb-8 text-black relative z-30">
+					<h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 md:mb-8 text-black relative z-30 font-mirage">
 						Filosofi Nama
 					</h1>
 
