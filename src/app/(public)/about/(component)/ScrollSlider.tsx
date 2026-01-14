@@ -1,5 +1,6 @@
 "use client";
 
+// proggres bottom
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
@@ -109,42 +110,27 @@ export default function ScrollSlider() {
 				))}
 			</div>
 
-			{/* Side Indicators */}
-			<div className="absolute top-1/2 right-2 sm:right-3 md:right-6 lg:right-8 -translate-y-1/2 flex items-center gap-1.5 sm:gap-2 md:gap-4 lg:gap-6 z-30">
-				<div className="flex flex-col gap-1.5 sm:gap-2 md:gap-3 lg:gap-4 items-end">
+			{/* Horizontal Progress Bar at Bottom */}
+			<div className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 w-full px-8 sm:px-12 md:px-16 lg:px-20 flex items-center justify-center z-30">
+				<div className="flex gap-1 sm:gap-1.5 md:gap-2 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
 					{SLIDE_COMPONENTS.map(({ id }, i) => (
 						<button
-							key={`indicator-${id}`}
+							key={`progress-${id}`}
 							onClick={() => handleSlideClick(i)}
 							type="button"
-							className="flex items-center gap-1.5 sm:gap-2 md:gap-3 lg:gap-4 cursor-pointer transition-all group lg:hover:scale-105"
+							className="flex-1 h-0.5 sm:h-0.75 bg-gray-300 transition-all duration-300 cursor-pointer hover:bg-gray-400 relative overflow-hidden group"
 						>
 							<div
-								className={`h-px bg-black transition-all duration-300 lg:group-hover:bg-gray-900 lg:group-hover:w-6 sm:lg:group-hover:w-8 md:lg:group-hover:w-10 ${
-									activeSlide === i
-										? "w-4 sm:w-6 md:w-8 lg:w-10 opacity-100"
-										: "w-1.5 sm:w-2 md:w-3 lg:w-4 opacity-30"
+								className={`absolute inset-0 bg-gray-800 transition-all duration-300 origin-left ${
+									i < activeSlide
+										? "scale-x-100"
+										: i === activeSlide
+											? "scale-x-100"
+											: "scale-x-0"
 								}`}
 							/>
-							<span
-								className={`font-mono text-[8px] sm:text-[9px] md:text-[10px] text-black transition-all duration-300 lg:group-hover:opacity-100 lg:group-hover:scale-110 ${
-									activeSlide === i ? "opacity-100" : "opacity-30"
-								}`}
-							>
-								{(i + 1).toString().padStart(2, "0")}
-							</span>
 						</button>
 					))}
-				</div>
-				{/* Vertical Progress Bar */}
-				<div className="relative w-px h-40 sm:h-48 md:h-56 lg:h-64 bg-gray-900">
-					<div
-						className="absolute top-0 left-0 w-px bg-gray-600 transition-transform duration-300 origin-top"
-						style={{
-							height: "100%",
-							transform: `scaleY(${(activeSlide + 1) / SLIDE_COMPONENTS.length})`,
-						}}
-					/>
 				</div>
 			</div>
 		</section>
