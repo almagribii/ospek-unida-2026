@@ -55,7 +55,7 @@ export default function Layout({
 	return (
 		<>
 			<Navbar />
-			<ReactLenis root ref={lenisRef} />
+			<ReactLenis root ref={lenisRef} autoRaf={false} />
 			{children}
 		</>
 	);

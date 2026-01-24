@@ -36,10 +36,13 @@ export default function ScrollSlider() {
 
 		const lenis = new Lenis();
 		lenisRef.current = lenis;
-		lenis.on("scroll", ScrollTrigger.update);
-		gsap.ticker.add((time) => {
+		const onLenisScroll = () => ScrollTrigger.update();
+		lenis.on("scroll", onLenisScroll);
+
+		const onTick = (time: number) => {
 			lenis.raf(time * 1000);
-		});
+		};
+		gsap.ticker.add(onTick);
 
 		const totalSlides = SLIDE_COMPONENTS.length;
 		const isMobile = window.innerWidth < 768;
@@ -65,11 +68,15 @@ export default function ScrollSlider() {
 		});
 
 		return () => {
-			lenis.destroy();
+			// Prevent runaway tickers/listeners when navigating away or during HMR.
+			gsap.ticker.remove(onTick);
+			lenis.off("scroll", onLenisScroll);
+
+			scrollTriggerRef.current?.kill();
+			scrollTriggerRef.current = null;
+
 			ctx.revert();
-			for (const trigger of ScrollTrigger.getAll()) {
-				trigger.kill();
-			}
+			lenis.destroy();
 		};
 	}, []);
 

@@ -53,7 +53,7 @@ export default function Layout({
 	}, []);
 	return (
 		<>
-			<ReactLenis root ref={lenisRef} />
+			<ReactLenis root ref={lenisRef} autoRaf={false} />
 			<div>{children}</div>
 		</>
 	);
