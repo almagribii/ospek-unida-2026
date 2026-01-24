@@ -1,5 +1,7 @@
+import Content from "./components/Content";
+
 const timelinePage = () => {
-  return <div>Timeline Page</div>;
-}
+	return <Content />;
+};
 
 export default timelinePage;
