@@ -16,14 +16,15 @@ export default function Slide2({ isActive }: BackgroundProps) {
 				<div className="w-full">
 					<div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-center lg:px-30">
 						<div className="relative group lg:col-span-2 order-2 lg:order-1 flex justify-center lg:justify-start lg:pr-10">
-							<div className="relative aspect-video lg:aspect-video overflow-hidden rounded-2xl border-2 border-transparent bg-linear-to-r from-[#4270ED] via-[#91167c] to-[#e2b870] shadow-2xl w-full max-w-md lg:max-w-none p-0.5">
-								<div className="relative w-full h-full overflow-hidden rounded-xl bg-white">
+							<div className="relative overflow-hidden rounded-2xl border-2 border-transparent bg-linear-to-r from-[#4270ED] via-[#91167c] to-[#e2b870] shadow-2xl w-full max-w-md lg:max-w-none p-0.5">
+								<div className="relative w-full overflow-hidden rounded-xl bg-white">
 									<Image
 										src="/filosofi/monogram.webp"
-										height={450}
 										width={800}
+										height={450}
 										alt="Penjelasan Monogram"
-										className="object-cover w-full h-full transition-transform duration-1000 group-hover:scale-105"
+										className="block h-auto w-full object-contain transition-transform duration-1000 group-hover:scale-105"
+										sizes="(max-width: 1024px) 100vw, 66vw"
 										priority
 									/>
 								</div>
@@ -38,7 +39,7 @@ export default function Slide2({ isActive }: BackgroundProps) {
 								<div className="w-20 sm:w-full h-0.5 bg-stone-600 rounded-full mx-auto" />
 							</div>
 
-							<div className="space-y-4 text-black font-mirage text-sm sm:text-base leading-relaxed">
+							<div className="space-y-4 text-black font-product-sans text-sm sm:text-base leading-relaxed">
 								<p>
 									Monogram <span className="font-bold italic">Al-Akhyar</span>{" "}
 									dirancang dengan menggabungkan empat huruf Arab yang membentuk

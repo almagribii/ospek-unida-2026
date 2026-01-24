@@ -9,7 +9,7 @@ import { useRef } from "react";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Content() {
-	const containerRef = useRef<HTMLElement>(null);
+	const containerRef = useRef<HTMLDivElement>(null);
 	const spotlightRef = useRef<HTMLElement>(null);
 	const pathRef = useRef<SVGPathElement>(null);
 	const svgDiv = useRef<HTMLDivElement>(null);
@@ -77,14 +77,7 @@ export default function Content() {
 	};
 
 	return (
-		<main ref={containerRef} className="font-sans bg-[#fafaf0] text-[#0f0f0f]">
-			{/* Hero Section */}
-			<section className="hero relative flex h-[100svh] w-full items-center justify-center overflow-hidden bg-[#deded5] p-8">
-				<h1 className="w-[60%] text-center text-[4rem] font-medium leading-[1.1] tracking-[-0.1rem] max-lg:w-full max-lg:text-[2rem] max-lg:tracking-normal">
-					Designed to keep information clear and connected
-				</h1>
-			</section>
-
+		<div ref={containerRef}>
 			{/* Spotlight Section */}
 			<section
 				ref={spotlightRef}
@@ -210,13 +203,6 @@ export default function Content() {
 					</svg>
 				</div>
 			</section>
-
-			{/* Outro Section */}
-			<section className="outro relative flex h-[100svh] w-full items-center justify-center overflow-hidden bg-[#deded5] p-8">
-				<h1 className="w-[60%] text-center text-[4rem] font-medium leading-[1.1] tracking-[-0.1rem] max-lg:w-full max-lg:text-[2rem] max-lg:tracking-normal">
-					Clearer organization ready for whatever comes next
-				</h1>
-			</section>
-		</main>
+		</div>
 	);
 }

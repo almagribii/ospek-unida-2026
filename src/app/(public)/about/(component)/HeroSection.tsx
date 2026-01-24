@@ -90,10 +90,10 @@ const HeroSection: React.FC<{ isActive?: boolean }> = ({ isActive = true }) => {
 				{/* Logo */}
 				<Image
 					ref={logoRef}
-					src="/logo/logo.png"
+					src="/logo/logo.webp"
 					alt="Akhyar Logo"
-					width={100}
-					height={100}
+					width={200}
+					height={200}
 					className="w-40 lg:w-60 h-auto mb-8 drop-shadow-xl opacity-0"
 				/>
 
@@ -121,7 +121,7 @@ const HeroSection: React.FC<{ isActive?: boolean }> = ({ isActive = true }) => {
 				</div>
 
 				<div ref={subTextRef} className="text-center mt-6 opacity-0">
-					<p className="text-xl md:text-2xl font-bold text-gray-800 tracking-widest uppercase">
+					<p className="text-xl md:text-2xl font-bold text-gray-800 tracking-widest uppercase font-product-sans">
 						OSPEK UNIDA GONTOR 2026
 					</p>
 				</div>
