@@ -35,8 +35,7 @@ export default function Content() {
 				ease: "power1.out",
 				scrollTrigger: {
 					trigger: spotlight,
-					start: "-40px 20%",
-					markers: true,
+					start: "-40px center",
 					toggleActions: "play none none reverse",
 				},
 			});
@@ -46,10 +45,11 @@ export default function Content() {
 				ease: "none",
 				scrollTrigger: {
 					trigger: spotlight,
-					start: "-40px 20%",
-					end: "bottom bottom",
+					start: "-40px center",
+					end: "90% 80%",
 					scrub: true,
 					invalidateOnRefresh: true,
+					markers: true,
 					onRefreshInit: () => {
 						const length = getPathLength();
 						gsap.set(path, {
@@ -85,161 +85,159 @@ export default function Content() {
 				ref={spotlightRef}
 				className="spotlight relative isolate z-0 h-full w-full overflow-hidden p-8 max-lg:gap-20"
 			>
-				{/* 
-				<div className="flex flex-col items-end lg:justify-end lg:mr-37.5 gap-4 max-lg:flex-col">
-					<div className="w-125 flex flex-col justify-center items-center max-lg:w-full">
-						<Image
-							src="/timeline/lulus.png"
-							alt="lulus"
-							className="h-full w-full object-cover drop-shadow-xl block"
-							width={500}
-							height={500}
-							onLoadingComplete={handleImageLoad}
-						/>
-						<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
-							<h2 className="text-2xl font-mirage font-semibold">
-								Yudisium Siswa Akhir KMI
-							</h2>
-							<p className="text-base font-light">
-								1 Maret 2026/ 11 Ramadhan 1447
-							</p>
-						</div>
-					</div>
-				</div>
-
-				<div className="flex flex-col items-start lg:justify-end lg:ml-37.5 gap-4 max-lg:flex-col">
-					<div className="w-125 flex flex-col justify-center items-center max-lg:w-full">
-						<Image
-							src="/timeline/lulus.png"
-							alt="lulus"
-							className="h-full w-full object-cover drop-shadow-xl block"
-							width={500}
-							height={500}
-							onLoadingComplete={handleImageLoad}
-						/>
-						<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
-							<h2 className="text-2xl font-mirage font-semibold">
-								Yudisium Siswa Akhir KMI
-							</h2>
-							<p className="text-base font-light">
-								1 Maret 2026/ 11 Ramadhan 1447
-							</p>
-						</div>
-					</div>
-				</div>
-
-				<div className="flex flex-col items-end lg:justify-end lg:ml-37.5 gap-4 max-lg:flex-col">
-					<div className="w-125 flex flex-col justify-center items-center max-lg:w-full">
-						<Image
-							src="/timeline/lulus.png"
-							alt="lulus"
-							className="h-full w-full object-cover drop-shadow-xl block"
-							width={500}
-							height={500}
-							onLoadingComplete={handleImageLoad}
-						/>
-						<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
-							<h2 className="text-2xl font-mirage font-semibold">
-								Yudisium Siswa Akhir KMI
-							</h2>
-							<p className="text-base font-light">
-								1 Maret 2026/ 11 Ramadhan 1447
-							</p>
-						</div>
-					</div>
-				</div>
-
-				<div className="flex flex-col items-start lg:justify-end lg:ml-37.5 gap-4 max-lg:flex-col">
-					<div className="w-125 flex flex-col justify-center items-center max-lg:w-full">
-						<Image
-							src="/timeline/lulus.png"
-							alt="lulus"
-							className="h-full w-full object-cover drop-shadow-xl block"
-							width={500}
-							height={500}
-							onLoadingComplete={handleImageLoad}
-						/>
-						<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
-							<h2 className="text-2xl font-mirage font-semibold">
-								Yudisium Siswa Akhir KMI
-							</h2>
-							<p className="text-base font-light">
-								1 Maret 2026/ 11 Ramadhan 1447
-							</p>
-						</div>
-					</div>
-				</div>
-
-				<div className="flex flex-col items-end lg:justify-end lg:ml-37.5 gap-4 max-lg:flex-col">
-					<div className="w-125 flex flex-col justify-center items-center max-lg:w-full">
-						<Image
-							src="/timeline/lulus.png"
-							alt="lulus"
-							className="h-full w-full object-cover drop-shadow-xl block"
-							width={500}
-							height={500}
-							onLoadingComplete={handleImageLoad}
-						/>
-						<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
-							<h2 className="text-2xl font-mirage font-semibold">
-								Yudisium Siswa Akhir KMI
-							</h2>
-							<p className="text-base font-light">
-								1 Maret 2026/ 11 Ramadhan 1447
-							</p>
-						</div>
-					</div>
-				</div>
-
-				<div className="flex flex-col items-start lg:justify-end lg:ml-37.5 gap-4 max-lg:flex-col">
-					<div className="w-125 flex flex-col justify-center items-center max-lg:w-full">
-						<Image
-							src="/timeline/lulus.png"
-							alt="lulus"
-							className="h-full w-full object-cover drop-shadow-xl block"
-							width={500}
-							height={500}
-							onLoadingComplete={handleImageLoad}
-						/>
-						<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
-							<h2 className="text-2xl font-mirage font-semibold">
-								Yudisium Siswa Akhir KMI
-							</h2>
-							<p className="text-base font-light">
-								1 Maret 2026/ 11 Ramadhan 1447
-							</p>
-						</div>
-					</div>
-				</div>
-
-				<div className="flex flex-col items-end lg:justify-end lg:ml-37.5 gap-4 max-lg:flex-col">
-					<div className="w-125 flex flex-col justify-center items-center max-lg:w-full">
-						<Image
-							src="/timeline/lulus.png"
-							alt="lulus"
-							className="h-full w-full object-cover drop-shadow-xl block"
-							width={500}
-							height={500}
-							onLoadingComplete={handleImageLoad}
-						/>
-						<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
-							<h2 className="text-2xl font-mirage font-semibold">
-								Yudisium Siswa Akhir KMI
-							</h2>
-							<p className="text-base font-light">
-								1 Maret 2026/ 11 Ramadhan 1447
-							</p>
-						</div>
-					</div>
-				</div> */}
-
-				{/* Timeline Content Container - matches SVG height */}
 				<div
 					ref={timelineContentRef}
-					className="relative mx-auto w-[90%] max-lg:w-[275%]"
-					style={{ aspectRatio: "199 / 450" }}
+					className="relative mx-auto"
+					style={{ aspectRatio: "199 / 414" }}
 				>
 					<div className="absolute right-0">
+						<div className="w-100 flex flex-col justify-center items-center max-lg:w-full">
+							<Image
+								src="/timeline/lulus.png"
+								alt="lulus"
+								className="h-full w-full object-cover drop-shadow-xl block"
+								width={400}
+								height={400}
+								onLoadingComplete={handleImageLoad}
+							/>
+							<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
+								<h2 className="text-2xl font-mirage font-semibold">
+									Yudisium Siswa Akhir KMI
+								</h2>
+								<p className="text-base font-light">
+									1 Maret 2026/ 11 Ramadhan 1447
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<div className="absolute left-0 top-[10%]">
+						<div className="w-100 flex flex-col justify-center items-center max-lg:w-full">
+							<Image
+								src="/timeline/lulus.png"
+								alt="lulus"
+								className="h-full w-full object-cover drop-shadow-xl block"
+								width={400}
+								height={400}
+								onLoadingComplete={handleImageLoad}
+							/>
+							<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
+								<h2 className="text-2xl font-mirage font-semibold">
+									Yudisium Siswa Akhir KMI
+								</h2>
+								<p className="text-base font-light">
+									1 Maret 2026/ 11 Ramadhan 1447
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<div className="absolute right-0 top-[23%]">
+						<div className="w-100 flex flex-col justify-center items-center max-lg:w-full">
+							<Image
+								src="/timeline/lulus.png"
+								alt="lulus"
+								className="h-full w-full object-cover drop-shadow-xl block"
+								width={400}
+								height={400}
+								onLoadingComplete={handleImageLoad}
+							/>
+							<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
+								<h2 className="text-2xl font-mirage font-semibold">
+									Yudisium Siswa Akhir KMI
+								</h2>
+								<p className="text-base font-light">
+									1 Maret 2026/ 11 Ramadhan 1447
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<div className="absolute left-0 top-[37%]">
+						<div className="w-100 flex flex-col justify-center items-center max-lg:w-full">
+							<Image
+								src="/timeline/lulus.png"
+								alt="lulus"
+								className="h-full w-full object-cover drop-shadow-xl block"
+								width={400}
+								height={400}
+								onLoadingComplete={handleImageLoad}
+							/>
+							<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
+								<h2 className="text-2xl font-mirage font-semibold">
+									Yudisium Siswa Akhir KMI
+								</h2>
+								<p className="text-base font-light">
+									1 Maret 2026/ 11 Ramadhan 1447
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<div className="absolute right-0 top-[48%]">
+						<div className="w-100 flex flex-col justify-center items-center max-lg:w-full">
+							<Image
+								src="/timeline/lulus.png"
+								alt="lulus"
+								className="h-full w-full object-cover drop-shadow-xl block"
+								width={400}
+								height={400}
+								onLoadingComplete={handleImageLoad}
+							/>
+							<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
+								<h2 className="text-2xl font-mirage font-semibold">
+									Yudisium Siswa Akhir KMI
+								</h2>
+								<p className="text-base font-light">
+									1 Maret 2026/ 11 Ramadhan 1447
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<div className="absolute left-0 top-[64%]">
+						<div className="w-100 flex flex-col justify-center items-center max-lg:w-full">
+							<Image
+								src="/timeline/lulus.png"
+								alt="lulus"
+								className="h-full w-full object-cover drop-shadow-xl block"
+								width={400}
+								height={400}
+								onLoadingComplete={handleImageLoad}
+							/>
+							<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
+								<h2 className="text-2xl font-mirage font-semibold">
+									Yudisium Siswa Akhir KMI
+								</h2>
+								<p className="text-base font-light">
+									1 Maret 2026/ 11 Ramadhan 1447
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<div className="absolute right-0 top-[74%]">
+						<div className="w-100 flex flex-col justify-center items-center max-lg:w-full">
+							<Image
+								src="/timeline/lulus.png"
+								alt="lulus"
+								className="h-full w-full object-cover drop-shadow-xl block"
+								width={400}
+								height={400}
+								onLoadingComplete={handleImageLoad}
+							/>
+							<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
+								<h2 className="text-2xl font-mirage font-semibold">
+									Yudisium Siswa Akhir KMI
+								</h2>
+								<p className="text-base font-light">
+									1 Maret 2026/ 11 Ramadhan 1447
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<div className="absolute left-0 top-[85%]">
 						<div className="w-100 flex flex-col justify-center items-center max-lg:w-full">
 							<Image
 								src="/timeline/lulus.png"
