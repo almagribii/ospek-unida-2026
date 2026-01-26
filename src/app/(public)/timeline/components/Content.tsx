@@ -13,6 +13,7 @@ export default function Content() {
 	const spotlightRef = useRef<HTMLElement>(null);
 	const pathRef = useRef<SVGPathElement>(null);
 	const svgDiv = useRef<HTMLDivElement>(null);
+	const timelineContentRef = useRef<HTMLDivElement>(null);
 
 	useGSAP(
 		() => {
@@ -34,7 +35,8 @@ export default function Content() {
 				ease: "power1.out",
 				scrollTrigger: {
 					trigger: spotlight,
-					start: "top top",
+					start: "-40px 20%",
+					markers: true,
 					toggleActions: "play none none reverse",
 				},
 			});
@@ -44,7 +46,7 @@ export default function Content() {
 				ease: "none",
 				scrollTrigger: {
 					trigger: spotlight,
-					start: "top top",
+					start: "-40px 20%",
 					end: "bottom bottom",
 					scrub: true,
 					invalidateOnRefresh: true,
@@ -81,89 +83,181 @@ export default function Content() {
 			{/* Spotlight Section */}
 			<section
 				ref={spotlightRef}
-				className="spotlight relative isolate z-0 flex h-full w-full flex-col gap-40 overflow-hidden p-8 max-lg:gap-20"
+				className="spotlight relative isolate z-0 h-full w-full overflow-hidden p-8 max-lg:gap-20"
 			>
-				{/* Row 1: Single Image (50% width on desktop) */}
-				<div className="flex justify-center gap-8 max-lg:flex-col">
-					<div className="w-125 max-lg:w-full">
+				{/* 
+				<div className="flex flex-col items-end lg:justify-end lg:mr-37.5 gap-4 max-lg:flex-col">
+					<div className="w-125 flex flex-col justify-center items-center max-lg:w-full">
 						<Image
 							src="/timeline/lulus.png"
-							alt=""
-							className="h-full w-full object-cover block"
+							alt="lulus"
+							className="h-full w-full object-cover drop-shadow-xl block"
 							width={500}
 							height={500}
 							onLoadingComplete={handleImageLoad}
 						/>
-					</div>
-				</div>
-
-				{/* Row 2: Text Left, Image Right */}
-				<div className="flex justify-center gap-8 max-lg:flex-col">
-					<div className="flex flex-1 flex-col justify-center">
-						<div className="mx-auto flex w-3/4 flex-col gap-4 rounded-2xl bg-[#deded5] p-12 max-lg:w-full">
-							<h2 className="text-[2.5rem] font-medium leading-[1.1] tracking-[-0.075rem] max-lg:text-[1.5rem] max-lg:tracking-normal">
-								A cleaner way to handle incoming updates
+						<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
+							<h2 className="text-2xl font-mirage font-semibold">
+								Yudisium Siswa Akhir KMI
 							</h2>
-							<p className="text-[1.125rem] font-medium max-lg:text-[1rem]">
-								Instead of showing every message or notification instantly, the
-								app groups related items and presents them in an organized
-								panel. It keeps your workspace calm, even when activity spikes.
-							</p>
-						</div>
-					</div>
-					<div className="flex flex-1 flex-col justify-center">
-						<div className="h-full w-full">
-							<Image
-								src="/timeline/balik.png"
-								alt=""
-								className="h-full w-full object-cover block"
-								width={300}
-								height={300}
-								onLoadingComplete={handleImageLoad}
-							/>
-						</div>
-					</div>
-				</div>
-
-				{/* Row 3: Image Left, Text Right */}
-				<div className="flex justify-center gap-8 max-lg:flex-col">
-					<div className="flex flex-1 flex-col justify-center">
-						<div className="h-full w-full">
-							<Image
-								src="/timeline/tes.png"
-								alt=""
-								className="h-full w-full object-cover block"
-								width={300}
-								height={300}
-								onLoadingComplete={handleImageLoad}
-							/>
-						</div>
-					</div>
-					<div className="flex flex-1 flex-col justify-center">
-						<div className="mx-auto flex w-3/4 flex-col gap-4 rounded-2xl bg-[#deded5] p-12 max-lg:w-full">
-							<h2 className="text-[2.5rem] font-medium leading-[1.1] tracking-[-0.075rem] max-lg:text-[1.5rem] max-lg:tracking-normal">
-								Built for increasing information demands
-							</h2>
-							<p className="text-[1.125rem] font-medium max-lg:text-[1rem]">
-								Whether it is files, notes, or incoming messages, the app sorts
-								and prioritizes items automatically. It prevents clutter and
-								helps maintain clarity during busy periods.
+							<p className="text-base font-light">
+								1 Maret 2026/ 11 Ramadhan 1447
 							</p>
 						</div>
 					</div>
 				</div>
 
-				{/* Row 4: Single Image (50% width on desktop) */}
-				<div className="flex justify-center gap-8 max-lg:flex-col">
-					<div className="w-1/2 max-lg:w-full">
+				<div className="flex flex-col items-start lg:justify-end lg:ml-37.5 gap-4 max-lg:flex-col">
+					<div className="w-125 flex flex-col justify-center items-center max-lg:w-full">
 						<Image
-							src="/timeline/tes.png"
-							alt=""
-							className="h-full w-full object-cover block"
-							width={300}
-							height={300}
+							src="/timeline/lulus.png"
+							alt="lulus"
+							className="h-full w-full object-cover drop-shadow-xl block"
+							width={500}
+							height={500}
 							onLoadingComplete={handleImageLoad}
 						/>
+						<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
+							<h2 className="text-2xl font-mirage font-semibold">
+								Yudisium Siswa Akhir KMI
+							</h2>
+							<p className="text-base font-light">
+								1 Maret 2026/ 11 Ramadhan 1447
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<div className="flex flex-col items-end lg:justify-end lg:ml-37.5 gap-4 max-lg:flex-col">
+					<div className="w-125 flex flex-col justify-center items-center max-lg:w-full">
+						<Image
+							src="/timeline/lulus.png"
+							alt="lulus"
+							className="h-full w-full object-cover drop-shadow-xl block"
+							width={500}
+							height={500}
+							onLoadingComplete={handleImageLoad}
+						/>
+						<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
+							<h2 className="text-2xl font-mirage font-semibold">
+								Yudisium Siswa Akhir KMI
+							</h2>
+							<p className="text-base font-light">
+								1 Maret 2026/ 11 Ramadhan 1447
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<div className="flex flex-col items-start lg:justify-end lg:ml-37.5 gap-4 max-lg:flex-col">
+					<div className="w-125 flex flex-col justify-center items-center max-lg:w-full">
+						<Image
+							src="/timeline/lulus.png"
+							alt="lulus"
+							className="h-full w-full object-cover drop-shadow-xl block"
+							width={500}
+							height={500}
+							onLoadingComplete={handleImageLoad}
+						/>
+						<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
+							<h2 className="text-2xl font-mirage font-semibold">
+								Yudisium Siswa Akhir KMI
+							</h2>
+							<p className="text-base font-light">
+								1 Maret 2026/ 11 Ramadhan 1447
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<div className="flex flex-col items-end lg:justify-end lg:ml-37.5 gap-4 max-lg:flex-col">
+					<div className="w-125 flex flex-col justify-center items-center max-lg:w-full">
+						<Image
+							src="/timeline/lulus.png"
+							alt="lulus"
+							className="h-full w-full object-cover drop-shadow-xl block"
+							width={500}
+							height={500}
+							onLoadingComplete={handleImageLoad}
+						/>
+						<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
+							<h2 className="text-2xl font-mirage font-semibold">
+								Yudisium Siswa Akhir KMI
+							</h2>
+							<p className="text-base font-light">
+								1 Maret 2026/ 11 Ramadhan 1447
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<div className="flex flex-col items-start lg:justify-end lg:ml-37.5 gap-4 max-lg:flex-col">
+					<div className="w-125 flex flex-col justify-center items-center max-lg:w-full">
+						<Image
+							src="/timeline/lulus.png"
+							alt="lulus"
+							className="h-full w-full object-cover drop-shadow-xl block"
+							width={500}
+							height={500}
+							onLoadingComplete={handleImageLoad}
+						/>
+						<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
+							<h2 className="text-2xl font-mirage font-semibold">
+								Yudisium Siswa Akhir KMI
+							</h2>
+							<p className="text-base font-light">
+								1 Maret 2026/ 11 Ramadhan 1447
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<div className="flex flex-col items-end lg:justify-end lg:ml-37.5 gap-4 max-lg:flex-col">
+					<div className="w-125 flex flex-col justify-center items-center max-lg:w-full">
+						<Image
+							src="/timeline/lulus.png"
+							alt="lulus"
+							className="h-full w-full object-cover drop-shadow-xl block"
+							width={500}
+							height={500}
+							onLoadingComplete={handleImageLoad}
+						/>
+						<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
+							<h2 className="text-2xl font-mirage font-semibold">
+								Yudisium Siswa Akhir KMI
+							</h2>
+							<p className="text-base font-light">
+								1 Maret 2026/ 11 Ramadhan 1447
+							</p>
+						</div>
+					</div>
+				</div> */}
+
+				{/* Timeline Content Container - matches SVG height */}
+				<div
+					ref={timelineContentRef}
+					className="relative mx-auto w-[90%] max-lg:w-[275%]"
+					style={{ aspectRatio: "199 / 450" }}
+				>
+					<div className="absolute right-0">
+						<div className="w-100 flex flex-col justify-center items-center max-lg:w-full">
+							<Image
+								src="/timeline/lulus.png"
+								alt="lulus"
+								className="h-full w-full object-cover drop-shadow-xl block"
+								width={400}
+								height={400}
+								onLoadingComplete={handleImageLoad}
+							/>
+							<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
+								<h2 className="text-2xl font-mirage font-semibold">
+									Yudisium Siswa Akhir KMI
+								</h2>
+								<p className="text-base font-light">
+									1 Maret 2026/ 11 Ramadhan 1447
+								</p>
+							</div>
+						</div>
 					</div>
 				</div>
 
@@ -184,22 +278,12 @@ export default function Content() {
 						<title>Line</title>
 						<path
 							ref={pathRef}
-							id="stroke-path"
-							d="M171.238 11.2948C151.238 3.29482 43.1162 32.9589 34.2376 84.2948C24.7969 138.881 183.469 79.2654 171.238 133.295C159.873 183.494 42.9538 153.569 34.2376 204.295C25.0638 257.684 169.248 250.16 171.238 304.295C173.441 364.244 -40.6625 449.84 21.2376 347.795C60.0162 283.866 187.17 392.563 188.693 403.795"
-							fill="none"
+							id="stoke-path"
+							d="M188.69 10.4222C185.619 7.86566 10.0001 15.9014 10.0001 62.866C10.0001 109.831 188.69 59.735 188.69 121.572C188.69 183.408 10.0001 120.006 10.0001 183.408C10.0001 246.81 188.69 169.319 188.69 235.852C188.69 302.385 10.0001 246.028 10.0001 302.385C10.0001 358.743 188.69 295.341 188.69 343.871C188.69 392.401 10.0001 397.88 10.0001 397.88"
 							stroke="#4270ED"
 							strokeWidth="20"
 							strokeLinecap="round"
 						/>
-						{/* <path
-							ref={pathRef}
-							id="stroke-path"
-							d="M639.668 100C639.668 100 105.669 100 199.669 601.503C293.669 1103.01 1277.17 691.502 1277.17 1399.5C1277.17 2107.5 -155.332 1968 140.168 1438.5C435.669 909.002 1442.66 2093.5 713.168 2659.5"
-							fill="none"
-							stroke="#FF5F0A"
-							strokeWidth="200"
-							strokeLinecap="round"
-						/> */}
 					</svg>
 				</div>
 			</section>
