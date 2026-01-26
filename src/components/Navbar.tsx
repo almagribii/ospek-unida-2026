@@ -48,14 +48,26 @@ const CONTACT_INFO = {
 		"[ +62 821 3970 3726 ]",
 	],
 	col2: [
-		"Instagram",
-		"https://www.instagram.com/ospek.unidagontor/",
-		"Youtube",
-		"https://www.youtube.com/@unidagontortv",
-		"UNIDA Gontor Instagram",
-		"https://www.instagram.com/unida.gontor/",
-		"UNIDA Gontor Website",
-		"https://unida.gontor.ac.id",
+		{
+			media: "OSPEK Instagram",
+			user: "@ospek.unidagontor",
+			link: "https://www.instagram.com/ospek.unidagontor/",
+		},
+		{
+			media: "UNIDA Gontor Youtube",
+			user: "@unidagontortv",
+			link: "https://www.youtube.com/@unidagontortv",
+		},
+		{
+			media: "UNIDA Gontor Instagram",
+			user: "@unida.gontor",
+			link: "https://www.instagram.com/unida.gontor/",
+		},
+		{
+			media: "UNIDA Gontor Website",
+			user: "unida.gontor.ac.id",
+			link: "https://unida.gontor.ac.id",
+		},
 	],
 };
 
@@ -529,37 +541,12 @@ export default function Navbar({
 						))}
 					</div>
 					<div className="text-right space-y-4">
-						{CONTACT_INFO.col2.map((line, i) =>
-							line.startsWith("https") ? (
-								<Link
-									href={line}
-									key={`col2-${
-										// biome-ignore lint/suspicious/noArrayIndexKey: nothing
-										i
-									}`}
-									className={
-										line.length === 0
-											? "h-4 "
-											: "hover:text-[#ffffff] transition-colors ease-out"
-									}
-								>
-									{line}
-									<br />
-									<br />
-								</Link>
-							) : (
-								<p
-									key={`col2-${
-										// biome-ignore lint/suspicious/noArrayIndexKey: nothing
-										i
-									}`}
-									className={line.length === 0 ? "h-4" : ""}
-								>
-									{line === "Language" ? <br /> : null}
-									{line}
-								</p>
-							),
-						)}
+						{CONTACT_INFO.col2.map((line, i) => (
+							<div key={line.user}>
+								<p>{line.media}</p>
+								<Link href={line.link}>{line.user}</Link>
+							</div>
+						))}
 					</div>
 				</div>
 
