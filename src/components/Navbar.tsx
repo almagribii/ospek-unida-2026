@@ -68,6 +68,11 @@ const CONTACT_INFO = {
 			user: "unida.gontor.ac.id",
 			link: "https://unida.gontor.ac.id",
 		},
+		{
+			media: "Admisi UNIDA Gontor",
+			user: "admisi.unida.gontor.ac.id",
+			link: "https://admisi.unida.gontor.ac.id/",
+		},
 	],
 };
 
@@ -541,10 +546,15 @@ export default function Navbar({
 						))}
 					</div>
 					<div className="text-right space-y-4">
-						{CONTACT_INFO.col2.map((line, i) => (
+						{CONTACT_INFO.col2.map((line) => (
 							<div key={line.user}>
 								<p>{line.media}</p>
-								<Link href={line.link}>{line.user}</Link>
+								<Link
+									className="text-primary hover:text-primary-muted transition-colors ease-out"
+									href={line.link}
+								>
+									{line.user}
+								</Link>
 							</div>
 						))}
 					</div>

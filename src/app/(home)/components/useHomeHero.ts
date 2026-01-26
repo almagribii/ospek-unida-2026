@@ -12,9 +12,10 @@ const TOP_THRESHOLD = 1350;
 const currentFrame = (index: number) =>
 	`/bg-frame/hd/${(index + 1).toString()}.jpg`;
 
-export function useHomeHero() {
+export function useHomeHero(preloaderComplete = false) {
 	const parentRef = useRef<HTMLDivElement>(null);
 	const canvasRef = useRef<HTMLCanvasElement>(null);
+	const initialAnimationsRef = useRef<gsap.core.Timeline | null>(null);
 	const imagesRef = useRef<HTMLImageElement[]>([]);
 	const videoFramesRef = useRef({ frame: 0 });
 	const isLoadedRef = useRef(false);
@@ -131,6 +132,7 @@ export function useHomeHero() {
 					autoAlpha: 0,
 					scale: 5,
 					y: -140,
+					filter: "blur(10px)",
 					transformOrigin: "50% 50%",
 					force3D: true,
 				});
@@ -143,12 +145,19 @@ export function useHomeHero() {
 						scale: 1,
 						y: 0,
 						duration: 1.5,
+						filter: "blur(0px)",
 						stagger: 1,
 						ease: "power4.out",
 					});
 			}
 
-			gsap.fromTo(
+			// Set transform origin for the header (fixed point for scaling/fading)
+			gsap.set(".header", {
+				transformOrigin: "50% 0%", // Adjust this value to match the circle position
+			});
+
+			// Create initial animations timeline but keep it paused
+			initialAnimationsRef.current = gsap.timeline({ paused: true }).fromTo(
 				".header",
 				{
 					autoAlpha: 0,
@@ -157,7 +166,7 @@ export function useHomeHero() {
 				{
 					autoAlpha: 1,
 					scale: 1,
-					duration: 1,
+					duration: 0.8,
 					ease: "power4.out",
 				},
 			);
@@ -194,9 +203,12 @@ export function useHomeHero() {
 					videoFramesRef.current.frame = targetFrame;
 					render();
 
-					if (progress <= 0.25) {
-						const zProgress = progress / 0.25;
+					if (progress <= 0.4) {
+						const zProgress = progress / 0.4;
 						const translateZ = zProgress * -500;
+						const translateY = zProgress * -250; // Move upward toward the fixed point
+						const scaleValue = 1 - zProgress * 0.5; // Scale from 1 to 0.5
+						const blurValue = zProgress * 10; // Blur from 0 to 10px
 
 						let opacity = 1;
 						if (progress >= 0.2) {
@@ -206,6 +218,9 @@ export function useHomeHero() {
 
 						gsap.set(".header", {
 							z: translateZ,
+							y: translateY,
+							scale: scaleValue,
+							filter: `blur(${blurValue}px)`,
 							opacity,
 						});
 					} else {
@@ -213,7 +228,6 @@ export function useHomeHero() {
 							opacity: 0,
 						});
 					}
-
 					const heroImgTl = heroImgTimelineRef.current;
 					if (heroImgTl) {
 						const t = (progress - 0.6) / 0.3;
@@ -237,10 +251,18 @@ export function useHomeHero() {
 			return () => {
 				heroTrigger.kill();
 				heroImgTimelineRef.current?.kill();
+				initialAnimationsRef.current?.kill();
 			};
 		},
 		{ scope: parentRef, dependencies: [render, syncNavHidden] },
 	);
+
+	// Trigger initial animations when preloader completes
+	useEffect(() => {
+		if (preloaderComplete && initialAnimationsRef.current) {
+			initialAnimationsRef.current.play();
+		}
+	}, [preloaderComplete]);
 
 	useEffect(() => {
 		const syncIsAtTop = () => {

@@ -8,10 +8,12 @@ import Preloader from "./Preloader";
 import { useHomeHero } from "./useHomeHero";
 
 export default function Home() {
-	const { parentRef, canvasRef, isNavHidden, isAtTop } = useHomeHero();
 	const [hidePreloader, setHidePreloader] = useState(false);
 	const [assetsReady, setAssetsReady] = useState(false);
 	const [timedOut, setTimedOut] = useState(false);
+	const [preloaderComplete, setPreloaderComplete] = useState(false);
+	const { parentRef, canvasRef, isNavHidden, isAtTop } =
+		useHomeHero(preloaderComplete);
 
 	const heroAssetUrls = useMemo(() => {
 		const frameCount = 90;
@@ -66,7 +68,10 @@ export default function Home() {
 			{!hidePreloader && (
 				<Preloader
 					shouldFinish={shouldFinishPreloader}
-					onComplete={() => setHidePreloader(true)}
+					onComplete={() => {
+						setPreloaderComplete(true);
+						setHidePreloader(true);
+					}}
 				/>
 			)}
 
