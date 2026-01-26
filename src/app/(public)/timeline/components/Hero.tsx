@@ -25,12 +25,19 @@ export default function Hero() {
 				ease: "power3.out",
 				scale: 0.2,
 				y: 100,
-			}).from(splitText.chars, {
-				duration: 1,
-				y: 100,
-				stagger: 0.05,
-				ease: "expo.out",
-			});
+			})
+				.from(splitText.chars, {
+					duration: 0.7,
+					y: 100,
+					stagger: 0.05,
+					ease: "expo.out",
+					delay: -0.5,
+				})
+				.from("#scroll-down", {
+					autoAlpha: 0,
+					ease: "power2.out",
+					delay: -0.3,
+				});
 		},
 		{ scope: sectionRef },
 	);
@@ -48,12 +55,23 @@ export default function Hero() {
 					height={330}
 				/>
 			</div>
-			<div className="max-h-[80px] px-2 overflow-hidden">
-				<h1 id="desc" className="font-mirage font-semibold text-6xl">
-					Timeline OSPEK
+			<div className="px-2 overflow-hidden mb-3">
+				<h1
+					id="desc"
+					className="font-mirage text-center font-semibold lg:text-6xl text-4xl"
+				>
+					Timeline OSPEK 2026
 				</h1>
 			</div>
-			<div className="scroll-down-animate absolute inset-x-0 bottom-14 z-20 flex justify-center">
+			<div className="px-2 overflow-hidden">
+				<h2 id="desc" className="text-center text-lg">
+					Universitas Darussalam Gontor
+				</h2>
+			</div>
+			<div
+				id="scroll-down"
+				className="absolute inset-x-0 bottom-14 z-20 flex justify-center"
+			>
 				<ScrollDown />
 			</div>{" "}
 		</section>
