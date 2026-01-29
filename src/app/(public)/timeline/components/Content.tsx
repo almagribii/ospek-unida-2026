@@ -40,6 +40,26 @@ export default function Content() {
 				},
 			});
 
+			const images = document.querySelectorAll("#image-timeline");
+			const imageTweens: gsap.core.Tween[] = [];
+
+			images.forEach((image) => {
+				const tween = gsap.from(image, {
+					autoAlpha: 0,
+					y: 100,
+					ease: "power3.out",
+					duration: 0.8,
+					scrollTrigger: {
+						trigger: image,
+						start: "top 75%",
+						end: "top 20%",
+						scrub: true,
+						toggleActions: "play none none reverse",
+					},
+				});
+				imageTweens.push(tween);
+			});
+
 			const drawTween = gsap.to(path, {
 				strokeDashoffset: 0,
 				ease: "none",
@@ -48,7 +68,6 @@ export default function Content() {
 					start: "-40px center",
 					end: "90% 80%",
 					scrub: true,
-					markers: true,
 					invalidateOnRefresh: true,
 					onRefreshInit: () => {
 						const length = getPathLength();
@@ -64,6 +83,10 @@ export default function Content() {
 				fadeTween.kill();
 				drawTween.scrollTrigger?.kill();
 				drawTween.kill();
+				imageTweens.forEach((tween) => {
+					tween.scrollTrigger?.kill();
+					tween.kill();
+				});
 			};
 		},
 		{ scope: containerRef },
@@ -90,12 +113,16 @@ export default function Content() {
 							<Image
 								src="/timeline/yudisium_kmi.png"
 								alt="lulus"
-								className="h-full w-full object-cover drop-shadow-xl block"
+								id="image-timeline"
+								className="h-full w-full object-cover drop-shadow-xl block z-1 relative"
 								width={400}
 								height={400}
 								onLoadingComplete={handleImageLoad}
 							/>
-							<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
+							<div
+								id="desc-timeline"
+								className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4 z-10 relative"
+							>
 								<h2 className="text-2xl font-mirage font-semibold">
 									Yudisium Siswa Akhir KMI
 								</h2>
@@ -111,12 +138,16 @@ export default function Content() {
 							<Image
 								src="/timeline/awal_kedatangan.png"
 								alt="lulus"
-								className="h-full w-full object-cover drop-shadow-xl block"
+								id="image-timeline"
+								className="h-full w-full object-cover drop-shadow-xl block z-1 relative"
 								width={400}
 								height={400}
 								onLoadingComplete={handleImageLoad}
 							/>
-							<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
+							<div
+								id="desc-timeline"
+								className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4 z-10 relative"
+							>
 								<h2 className="text-2xl font-mirage font-semibold">
 									Awal Kedatangan Mahasiswa Baru
 								</h2>
@@ -132,12 +163,16 @@ export default function Content() {
 							<Image
 								src="/timeline/pengarahan_pra_ospek.png"
 								alt="lulus"
-								className="h-full w-full object-cover drop-shadow-xl block"
+								id="image-timeline"
+								className="h-full w-full object-cover drop-shadow-xl block z-1 relative"
 								width={400}
 								height={400}
 								onLoadingComplete={handleImageLoad}
 							/>
-							<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
+							<div
+								id="desc-timeline"
+								className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4 z-10 relative"
+							>
 								<h2 className="text-2xl font-mirage font-semibold">
 									Pengarahan Pra-Ospek
 								</h2>
@@ -153,12 +188,16 @@ export default function Content() {
 							<Image
 								src="/timeline/interview.png"
 								alt="lulus"
-								className="h-full w-full object-cover drop-shadow-xl block"
+								id="image-timeline"
+								className="h-full w-full object-cover drop-shadow-xl block z-1 relative"
 								width={400}
 								height={400}
 								onLoadingComplete={handleImageLoad}
 							/>
-							<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
+							<div
+								id="desc-timeline"
+								className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4 z-10 relative"
+							>
 								<h2 className="text-2xl font-mirage font-semibold">
 									Interview Program Studi
 								</h2>
@@ -174,12 +213,16 @@ export default function Content() {
 							<Image
 								src="/timeline/yudisium_prodi.png"
 								alt="lulus"
-								className="h-full w-full object-cover drop-shadow-xl block"
+								id="image-timeline"
+								className="h-full w-full object-cover drop-shadow-xl block z-1 relative"
 								width={400}
 								height={400}
 								onLoadingComplete={handleImageLoad}
 							/>
-							<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
+							<div
+								id="desc-timeline"
+								className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4 z-10 relative"
+							>
 								<h2 className="text-2xl font-mirage font-semibold">
 									Yudisium Program Studi
 								</h2>
@@ -195,12 +238,16 @@ export default function Content() {
 							<Image
 								src="/timeline/pembukaan_ospek.png"
 								alt="lulus"
-								className="h-full w-full object-cover drop-shadow-xl block"
+								id="image-timeline"
+								className="h-full w-full object-cover drop-shadow-xl block z-1 relative"
 								width={400}
 								height={400}
 								onLoadingComplete={handleImageLoad}
 							/>
-							<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
+							<div
+								id="desc-timeline"
+								className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4 z-10 relative"
+							>
 								<h2 className="text-2xl font-mirage font-semibold">
 									Pembukaan Ospek
 								</h2>
@@ -216,12 +263,16 @@ export default function Content() {
 							<Image
 								src="/timeline/kuliah_umum.png"
 								alt="lulus"
-								className="h-full w-full object-cover drop-shadow-xl block"
+								id="image-timeline"
+								className="h-full w-full object-cover drop-shadow-xl block z-1 relative"
 								width={400}
 								height={400}
 								onLoadingComplete={handleImageLoad}
 							/>
-							<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
+							<div
+								id="desc-timeline"
+								className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4 z-10 relative"
+							>
 								<h2 className="text-2xl font-mirage font-semibold">
 									Kuliah Umum Per Fakultas
 								</h2>
@@ -238,12 +289,16 @@ export default function Content() {
 							<Image
 								src="/timeline/penutupan_ospek.png"
 								alt="lulus"
-								className="h-full w-full object-cover drop-shadow-xl block"
+								id="image-timeline"
+								className="h-full w-full object-cover drop-shadow-xl block z-1 relative"
 								width={400}
 								height={400}
 								onLoadingComplete={handleImageLoad}
 							/>
-							<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
+							<div
+								id="desc-timeline"
+								className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4 z-10 relative"
+							>
 								<h2 className="text-2xl font-mirage font-semibold">
 									Penutupan Ospek Akhyar
 								</h2>
@@ -258,7 +313,7 @@ export default function Content() {
 				{/* SVG Path Background */}
 				<div
 					ref={svgDiv}
-					className="pointer-events-none absolute left-1/2 top-[15svh] -z-10 h-full w-[90%] -translate-x-1/2 max-lg:top-[15svh] max-lg:w-[275%]"
+					className="pointer-events-none lg:block hidden absolute left-1/2 top-[15svh] -z-10 h-full w-[90%] -translate-x-1/2 max-lg:top-[15svh] max-lg:w-[275%]"
 				>
 					<svg
 						className="h-auto w-full"
