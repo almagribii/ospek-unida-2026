@@ -1,3 +1,9 @@
+"use client";
+
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useRef } from "react";
 import {
 	Timeline,
 	TimelineContent,
@@ -7,18 +13,55 @@ import {
 import { timelineData as data } from "./timelineData";
 
 export default function Description() {
+	const sectionRef = useRef<HTMLElement | null>(null);
+	const timelineRef = useRef<HTMLDivElement | null>(null);
+
+	useGSAP(
+		() => {
+			const tween = gsap.timeline({
+				scrollTrigger: {
+					trigger: timelineRef.current,
+					start: "top 75%",
+					toggleActions: "play none none reverse",
+					markers: true,
+				},
+			});
+
+			tween
+				.from(timelineRef.current, {
+					x: -200,
+					ease: "power3.out",
+					duration: 0.8,
+				})
+				.from("span", {
+					x: 100,
+					ease: "power3.out",
+				});
+		},
+		{ scope: timelineRef },
+	);
+
+	useGSAP(() => {}, { scope: sectionRef });
 	return (
-		<div className="bg-[linear-gradient(rgba(243,243,243,1),rgba(0,0,0,0.2)),url('/background/white_texture.webp')] bg-cover bg-center p-8 md:p-12 flex flex-col gap-12">
+		<section
+			ref={sectionRef}
+			className="bg-[linear-gradient(rgba(243,243,243,1),rgba(0,0,0,0.2)),url('/background/white_texture.webp')] bg-cover bg-center p-8 md:p-12 flex flex-col gap-12"
+		>
 			<div className="bg-foreground relative p-6 md:p-10 rounded-xl overflow-x-auto">
-				<div className="absolute hidden lg:flex flex-col items-center justify-center left-5 h-full max-h-[288px] w-full max-w-[80px] bg-primary text-2xl font-mirage font-semibold">
-					<span>T</span>
-					<span>I</span>
-					<span>M</span>
-					<span>E</span>
-					<span>L</span>
-					<span>I</span>
-					<span>N</span>
-					<span>E</span>
+				<div
+					ref={timelineRef}
+					className="absolute hidden lg:flex flex-col items-center justify-center left-5 h-full max-h-72 w-full max-w-20 bg-secondary text-foreground text-2xl font-mirage font-semibold"
+				>
+					<div className="flex flex-col items-center h-full justify-center">
+						<span className="overflow-hidden">T</span>
+						<span className="overflow-hidden">I</span>
+						<span className="overflow-hidden">M</span>
+						<span className="overflow-hidden">E</span>
+						<span className="overflow-hidden">L</span>
+						<span className="overflow-hidden">I</span>
+						<span className="overflow-hidden">N</span>
+						<span className="overflow-hidden">E</span>
+					</div>
 				</div>
 				<Timeline>
 					{data.map((item, index) => {
@@ -34,6 +77,6 @@ export default function Description() {
 					})}
 				</Timeline>
 			</div>
-		</div>
+		</section>
 	);
 }
