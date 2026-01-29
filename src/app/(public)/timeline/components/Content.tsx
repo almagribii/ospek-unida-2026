@@ -6,6 +6,13 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import { useRef } from "react";
 
+interface TimelineData {
+	imageUrl: string;
+	title: string;
+	description: string;
+	position: string;
+}
+
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Content() {
@@ -14,6 +21,57 @@ export default function Content() {
 	const pathRef = useRef<SVGPathElement>(null);
 	const svgDiv = useRef<HTMLDivElement>(null);
 	const timelineContentRef = useRef<HTMLDivElement>(null);
+	const timelineData: TimelineData[] = [
+		{
+			imageUrl: "yudisium_kmi.png",
+			title: "Yudisium Siswa Akhir KMI",
+			description: "1 Maret 2026/ 11 Ramadhan 1447",
+			position: "lg:right-0",
+		},
+		{
+			imageUrl: "awal_kedatangan.png",
+			title: "Awal Kedatangan Mahasiswa Baru",
+			description: "26 Maret 2026/ 7 Syawwal 1447",
+			position: "lg:left-0 lg:top-[10%]",
+		},
+		{
+			imageUrl: "pengarahan_pra_ospek.png",
+			title: "Pengarahan Pra-Ospek",
+			description: "31 Maret 2026/ 12 Syawwal 1447",
+			position: "lg:right-0 lg:top-[23%]",
+		},
+		{
+			imageUrl: "interview.png",
+			title: "Interview Program Studi",
+			description: "1 April 2026/ 13 Syawwal 1447",
+			position: "lg:left-0 lg:top-[37%]",
+		},
+		{
+			imageUrl: "yudisium_prodi.png",
+			title: "Yudisium Program Studi",
+			description: "2 April 2026/ 14 Syawwal 1447",
+			position: "lg:right-0 lg:top-[48%]",
+		},
+		{
+			imageUrl: "pembukaan_ospek.png",
+			title: "Pembukaan Ospek",
+			description: "4 April 2026/ 16 Syawwal 1447",
+			position: "lg:left-0 lg:top-[64%]",
+		},
+		{
+			imageUrl: "kuliah_umum.png",
+			title: "Kuliah Umum Per Fakultas",
+			description:
+				"4 April 2026/ 16 Syawwal 1447, Sampai 8 April 2026/ 20 Syawwal 1447",
+			position: "lg:right-0 lg:top-[74%]",
+		},
+		{
+			imageUrl: "penutupan_ospek.png",
+			title: "Penutupan Ospek Akhyar",
+			description: "9 April 2026/ 21 Syawwal 1447",
+			position: "lg:left-0 lg:top-[85%]",
+		},
+	];
 
 	useGSAP(
 		() => {
@@ -108,206 +166,36 @@ export default function Content() {
 					className="relative lg:block flex flex-col justify-center items-center gap-2 lg:gap-0 mx-auto"
 					style={{ aspectRatio: "199 / 414" }}
 				>
-					<div className="lg:absolute lg:right-0">
-						<div className="w-100 flex flex-col justify-center items-center max-lg:w-full">
-							<Image
-								src="/timeline/yudisium_kmi.png"
-								alt="lulus"
-								id="image-timeline"
-								className="h-full w-full object-cover drop-shadow-xl block z-1 relative"
-								width={400}
-								height={400}
-								onLoadingComplete={handleImageLoad}
-							/>
-							<div
-								id="desc-timeline"
-								className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4 z-10 relative"
-							>
-								<h2 className="text-2xl font-mirage font-semibold">
-									Yudisium Siswa Akhir KMI
-								</h2>
-								<p className="text-base font-light">
-									1 Maret 2026/ 11 Ramadhan 1447
-								</p>
-							</div>
-						</div>
-					</div>
-
-					<div className="lg:absolute lg:left-0 lg:top-[10%]">
-						<div className="w-100 flex flex-col justify-center items-center max-lg:w-full">
-							<Image
-								src="/timeline/awal_kedatangan.png"
-								alt="lulus"
-								id="image-timeline"
-								className="h-full w-full object-cover drop-shadow-xl block z-1 relative"
-								width={400}
-								height={400}
-								onLoadingComplete={handleImageLoad}
-							/>
-							<div
-								id="desc-timeline"
-								className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4 z-10 relative"
-							>
-								<h2 className="text-2xl font-mirage font-semibold">
-									Awal Kedatangan Mahasiswa Baru
-								</h2>
-								<p className="text-base font-light">
-									26 Maret 2026/ 7 Syawwal 1447
-								</p>
-							</div>
-						</div>
-					</div>
-
-					<div className="lg:absolute lg:right-0 lg:top-[23%]">
-						<div className="w-100 flex flex-col justify-center items-center max-lg:w-full">
-							<Image
-								src="/timeline/pengarahan_pra_ospek.png"
-								alt="lulus"
-								id="image-timeline"
-								className="h-full w-full object-cover drop-shadow-xl block z-1 relative"
-								width={400}
-								height={400}
-								onLoadingComplete={handleImageLoad}
-							/>
-							<div
-								id="desc-timeline"
-								className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4 z-10 relative"
-							>
-								<h2 className="text-2xl font-mirage font-semibold">
-									Pengarahan Pra-Ospek
-								</h2>
-								<p className="text-base font-light">
-									31 Maret 2026/ 12 Syawwal 1447
-								</p>
-							</div>
-						</div>
-					</div>
-
-					<div className="lg:absolute lg:left-0 lg:top-[37%]">
-						<div className="w-100 flex flex-col justify-center items-center max-lg:w-full">
-							<Image
-								src="/timeline/interview.png"
-								alt="lulus"
-								id="image-timeline"
-								className="h-full w-full object-cover drop-shadow-xl block z-1 relative"
-								width={400}
-								height={400}
-								onLoadingComplete={handleImageLoad}
-							/>
-							<div
-								id="desc-timeline"
-								className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4 z-10 relative"
-							>
-								<h2 className="text-2xl font-mirage font-semibold">
-									Interview Program Studi
-								</h2>
-								<p className="text-base font-light">
-									1 April 2026/ 13 Syawwal 1447
-								</p>
-							</div>
-						</div>
-					</div>
-
-					<div className="lg:absolute lg:right-0 lg:top-[48%]">
-						<div className="w-100 flex flex-col justify-center items-center max-lg:w-full">
-							<Image
-								src="/timeline/yudisium_prodi.png"
-								alt="lulus"
-								id="image-timeline"
-								className="h-full w-full object-cover drop-shadow-xl block z-1 relative"
-								width={400}
-								height={400}
-								onLoadingComplete={handleImageLoad}
-							/>
-							<div
-								id="desc-timeline"
-								className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4 z-10 relative"
-							>
-								<h2 className="text-2xl font-mirage font-semibold">
-									Yudisium Program Studi
-								</h2>
-								<p className="text-base font-light">
-									2 April 2026/ 14 Syawwal 1447
-								</p>
-							</div>
-						</div>
-					</div>
-
-					<div className="lg:absolute lg:left-0 lg:top-[64%]">
-						<div className="w-100 flex flex-col justify-center items-center max-lg:w-full">
-							<Image
-								src="/timeline/pembukaan_ospek.png"
-								alt="lulus"
-								id="image-timeline"
-								className="h-full w-full object-cover drop-shadow-xl block z-1 relative"
-								width={400}
-								height={400}
-								onLoadingComplete={handleImageLoad}
-							/>
-							<div
-								id="desc-timeline"
-								className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4 z-10 relative"
-							>
-								<h2 className="text-2xl font-mirage font-semibold">
-									Pembukaan Ospek
-								</h2>
-								<p className="text-base font-light">
-									4 April 2026/ 16 Syawwal 1447
-								</p>
-							</div>
-						</div>
-					</div>
-
-					<div className="lg:absolute lg:right-0 lg:top-[74%]">
-						<div className="w-100 flex flex-col justify-center items-center max-lg:w-full">
-							<Image
-								src="/timeline/kuliah_umum.png"
-								alt="lulus"
-								id="image-timeline"
-								className="h-full w-full object-cover drop-shadow-xl block z-1 relative"
-								width={400}
-								height={400}
-								onLoadingComplete={handleImageLoad}
-							/>
-							<div
-								id="desc-timeline"
-								className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4 z-10 relative"
-							>
-								<h2 className="text-2xl font-mirage font-semibold">
-									Kuliah Umum Per Fakultas
-								</h2>
-								<p className="text-base font-light">
-									4 April 2026/ 16 Syawwal 1447, Sampai 8 April 2026/ 20 Syawwal
-									1447
-								</p>
-							</div>
-						</div>
-					</div>
-
-					<div className="lg:absolute lg:left-0 lg:top-[85%]">
-						<div className="w-100 flex flex-col justify-center items-center max-lg:w-full">
-							<Image
-								src="/timeline/penutupan_ospek.png"
-								alt="lulus"
-								id="image-timeline"
-								className="h-full w-full object-cover drop-shadow-xl block z-1 relative"
-								width={400}
-								height={400}
-								onLoadingComplete={handleImageLoad}
-							/>
-							<div
-								id="desc-timeline"
-								className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4 z-10 relative"
-							>
-								<h2 className="text-2xl font-mirage font-semibold">
-									Penutupan Ospek Akhyar
-								</h2>
-								<p className="text-base font-light">
-									9 April 2026/ 21 Syawwal 1447
-								</p>
-							</div>
-						</div>
-					</div>
+					{timelineData.length > 0 &&
+						timelineData.map((item, index) => {
+							return (
+								<div
+									key={`${item.title}-${index}`}
+									className={`lg:absolute ${item.position}`}
+								>
+									<div className="w-100 flex flex-col justify-center items-center max-lg:w-full">
+										<Image
+											src={`/timeline/${item.imageUrl}`}
+											alt="lulus"
+											id="image-timeline"
+											className="h-full w-full object-cover drop-shadow-xl block z-1 relative"
+											width={400}
+											height={400}
+											onLoadingComplete={handleImageLoad}
+										/>
+										<div
+											id="desc-timeline"
+											className="flex-col lg:max-w-sm max-w-full w-full gap-4 rounded-2xl bg-secondary-muted text-foreground p-4 z-10 relative"
+										>
+											<h2 className="text-2xl font-mirage font-semibold">
+												{item.title}
+											</h2>
+											<p className="text-base font-light">{item.description}</p>
+										</div>
+									</div>
+								</div>
+							);
+						})}
 				</div>
 
 				{/* SVG Path Background */}
