@@ -111,11 +111,29 @@ export default function Content() {
 						trigger: image,
 						start: "top 75%",
 						end: "top 20%",
-						scrub: true,
 						toggleActions: "play none none reverse",
 					},
 				});
 				imageTweens.push(tween);
+			});
+
+			const descriptions = document.querySelectorAll("#desc-timeline");
+			const descriptionsTweens: gsap.core.Tween[] = [];
+
+			descriptions.forEach((description) => {
+				const tween = gsap.from(description, {
+					autoAlpha: 0,
+					y: 100,
+					ease: "power3.out",
+					duration: 0.8,
+					scrollTrigger: {
+						trigger: description,
+						start: "top 100%",
+						end: "top 20%",
+						toggleActions: "play none none reverse",
+					},
+				});
+				descriptionsTweens.push(tween);
 			});
 
 			const drawTween = gsap.to(path, {
@@ -145,6 +163,10 @@ export default function Content() {
 					tween.scrollTrigger?.kill();
 					tween.kill();
 				});
+				descriptionsTweens.forEach((tween) => {
+					tween.scrollTrigger?.kill();
+					tween.kill();
+				});
 			};
 		},
 		{ scope: containerRef },
@@ -156,7 +178,6 @@ export default function Content() {
 
 	return (
 		<div ref={containerRef}>
-			{/* Spotlight Section */}
 			<section
 				ref={spotlightRef}
 				className="spotlight relative isolate z-0 h-full w-full overflow-hidden p-8 max-lg:gap-20"
@@ -173,7 +194,7 @@ export default function Content() {
 									key={`${item.title}-${index}`}
 									className={`lg:absolute ${item.position}`}
 								>
-									<div className="w-100 flex flex-col justify-center items-center max-lg:w-full">
+									<div className="w-100 flex flex-col justify-center items-center max-lg:w-full text-center">
 										<Image
 											src={`/timeline/${item.imageUrl}`}
 											alt="lulus"
