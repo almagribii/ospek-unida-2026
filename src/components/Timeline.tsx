@@ -51,7 +51,7 @@ const TimelineItem = React.forwardRef<HTMLDivElement, TimelineItemProps>(
 		return (
 			<div
 				ref={ref}
-				className={`group relative flex flex-1 gap-4 flex-row last:pb-0 ${orientation === "horizontal" ? "md:flex-col md:pb-0" : "md:flex-row"} ${className}`}
+				className={`group relative flex flex-1 gap-2 flex-row last:pb-0 ${orientation === "horizontal" ? "md:flex-col md:pb-0" : "md:flex-row"} ${className}`}
 				data-status={status}
 				{...props}
 			>
@@ -91,7 +91,7 @@ const TimelineIcon = React.forwardRef<
 	return (
 		<div
 			ref={ref}
-			className={`z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 text-white shadow-sm transition-colors duration-300 group-data-[status=completed]:bg-primary group-data-[status=completed]:border-primary group-data-[status=current]:bg-primary group-data-[status=current]:border-primary group-data-[status=upcoming]:bg-transparent group-data-[status=upcoming]:border-muted-foreground group-data-[status=upcoming]:text-muted-foreground ${className}`}
+			className={`z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 text-white shadow-sm transition-colors duration-300 group-data-[status=completed]:bg-secondary group-data-[status=completed]:border-secondary group-data-[status=current]:bg-secondary group-data-[status=current]:border-secondary group-data-[status=upcoming]:bg-transparent group-data-[status=upcoming]:border-muted-foreground group-data-[status=upcoming]:text-muted-foreground ${className}`}
 			{...props}
 		>
 			{children}
@@ -111,7 +111,7 @@ const TimelineConnector = React.forwardRef<
 	return (
 		<div
 			ref={ref}
-			className={`flex-1 transition-colors duration-300 w-0.5 min-h-8 my-2 ${orientation === "horizontal" ? "md:h-0.5 md:w-full md:min-h-0 md:my-0 md:mx-2" : "md:w-0.5 md:min-h-8 md:my-2 md:mx-0"} group-last:hidden bg-(--muted-foreground)/30 group-data-[status=completed]:bg-primary group-data-[status=current]:bg-primary`}
+			className={`flex-1 transition-colors duration-300 w-0.5 min-h-8 my-2 ${orientation === "horizontal" ? "md:h-0.5 md:w-full md:min-h-0 md:my-0 md:mx-2" : "md:w-0.5 md:min-h-8 md:my-2 md:mx-0"} group-last:hidden bg-(--muted-foreground)/30 group-data-[status=completed]:bg-secondary group-data-[status=current]:bg-secondary`}
 			{...props}
 		/>
 	);
@@ -145,7 +145,7 @@ const TimelineTitle = React.forwardRef<
 	return (
 		<h3
 			ref={ref}
-			className={`font-semibold text-foreground ${className}`}
+			className={`font-semibold text-background ${className}`}
 			{...props}
 		>
 			{children}
@@ -161,7 +161,7 @@ const TimelineDate = React.forwardRef<
 	return (
 		<span
 			ref={ref}
-			className={`text-xs font-medium text-primary-muted ${className}`}
+			className={`text-xs font-medium text-secondary-muted ${className}`}
 			{...props}
 		>
 			{children}
@@ -177,7 +177,7 @@ const TimelineDescription = React.forwardRef<
 	return (
 		<p
 			ref={ref}
-			className={`text-sm text-(--foreground)/80 leading-relaxed ${className}`}
+			className={`text-sm text-background/75 leading-relaxed ${className}`}
 			{...props}
 		>
 			{children}

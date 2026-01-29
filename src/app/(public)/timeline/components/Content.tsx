@@ -5,13 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import { useRef } from "react";
-
-interface TimelineData {
-	imageUrl: string;
-	title: string;
-	description: string;
-	position: string;
-}
+import { timelineData } from "./timelineData";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -21,57 +15,6 @@ export default function Content() {
 	const pathRef = useRef<SVGPathElement>(null);
 	const svgDiv = useRef<HTMLDivElement>(null);
 	const timelineContentRef = useRef<HTMLDivElement>(null);
-	const timelineData: TimelineData[] = [
-		{
-			imageUrl: "yudisium_kmi.png",
-			title: "Yudisium Siswa Akhir KMI",
-			description: "1 Maret 2026/ 11 Ramadhan 1447",
-			position: "lg:right-0",
-		},
-		{
-			imageUrl: "awal_kedatangan.png",
-			title: "Awal Kedatangan Mahasiswa Baru",
-			description: "26 Maret 2026/ 7 Syawwal 1447",
-			position: "lg:left-0 lg:top-[10%]",
-		},
-		{
-			imageUrl: "pengarahan_pra_ospek.png",
-			title: "Pengarahan Pra-Ospek",
-			description: "31 Maret 2026/ 12 Syawwal 1447",
-			position: "lg:right-0 lg:top-[23%]",
-		},
-		{
-			imageUrl: "interview.png",
-			title: "Interview Program Studi",
-			description: "1 April 2026/ 13 Syawwal 1447",
-			position: "lg:left-0 lg:top-[37%]",
-		},
-		{
-			imageUrl: "yudisium_prodi.png",
-			title: "Yudisium Program Studi",
-			description: "2 April 2026/ 14 Syawwal 1447",
-			position: "lg:right-0 lg:top-[48%]",
-		},
-		{
-			imageUrl: "pembukaan_ospek.png",
-			title: "Pembukaan Ospek",
-			description: "4 April 2026/ 16 Syawwal 1447",
-			position: "lg:left-0 lg:top-[64%]",
-		},
-		{
-			imageUrl: "kuliah_umum.png",
-			title: "Kuliah Umum Per Fakultas",
-			description:
-				"4 April 2026/ 16 Syawwal 1447, Sampai 8 April 2026/ 20 Syawwal 1447",
-			position: "lg:right-0 lg:top-[74%]",
-		},
-		{
-			imageUrl: "penutupan_ospek.png",
-			title: "Penutupan Ospek Akhyar",
-			description: "9 April 2026/ 21 Syawwal 1447",
-			position: "lg:left-0 lg:top-[85%]",
-		},
-	];
 
 	useGSAP(
 		() => {
@@ -180,7 +123,8 @@ export default function Content() {
 		<div ref={containerRef}>
 			<section
 				ref={spotlightRef}
-				className="spotlight relative isolate z-0 h-full w-full overflow-hidden p-8 max-lg:gap-20"
+				className="spotlight relative isolate z-0 w-full overflow-visible mb-12 lg:mb-24 p-8 max-lg:gap-20"
+				style={{ minHeight: "200vh" }}
 			>
 				<div
 					ref={timelineContentRef}
