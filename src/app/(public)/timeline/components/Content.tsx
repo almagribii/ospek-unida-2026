@@ -146,7 +146,7 @@ export default function Content() {
 											className="h-full w-full object-cover drop-shadow-xl block z-1 relative"
 											width={400}
 											height={400}
-											onLoadingComplete={handleImageLoad}
+											onLoad={handleImageLoad}
 										/>
 										<div
 											id="desc-timeline"

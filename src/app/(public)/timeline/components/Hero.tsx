@@ -46,7 +46,7 @@ export default function Hero() {
 			ref={sectionRef}
 			className="h-screen bg-[linear-gradient(rgba(0,0,0,0.2),rgba(243,243,243,1)),url('/background/white_texture.webp')] bg-cover bg-center flex flex-col justify-center items-center gap-2"
 		>
-			<div className="h-82.5 w-50">
+			<div className="lg:h-82.5 lg:w-50 h-75.5 w-40">
 				<Image
 					id="image"
 					src="/logo/logo.webp"
@@ -70,7 +70,7 @@ export default function Hero() {
 			</div>
 			<div
 				id="scroll-down"
-				className="absolute inset-x-0 bottom-14 z-20 flex justify-center"
+				className="absolute scale-75 md:scale-100 inset-x-0 lg:bottom-14 bottom-8 z-20 flex justify-center"
 			>
 				<ScrollDown />
 			</div>{" "}
