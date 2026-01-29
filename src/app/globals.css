@@ -161,6 +161,8 @@
 	--primary-muted: #67bbf7;
 	--secondary: #f28a3a;
 	--secondary-muted: #d9b068;
+	--muted: #1f2937;
+	--muted-foreground: #6b7280;
 }
 
 @theme inline {
@@ -170,6 +172,8 @@
 	--color-primary-muted: var(--primary-muted);
 	--color-secondary: var(--secondary);
 	--color-secondary-muted: var(--secondary-muted);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
 
 	/* Custom Fonts */
 	--font-mirage: "Mirage", sans-serif;

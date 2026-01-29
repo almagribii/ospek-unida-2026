@@ -1,4 +1,5 @@
 import Content from "./components/Content";
+import Description from "./components/Description";
 import Hero from "./components/Hero";
 
 const timelinePage = () => {
@@ -6,6 +7,7 @@ const timelinePage = () => {
 		<>
 			<Hero />
 			<Content />
+			<Description />
 		</>
 	);
 };

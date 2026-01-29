@@ -48,24 +48,19 @@ export default function Content() {
 					start: "-40px center",
 					end: "90% 80%",
 					scrub: true,
-					invalidateOnRefresh: true,
 					markers: true,
+					invalidateOnRefresh: true,
 					onRefreshInit: () => {
 						const length = getPathLength();
 						gsap.set(path, {
 							strokeDasharray: length,
 							strokeDashoffset: length,
 						});
-						gsap.set(svg, { autoAlpha: 0 });
 					},
 				},
 			});
 
-			// Next/Image can shift layout after hydration; keep triggers in sync.
-			requestAnimationFrame(() => ScrollTrigger.refresh());
-
 			return () => {
-				fadeTween.scrollTrigger?.kill();
 				fadeTween.kill();
 				drawTween.scrollTrigger?.kill();
 				drawTween.kill();
@@ -87,13 +82,13 @@ export default function Content() {
 			>
 				<div
 					ref={timelineContentRef}
-					className="relative mx-auto"
+					className="relative lg:block flex flex-col justify-center items-center gap-2 lg:gap-0 mx-auto"
 					style={{ aspectRatio: "199 / 414" }}
 				>
-					<div className="absolute right-0">
+					<div className="lg:absolute lg:right-0">
 						<div className="w-100 flex flex-col justify-center items-center max-lg:w-full">
 							<Image
-								src="/timeline/lulus.png"
+								src="/timeline/yudisium_kmi.png"
 								alt="lulus"
 								className="h-full w-full object-cover drop-shadow-xl block"
 								width={400}
@@ -111,10 +106,10 @@ export default function Content() {
 						</div>
 					</div>
 
-					<div className="absolute left-0 top-[10%]">
+					<div className="lg:absolute lg:left-0 lg:top-[10%]">
 						<div className="w-100 flex flex-col justify-center items-center max-lg:w-full">
 							<Image
-								src="/timeline/lulus.png"
+								src="/timeline/awal_kedatangan.png"
 								alt="lulus"
 								className="h-full w-full object-cover drop-shadow-xl block"
 								width={400}
@@ -123,19 +118,19 @@ export default function Content() {
 							/>
 							<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
 								<h2 className="text-2xl font-mirage font-semibold">
-									Yudisium Siswa Akhir KMI
+									Awal Kedatangan Mahasiswa Baru
 								</h2>
 								<p className="text-base font-light">
-									1 Maret 2026/ 11 Ramadhan 1447
+									26 Maret 2026/ 7 Syawwal 1447
 								</p>
 							</div>
 						</div>
 					</div>
 
-					<div className="absolute right-0 top-[23%]">
+					<div className="lg:absolute lg:right-0 lg:top-[23%]">
 						<div className="w-100 flex flex-col justify-center items-center max-lg:w-full">
 							<Image
-								src="/timeline/lulus.png"
+								src="/timeline/pengarahan_pra_ospek.png"
 								alt="lulus"
 								className="h-full w-full object-cover drop-shadow-xl block"
 								width={400}
@@ -144,19 +139,19 @@ export default function Content() {
 							/>
 							<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
 								<h2 className="text-2xl font-mirage font-semibold">
-									Yudisium Siswa Akhir KMI
+									Pengarahan Pra-Ospek
 								</h2>
 								<p className="text-base font-light">
-									1 Maret 2026/ 11 Ramadhan 1447
+									31 Maret 2026/ 12 Syawwal 1447
 								</p>
 							</div>
 						</div>
 					</div>
 
-					<div className="absolute left-0 top-[37%]">
+					<div className="lg:absolute lg:left-0 lg:top-[37%]">
 						<div className="w-100 flex flex-col justify-center items-center max-lg:w-full">
 							<Image
-								src="/timeline/lulus.png"
+								src="/timeline/interview.png"
 								alt="lulus"
 								className="h-full w-full object-cover drop-shadow-xl block"
 								width={400}
@@ -165,19 +160,19 @@ export default function Content() {
 							/>
 							<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
 								<h2 className="text-2xl font-mirage font-semibold">
-									Yudisium Siswa Akhir KMI
+									Interview Program Studi
 								</h2>
 								<p className="text-base font-light">
-									1 Maret 2026/ 11 Ramadhan 1447
+									1 April 2026/ 13 Syawwal 1447
 								</p>
 							</div>
 						</div>
 					</div>
 
-					<div className="absolute right-0 top-[48%]">
+					<div className="lg:absolute lg:right-0 lg:top-[48%]">
 						<div className="w-100 flex flex-col justify-center items-center max-lg:w-full">
 							<Image
-								src="/timeline/lulus.png"
+								src="/timeline/yudisium_prodi.png"
 								alt="lulus"
 								className="h-full w-full object-cover drop-shadow-xl block"
 								width={400}
@@ -186,19 +181,19 @@ export default function Content() {
 							/>
 							<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
 								<h2 className="text-2xl font-mirage font-semibold">
-									Yudisium Siswa Akhir KMI
+									Yudisium Program Studi
 								</h2>
 								<p className="text-base font-light">
-									1 Maret 2026/ 11 Ramadhan 1447
+									2 April 2026/ 14 Syawwal 1447
 								</p>
 							</div>
 						</div>
 					</div>
 
-					<div className="absolute left-0 top-[64%]">
+					<div className="lg:absolute lg:left-0 lg:top-[64%]">
 						<div className="w-100 flex flex-col justify-center items-center max-lg:w-full">
 							<Image
-								src="/timeline/lulus.png"
+								src="/timeline/pembukaan_ospek.png"
 								alt="lulus"
 								className="h-full w-full object-cover drop-shadow-xl block"
 								width={400}
@@ -207,19 +202,19 @@ export default function Content() {
 							/>
 							<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
 								<h2 className="text-2xl font-mirage font-semibold">
-									Yudisium Siswa Akhir KMI
+									Pembukaan Ospek
 								</h2>
 								<p className="text-base font-light">
-									1 Maret 2026/ 11 Ramadhan 1447
+									4 April 2026/ 16 Syawwal 1447
 								</p>
 							</div>
 						</div>
 					</div>
 
-					<div className="absolute right-0 top-[74%]">
+					<div className="lg:absolute lg:right-0 lg:top-[74%]">
 						<div className="w-100 flex flex-col justify-center items-center max-lg:w-full">
 							<Image
-								src="/timeline/lulus.png"
+								src="/timeline/kuliah_umum.png"
 								alt="lulus"
 								className="h-full w-full object-cover drop-shadow-xl block"
 								width={400}
@@ -228,19 +223,20 @@ export default function Content() {
 							/>
 							<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
 								<h2 className="text-2xl font-mirage font-semibold">
-									Yudisium Siswa Akhir KMI
+									Kuliah Umum Per Fakultas
 								</h2>
 								<p className="text-base font-light">
-									1 Maret 2026/ 11 Ramadhan 1447
+									4 April 2026/ 16 Syawwal 1447, Sampai 8 April 2026/ 20 Syawwal
+									1447
 								</p>
 							</div>
 						</div>
 					</div>
 
-					<div className="absolute left-0 top-[85%]">
+					<div className="lg:absolute lg:left-0 lg:top-[85%]">
 						<div className="w-100 flex flex-col justify-center items-center max-lg:w-full">
 							<Image
-								src="/timeline/lulus.png"
+								src="/timeline/penutupan_ospek.png"
 								alt="lulus"
 								className="h-full w-full object-cover drop-shadow-xl block"
 								width={400}
@@ -249,10 +245,10 @@ export default function Content() {
 							/>
 							<div className="flex-col max-w-sm gap-4 rounded-2xl bg-secondary-muted text-foreground p-4">
 								<h2 className="text-2xl font-mirage font-semibold">
-									Yudisium Siswa Akhir KMI
+									Penutupan Ospek Akhyar
 								</h2>
 								<p className="text-base font-light">
-									1 Maret 2026/ 11 Ramadhan 1447
+									9 April 2026/ 21 Syawwal 1447
 								</p>
 							</div>
 						</div>
