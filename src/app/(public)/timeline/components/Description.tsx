@@ -23,7 +23,6 @@ export default function Description() {
 					trigger: timelineRef.current,
 					start: "top 75%",
 					toggleActions: "play none none reverse",
-					markers: true,
 				},
 			});
 
@@ -41,13 +40,27 @@ export default function Description() {
 		{ scope: timelineRef },
 	);
 
-	useGSAP(() => {}, { scope: sectionRef });
+	useGSAP(
+		() => {
+			gsap.from("#timeline-highlights", {
+				y: 400,
+				autoAlpha: 100,
+				ease: "power3.out",
+				scrollTrigger: {
+					trigger: timelineRef.current,
+					start: "top 75%",
+					toggleActions: "play none none reverse",
+				},
+			});
+		},
+		{ scope: sectionRef },
+	);
 	return (
 		<section
 			ref={sectionRef}
-			className="bg-[linear-gradient(rgba(243,243,243,1),rgba(0,0,0,0.2)),url('/background/white_texture.webp')] bg-cover bg-center p-8 md:p-12 flex flex-col gap-12"
+			className="bg-[linear-gradient(rgba(243,243,243,1),rgba(0,0,0,0.2)),url('/background/white_texture.webp')] bg-cover bg-center p-8 md:p-12 flex flex-col gap-12 overflow-hidden"
 		>
-			<div className="bg-foreground relative p-6 md:p-10 rounded-xl overflow-x-auto">
+			<div className="bg-foreground relative p-6 md:p-10 rounded-xl overflow-hidden">
 				<div
 					ref={timelineRef}
 					className="absolute hidden lg:flex flex-col items-center justify-center left-5 h-full max-h-72 w-full max-w-20 bg-secondary text-foreground text-2xl font-mirage font-semibold"
@@ -63,19 +76,21 @@ export default function Description() {
 						<span className="overflow-hidden">E</span>
 					</div>
 				</div>
-				<Timeline>
-					{data.map((item, index) => {
-						return (
-							<TimelineItem key={`${item.title}-${index}`}>
-								<TimelineDot>{index + 1}</TimelineDot>
-								<TimelineContent className="flex flex-col">
-									<span className="text-secondary-muted">{item.date}</span>
-									<span className="text-background">{item.title}</span>
-								</TimelineContent>
-							</TimelineItem>
-						);
-					})}
-				</Timeline>
+				<div id="timeline-highlights">
+					<Timeline>
+						{data.map((item, index) => {
+							return (
+								<TimelineItem key={`${item.title}-${index}`}>
+									<TimelineDot>{index + 1}</TimelineDot>
+									<TimelineContent className="flex flex-col">
+										<span className="text-secondary-muted">{item.date}</span>
+										<span className="text-background">{item.title}</span>
+									</TimelineContent>
+								</TimelineItem>
+							);
+						})}
+					</Timeline>
+				</div>
 			</div>
 		</section>
 	);
