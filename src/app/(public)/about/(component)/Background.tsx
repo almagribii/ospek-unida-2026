@@ -17,18 +17,7 @@ export const Background = ({ isActive }: BackgroundProps) => {
 				}}
 			/>
 
-			{/* Top Center Decorative Header */}
-			<div className="absolute top-0 left-1/2 transform -translate-x-1/2 flex items-center justify-center gap-4 z-10 pt-6">
-				<div className="hidden lg:block w-48 h-px bg-gray-800" />
-				<Image
-					src="/assets/ospek-arabi.webp"
-					alt="Quote Icon"
-					width={600}
-					height={30}
-					className="filter brightness-0 shrink-0 hidden lg:block"
-				/>
-				<div className="hidden lg:block w-48 h-px bg-gray-800" />
-			</div>
+			
 			<Image
 				src="/background/geter.webp"
 				alt="Silhouette gedung UNIDA"
