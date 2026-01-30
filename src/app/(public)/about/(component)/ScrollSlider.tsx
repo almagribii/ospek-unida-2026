@@ -102,13 +102,13 @@ export default function ScrollSlider() {
 	return (
 		<section
 			ref={containerRef}
-			className="relative h-svh w-full overflow-hidden "
+			className="relative min-h-screen h-svh w-full overflow-hidden bg-white"
 		>
-			<div className="absolute inset-0 z-0">
+			<div className="absolute inset-0 z-0 w-full h-full">
 				{SLIDE_COMPONENTS.map(({ id, Component }, i) => (
 					<div
 						key={id}
-						className={`absolute inset-0 transition-opacity duration-1000 ${
+						className={`absolute inset-0 w-full h-full min-h-screen transition-opacity duration-1000 ${
 							activeSlide === i
 								? "opacity-100 z-10 pointer-events-auto"
 								: "opacity-0 z-0 pointer-events-none"
@@ -124,10 +124,10 @@ export default function ScrollSlider() {
 			>
 				<button
 					onClick={handlePrevSlide}
-					disabled={activeSlide === SLIDE_COMPONENTS.length - 1}
+					disabled={activeSlide === 0}
 					type="button"
 					className="p-2 md:p-2.5 lg:p-3 rounded-full border border-black transition-all duration-300 hover:bg-black hover:text-white disabled:opacity-30 disabled:cursor-not-allowed hover:disabled:bg-transparent hover:disabled:text-black"
-					aria-label="Next slide"
+					aria-label="Previous slide"
 				>
 					<ChevronUp className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" />
 				</button>

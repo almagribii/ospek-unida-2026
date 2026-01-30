@@ -1,4 +1,4 @@
-import FooterSection from "./(component)/filosofi";
+import FooterSection from "./(component)/FooterSection";
 import ScrollSlider from "./(component)/ScrollSlider";
 
 export default function Home() {
