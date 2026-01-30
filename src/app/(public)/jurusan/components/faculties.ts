@@ -1,4 +1,5 @@
 interface CardData {
+	id: string;
 	name: string;
 	description: string;
 	image: string;
@@ -8,6 +9,7 @@ interface CardData {
 
 export const cardsData: CardData[] = [
 	{
+		id: "tarbiyah",
 		name: "Tarbiyah",
 		description:
 			"Mengintegrasikan ilmu pendidikan dengan nilai Islam, mencetak pendidik yang berkualitas, berakhlak mulia, dan mampu membimbing generasi masa depan",
@@ -20,6 +22,7 @@ export const cardsData: CardData[] = [
 		],
 	},
 	{
+		id: "syariah",
 		name: "Syariah",
 		description:
 			"Memadukan ilmu hukum syariah dengan nilai Islam, mencetak ahli hukum yang adil, berintegritas, dan mampu menegakkan keadilan dalam masyarakat",
@@ -28,6 +31,7 @@ export const cardsData: CardData[] = [
 		jurusan: ["Perbandingan Madzhab", "Hukum Ekonomi Syariah"],
 	},
 	{
+		id: "humaniora",
 		name: "Humaniora",
 		description:
 			"Memadukan ilmu humaniora dengan nilai Islam, mencetak pemikir kritis dan berakhlak mulia yang mampu memahami dan membangun peradaban",
@@ -36,6 +40,7 @@ export const cardsData: CardData[] = [
 		jurusan: ["Hubungan Internasional", "Ilmu Komunikasi"],
 	},
 	{
+		id: "fem",
 		name: "Ekonomi & Manajemen",
 		description:
 			"Mencetak pemimpin bisnis yang cerdas, visioner dan berintegritas dengan memadukan ilmu ekonomi & manajemen dengan nilai Islam",
@@ -44,6 +49,7 @@ export const cardsData: CardData[] = [
 		jurusan: ["Ekonomi Islam", "Manajemen"],
 	},
 	{
+		id: "ushuluddin",
 		name: "Ushuluddin",
 		description:
 			"Mencetak pemikir teologis yang mendalam, berakhlak mulia, serta berkemampuan untuk memperkuat pondasi keimanan dan menjaga keharmonisan umat nilai-nilai Islam",
@@ -56,6 +62,7 @@ export const cardsData: CardData[] = [
 		],
 	},
 	{
+		id: "saintek",
 		name: "Sains & Teknologi",
 		description:
 			"Mengintegrasikan inovasi ilmiah dengan nilai Islam, mencetak ahli teknologi yang cerdas, dan siap memberi dampak positif bagi masyarakat",
@@ -68,6 +75,7 @@ export const cardsData: CardData[] = [
 		],
 	},
 	{
+		id: "kesehatan",
 		name: "Kesehatan",
 		description:
 			"Membentuk tenaga kesehatan profesional dan berakhlak mulia berasaskan nilai Islam, serta memberikan pelayanan terbaik dengan menjunjung tinggi etika dan moral",
@@ -76,6 +84,7 @@ export const cardsData: CardData[] = [
 		jurusan: ["Farmasi", "Ilmu Gizi", "Kesehatan & Keselamatan Kerja"],
 	},
 	{
+		id: "kedokteran",
 		name: "Kedokteran",
 		description:
 			"Mencetak dokter yang tidak hanya kompeten dalam bidang medis, tetapi juga berakhlak mulia, peduli terhadap pasien, dan mampu mengedepankan prinsip moral dalam setiap tindakan",

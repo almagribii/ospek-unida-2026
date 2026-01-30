@@ -26,10 +26,9 @@ export default function Hero() {
 				scale: 0.2,
 				y: 100,
 			})
-				.from(splitText.chars, {
-					duration: 0.7,
+				.from(splitText.words, {
 					y: 100,
-					stagger: 0.05,
+					stagger: 0.1,
 					ease: "expo.out",
 					delay: -0.5,
 				})
