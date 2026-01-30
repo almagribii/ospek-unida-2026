@@ -1,9 +1,9 @@
 "use client";
 
-// proggres bottom
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import Slide1 from "../(filosofi)/Slide1";
 import Slide2 from "../(filosofi)/Slide2";
@@ -36,24 +36,21 @@ export default function ScrollSlider() {
 
 		const lenis = new Lenis();
 		lenisRef.current = lenis;
-		const onLenisScroll = () => ScrollTrigger.update();
-		lenis.on("scroll", onLenisScroll);
-
-		const onTick = (time: number) => {
+		lenis.on("scroll", ScrollTrigger.update);
+		gsap.ticker.add((time) => {
 			lenis.raf(time * 1000);
-		};
-		gsap.ticker.add(onTick);
+		});
 
 		const totalSlides = SLIDE_COMPONENTS.length;
 		const isMobile = window.innerWidth < 768;
-		const pinDistance = window.innerHeight * totalSlides * (isMobile ? 2 : 0.8);
+		const pinDistance = window.innerHeight * totalSlides * (isMobile ? 4 : 2);
 
 		const ctx = gsap.context(() => {
 			const trigger = ScrollTrigger.create({
 				trigger: containerRef.current,
 				start: "top top",
 				end: () => `+=${pinDistance}`,
-				scrub: isMobile ? 1.5 : 0.5,
+				scrub: isMobile ? 2.5 : 1,
 				pin: true,
 				onUpdate: (self) => {
 					const progress = self.progress;
@@ -68,15 +65,11 @@ export default function ScrollSlider() {
 		});
 
 		return () => {
-			// Prevent runaway tickers/listeners when navigating away or during HMR.
-			gsap.ticker.remove(onTick);
-			lenis.off("scroll", onLenisScroll);
-
-			scrollTriggerRef.current?.kill();
-			scrollTriggerRef.current = null;
-
-			ctx.revert();
 			lenis.destroy();
+			ctx.revert();
+			for (const trigger of ScrollTrigger.getAll()) {
+				trigger.kill();
+			}
 		};
 	}, []);
 
@@ -96,12 +89,21 @@ export default function ScrollSlider() {
 		});
 	};
 
+	const handleNextSlide = () => {
+		const nextIndex = Math.min(activeSlide + 1, SLIDE_COMPONENTS.length - 1);
+		handleSlideClick(nextIndex);
+	};
+
+	const handlePrevSlide = () => {
+		const prevIndex = Math.max(activeSlide - 1, 0);
+		handleSlideClick(prevIndex);
+	};
+
 	return (
 		<section
 			ref={containerRef}
 			className="relative h-svh w-full overflow-hidden "
 		>
-			{/* Render Slide Components menggunakan ID unik sebagai key */}
 			<div className="absolute inset-0 z-0">
 				{SLIDE_COMPONENTS.map(({ id, Component }, i) => (
 					<div
@@ -117,28 +119,100 @@ export default function ScrollSlider() {
 				))}
 			</div>
 
-			{/* Horizontal Progress Bar at Bottom */}
-			<div className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 w-full px-8 sm:px-12 md:px-16 lg:px-20 flex items-center justify-center z-30">
-				<div className="flex gap-1 sm:gap-1.5 md:gap-2 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
+			<div
+				className={`${activeSlide === 0 ? "hidden" : "hidden md:flex"} absolute left-2 sm:left-3 md:left-6 lg:left-8 top-1/2 -translate-y-1/2 gap-2 md:gap-3 lg:gap-4 z-30 flex-col`}
+			>
+				<button
+					onClick={handlePrevSlide}
+					disabled={activeSlide === SLIDE_COMPONENTS.length - 1}
+					type="button"
+					className="p-2 md:p-2.5 lg:p-3 rounded-full border border-black transition-all duration-300 hover:bg-black hover:text-white disabled:opacity-30 disabled:cursor-not-allowed hover:disabled:bg-transparent hover:disabled:text-black"
+					aria-label="Next slide"
+				>
+					<ChevronUp className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" />
+				</button>
+
+				<button
+					onClick={handleNextSlide}
+					disabled={activeSlide === SLIDE_COMPONENTS.length - 1}
+					type="button"
+					className="p-2 md:p-2.5 lg:p-3 rounded-full border border-black transition-all duration-300 hover:bg-black hover:text-white disabled:opacity-30 disabled:cursor-not-allowed hover:disabled:bg-transparent hover:disabled:text-black"
+					aria-label="Next slide"
+				>
+					<ChevronDown className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" />
+				</button>
+			</div>
+
+			<div
+				className={`${activeSlide === 0 ? "hidden" : "flex"} absolute top-1/2 -translate-y-1/2 right-2 sm:right-3 md:right-6 lg:right-8 z-30 items-center gap-1.5 sm:gap-2 md:gap-4 lg:gap-6`}
+			>
+				{/* Indicators */}
+				<div className="flex flex-col gap-1.5 sm:gap-2 md:gap-3 lg:gap-4 items-end">
 					{SLIDE_COMPONENTS.map(({ id }, i) => (
 						<button
-							key={`progress-${id}`}
+							key={`indicator-${id}`}
 							onClick={() => handleSlideClick(i)}
 							type="button"
-							className="flex-1 h-0.5 sm:h-0.75 bg-gray-300 transition-all duration-300 cursor-pointer hover:bg-gray-400 relative overflow-hidden group"
+							className="flex items-center gap-1.5 sm:gap-2 md:gap-3 lg:gap-4 cursor-pointer transition-all group lg:hover:scale-105"
 						>
 							<div
-								className={`absolute inset-0 bg-gray-800 transition-all duration-300 origin-left ${
-									i < activeSlide
-										? "scale-x-100"
-										: i === activeSlide
-											? "scale-x-100"
-											: "scale-x-0"
+								className={`h-px bg-black transition-all duration-300 lg:group-hover:bg-gray-900 lg:group-hover:w-6 sm:lg:group-hover:w-8 md:lg:group-hover:w-10 ${
+									activeSlide === i
+										? "w-4 sm:w-6 md:w-8 lg:w-10 opacity-100"
+										: "w-1.5 sm:w-2 md:w-3 lg:w-4 opacity-30"
 								}`}
 							/>
+							<span
+								className={`font-mono text-[8px] sm:text-[9px] md:text-[10px] text-black transition-all duration-300 lg:group-hover:opacity-100 lg:group-hover:scale-110 ${
+									activeSlide === i ? "opacity-100" : "opacity-30"
+								}`}
+							>
+								{(i + 1).toString().padStart(2, "0")}
+							</span>
 						</button>
 					))}
 				</div>
+				{/* Vertical Progress Bar */}
+				<div className="relative w-px h-40 sm:h-48 md:h-56 lg:h-64 bg-gray-900">
+					<div
+						className="absolute top-0 left-0 w-px bg-gray-600 transition-transform duration-300 origin-top"
+						style={{
+							height: "100%",
+							transform: `scaleY(${(activeSlide + 1) / SLIDE_COMPONENTS.length})`,
+						}}
+					/>
+				</div>
+			</div>
+
+			<div
+				className={`${activeSlide === 0 ? "hidden" : "flex md:hidden"} absolute bottom-4 left-1/2 -translate-x-1/2 items-center gap-3 z-30`}
+			>
+				<button
+					onClick={handlePrevSlide}
+					disabled={activeSlide === 0}
+					type="button"
+					className="p-2 sm:p-2.5 rounded-full border border-black transition-all duration-300 hover:bg-black hover:text-white disabled:opacity-30 disabled:cursor-not-allowed hover:disabled:bg-transparent hover:disabled:text-black"
+					aria-label="Previous slide"
+				>
+					<ChevronUp className="w-4 h-4 sm:w-5 sm:h-5" />
+				</button>
+
+				<div className="px-4 py-1 text-center">
+					<span className="font-mono text-sm text-black">
+						{(activeSlide + 1).toString().padStart(2, "0")} /{" "}
+						{SLIDE_COMPONENTS.length.toString().padStart(2, "0")}
+					</span>
+				</div>
+
+				<button
+					onClick={handleNextSlide}
+					disabled={activeSlide === SLIDE_COMPONENTS.length - 1}
+					type="button"
+					className="p-2 sm:p-2.5 rounded-full border border-black transition-all duration-300 hover:bg-black hover:text-white disabled:opacity-30 disabled:cursor-not-allowed hover:disabled:bg-transparent hover:disabled:text-black"
+					aria-label="Next slide"
+				>
+					<ChevronDown className="w-4 h-4 sm:w-5 sm:h-5" />
+				</button>
 			</div>
 		</section>
 	);
