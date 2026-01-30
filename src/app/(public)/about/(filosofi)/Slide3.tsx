@@ -71,30 +71,28 @@ export default function Slide3({ isActive }: SlideProps) {
 					<div className="relative mx-auto w-full max-w-6xl overflow-hidden rounded-[20px] sm:rounded-[30px] md:rounded-[40px] shadow-2xl p-4 sm:p-6 md:p-8 lg:p-12 border-2 border-transparent bg-linear-to-r from-[#4270ED] via-[#91167c] to-[#e2b870] bg-clip-padding">
 						<div className="absolute inset-1 bg-white rounded-2xl sm:rounded-[26px] md:rounded-[36px]" />
 
-						<div className="relative z-10 space-y-4 sm:space-y-6 md:space-y-8">
-							<div className="space-y-3 sm:space-y-4 text-black font-product-sans text-xs xs:text-sm sm:text-base md:text-lg leading-relaxed">
-								<p className="text-justify">
-									Menara Gontor merupakan ikon Pondok Modern Darussalam Gontor
-									yang menggambarkan simbol{" "}
-									<span className="font-bold">mercusuar peradaban Islam</span>{" "}
-									yang kokoh serta menjadi pengingat akan pentingnya ajaran
-									Islam seperti yang diisyaratkan oleh moto{" "}
-									<span className="font-bold italic">
-										"al Islamu ya'lu wa laa yu'alaa yu'laaih"
-									</span>{" "}
-									<span className="font-medium italic">
-										(Islam itu tinggi dan tidak ada yang mengalahkan).
-									</span>
-								</p>
+						<div className="relative z-10 font-mirage space-y-4 sm:space-y-6 md:space-y-8">
+							<p className="text-sm sm:text-base md:text-lg leading-relaxed md:px-6">
+								Menara Gontor merupakan ikon Pondok Modern Darussalam Gontor
+								yang menggambarkan simbol{" "}
+								<span className="font-bold">mercusuar peradaban Islam</span>{" "}
+								yang kokoh serta menjadi pengingat akan pentingnya ajaran Islam
+								seperti yang diisyaratkan oleh moto{" "}
+								<span className="font-bold italic">
+									"al Islamu ya'lu wa laa yu'alaa yu'laaih"
+								</span>{" "}
+								<span className="font-medium italic">
+									(Islam itu tinggi dan tidak ada yang mengalahkan).
+								</span>
+							</p>
 
-								<p className="text-justify">
-									Menara juga mencerminkan nilai-nilai Gontor seperti{" "}
-									<span className="font-bold">Panca Jiwa</span> sebagai misi
-									hidup dan <span className="font-bold">Panca Jangka</span>{" "}
-									sebagai visinya. Yang diharapkan menjadi syi'ar dan pengingat
-									bagi mahasiswa baru akan almamater pendidikannya.
-								</p>
-							</div>
+							<p className="text-sm sm:text-base md:text-lg leading-relaxed md:px-6">
+								Menara juga mencerminkan nilai-nilai Gontor seperti{" "}
+								<span className="font-bold">Panca Jiwa</span> sebagai misi hidup
+								dan <span className="font-bold">Panca Jangka</span> sebagai
+								visinya. Yang diharapkan menjadi syi'ar dan pengingat bagi
+								mahasiswa baru akan almamater pendidikannya.
+							</p>
 						</div>
 					</div>
 				</div>

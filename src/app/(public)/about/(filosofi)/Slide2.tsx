@@ -39,7 +39,7 @@ export default function Slide2({ isActive }: BackgroundProps) {
 								<div className="w-20 sm:w-full h-0.5 bg-stone-600 rounded-full mx-auto" />
 							</div>
 
-							<div className="space-y-4 text-black font-product-sans text-sm sm:text-base leading-relaxed">
+							<div className="space-y-4 text-black font-mirage text-sm sm:text-base leading-relaxed">
 								<p>
 									Monogram <span className="font-bold italic">Al-Akhyar</span>{" "}
 									dirancang dengan menggabungkan empat huruf Arab yang membentuk
