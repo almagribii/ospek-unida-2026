@@ -87,24 +87,43 @@ export default function Content() {
 	return (
 		<div ref={containerRef} className="overflow-x-hidden">
 			{/* Hero Section */}
-			<section className="relative h-screen w-screen items-center justify-center bg-background p-8 text-center">
-				<div>
-					{/* <Image
-						src="/logo/logo-unida.png"
-						alt="logo-unida"
-						width={200}
-						height={200}
-					></Image> */}
-					<h1 className="font-mirage text-2xl font-bold uppercase leading-none md:text-[3rem] lg:text-4xl">
-						Fakultas UNIDA Gontor
-					</h1>
+			<section className="relative card h-screen w-screen bg-background p-8 text-center">
+				<div className="flex flex-col items-center justify-center card-inner">
+					<div className="flex flex-col justify-center items-center mb-8">
+						<Image
+							src="/logo/logo-unida.png"
+							alt="logo-unida"
+							width={200}
+							height={200}
+						></Image>
+						<h1 className="font-mirage text-2xl font-bold uppercase leading-none md:text-[3rem] lg:text-4xl">
+							Daftar Fakultas UNIDA Gontor
+						</h1>
+					</div>
+					<div className="grid grid-rows-2 grid-flow-col gap-4">
+						{cardsData.map((card) => {
+							return (
+								<div
+									className="relative z-10 h-[300px] w-[300px]"
+									key={card.name}
+								>
+									<Image
+										src={card.image}
+										alt={card.name}
+										width={300}
+										height={300}
+										className="absolute z-0 object-cover w-full h-full"
+									/>
+								</div>
+							);
+						})}
+					</div>
 				</div>
-				<div className=" grid grid-rows-2 gap-2"></div>
 			</section>
 
 			{/* Sticky Cards Section */}
-			<section className="sticky-cards relative w-full bg-black/15">
-				{cardsData.map((card, index) => (
+			<section className=" relative w-full bg-black/15">
+				{cardsData.map((card) => (
 					<div
 						key={card.name}
 						id={card.name}
@@ -112,7 +131,7 @@ export default function Content() {
 						style={{ perspective: "1000px" }}
 					>
 						<div
-							className={`card-inner relative flex h-full w-full origin-[50%_100%] flex-col will-change-transform bg-background  ${cardsData.length - index === cardsData.length ? "" : "drop-shadow-2xl shadow-2xl"}`}
+							className="card-inner relative flex h-full w-full origin-[50%_100%] flex-col will-change-transform bg-background shadow-2xl drop-shadow-2xl"
 							style={
 								{
 									"--after-opacity": 0,

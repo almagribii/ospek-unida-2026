@@ -38,7 +38,7 @@ const StyledWrapper = styled.div`
   }
   .type--C {
     --line_color: #0e2345;
-    --back_color: #d9b068;
+    --back_color: #67bbf7;
   }
   .button {
     position: relative;
