@@ -19,6 +19,37 @@ export default function Content() {
 	useGSAP(
 		() => {
 			const cards = gsap.utils.toArray<HTMLElement>(".card");
+			const faculties = gsap.utils.toArray<HTMLElement>(".faculties");
+
+			faculties.forEach((faculty) => {
+				const tl = gsap.timeline({
+					scrollTrigger: {
+						trigger: ".faculties-wrapper",
+						start: "top 30%",
+						toggleActions: "play none none none",
+					},
+				});
+
+				tl.fromTo(
+					faculty,
+					{
+						delay: 0.2,
+						scale: 0,
+						borderRadius: "100%",
+					},
+					{
+						scale: 0.5,
+						duration: 0.75,
+						borderRadius: "50%",
+						ease: "power2.out",
+					},
+				).to(faculty, {
+					scale: 1,
+					duration: 0.4,
+					borderRadius: "0%",
+					ease: "expo.out",
+				});
+			});
 
 			cards.forEach((card, index) => {
 				const cardInner = card.querySelector(".card-inner");
@@ -87,7 +118,7 @@ export default function Content() {
 	return (
 		<div ref={containerRef} className="overflow-x-hidden">
 			{/* Hero Section */}
-			<section className="relative card h-screen w-screen bg-background p-8 text-center">
+			<section className="relative card faculties-wrapper w-screen bg-background px-8 py-12 text-center">
 				<div className="flex flex-col items-center justify-center card-inner">
 					<div className="flex flex-col justify-center items-center mb-8">
 						<Image
@@ -100,11 +131,11 @@ export default function Content() {
 							Daftar Fakultas UNIDA Gontor
 						</h1>
 					</div>
-					<div className="grid grid-rows-2 grid-flow-col gap-4">
+					<div className="grid grid-rows-2 lg:grid-flow-col grid-flow-row gap-4">
 						{cardsData.map((card) => {
 							return (
 								<div
-									className="relative z-10 h-[300px] w-[300px]"
+									className="relative z-10 h-[300px] w-[300px] faculties"
 									key={card.name}
 								>
 									<Image
