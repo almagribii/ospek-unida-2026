@@ -118,7 +118,7 @@ export default function Content() {
 	return (
 		<div ref={containerRef} className="overflow-x-hidden">
 			{/* Hero Section */}
-			<section className="relative card faculties-wrapper w-screen bg-background px-8 py-12 text-center">
+			<section className="relative card faculties-wrapper w-screen bg-background px-8 pt-12 pb-20 text-center">
 				<div className="flex flex-col items-center justify-center card-inner">
 					<div className="flex flex-col justify-center items-center mb-8">
 						<Image
@@ -135,7 +135,7 @@ export default function Content() {
 						{cardsData.map((card) => {
 							return (
 								<div
-									className="relative z-10 h-[300px] w-[300px] faculties"
+									className="relative z-10 h-75 w-75 faculties"
 									key={card.name}
 								>
 									<Image
