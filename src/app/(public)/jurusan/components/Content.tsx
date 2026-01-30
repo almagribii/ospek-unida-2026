@@ -3,12 +3,11 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { CornerDownRightIcon, MoveRightIcon } from "lucide-react";
+import { MoveRightIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import type React from "react";
 import { useRef } from "react";
-import { Glass, GlassTitle } from "@/components/Glass";
 import SignButton from "@/components/SignButton";
 import { cardsData } from "./faculties";
 
@@ -31,10 +30,10 @@ export default function Content() {
 						yPercent: -15,
 					},
 					{
-						yPercent: 15,
+						yPercent: 25,
 						ease: "none",
 						scrollTrigger: {
-							trigger: card.querySelector(".mt-16"),
+							trigger: card.querySelector(".card-img-wrapper"),
 							start: "top bottom",
 							end: "bottom top",
 							scrub: 1.5,
@@ -130,14 +129,27 @@ export default function Content() {
 							/>
 
 							{/* Card Content */}
-							<div className="card-info w-[75%] px-8 py-[4em] hidden lg:block text-center md:w-[75%] lg:w-[25%] lg:px-[4em] lg:text-left">
-								<p className="text-sm font-medium uppercase">
-									{card.name} Faculty
-								</p>
+							<div className="flex flex-row justify-between">
+								<div className="card-info w-[75%] px-8 py-[4em] hidden lg:block text-center md:w-[75%] lg:w-[25%] lg:px-[4em] lg:text-left">
+									<p className="text-sm font-medium uppercase">
+										{card.name} Faculty
+									</p>
+								</div>
+								<Link
+									href="https://unida.gontor.ac.id"
+									className="card-info hidden lg:block text-center px-4 py-4 cursor-pointer hover:scale-125 transition-transform ease-out duration-150"
+								>
+									<Image
+										src="/logo/logo-unida.png"
+										alt="logo-unida"
+										width={100}
+										height={100}
+									></Image>
+								</Link>
 							</div>
 
 							<div className="card-title text-center">
-								<h1 className="font-mirage py-8 text-[3rem] font-bold uppercase leading-none lg:text-[10rem]">
+								<h1 className="font-mirage py-8 text-[2.5rem] font-bold uppercase leading-none lg:text-[10rem]">
 									{card.name}
 								</h1>
 							</div>
@@ -154,21 +166,19 @@ export default function Content() {
 										);
 									})}
 								</div>
-								<Link href={card.url}>
-									<SignButton>
-										<MoveRightIcon />
-										Pelajari
-									</SignButton>
-								</Link>
+								<SignButton link={card.url}>
+									<MoveRightIcon />
+									Pelajari
+								</SignButton>
 							</div>
 
-							<div className="relative z-1 lg:max-h-full h-full w-full overflow-hidden">
+							<div className="relative card-img-wrapper z-1 lg:max-h-full h-full w-full overflow-hidden">
 								<Image
 									src={card.image}
 									alt={card.name}
 									height={600}
 									width={1500}
-									className="absolute w-full h-[130%] -top-[15%] object-cover card-image"
+									className="absolute w-full h-[125%] -top-[15%] object-cover card-image"
 								/>
 							</div>
 						</div>

@@ -1,17 +1,27 @@
+import type { UrlObject } from "node:url";
+import Link from "next/link";
 import type { ReactNode } from "react";
 import styled from "styled-components";
 
-export default function SignButton({ children }: { children: ReactNode }) {
+export default function SignButton({
+	children,
+	link,
+}: {
+	children: ReactNode;
+	link: string | UrlObject;
+}) {
 	return (
 		<StyledWrapper>
 			<div className="container">
-				<div className="button type--C">
-					<div className="button__line" />
-					<div className="button__line" />
-					<span className="button__text flex flex-row gap-2">{children}</span>
-					<div className="button__drow1" />
-					<div className="button__drow2" />
-				</div>
+				<Link className="p-4" href={link}>
+					<div className="button type--C">
+						<div className="button__line" />
+						<div className="button__line" />
+						<span className="button__text flex flex-row gap-2">{children}</span>
+						<div className="button__drow1" />
+						<div className="button__drow2" />
+					</div>
+				</Link>
 			</div>
 		</StyledWrapper>
 	);
