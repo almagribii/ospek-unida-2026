@@ -3,14 +3,19 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Clock, MapPin, Send, Sparkles } from "lucide-react";
+import {
+	Facebook,
+	Globe,
+	Instagram,
+	Mail,
+	MapPin,
+	Music2,
+	Phone,
+	Send,
+	Sparkles,
+	Youtube,
+} from "lucide-react";
 import { useRef } from "react";
-
-const OPERASIONAL = [
-	{ day: "Senin - Jumat", time: "08.00 - 20.00" },
-	{ day: "Sabtu", time: "09.00 - 17.00" },
-	{ day: "Minggu", time: "Emergency Only" },
-];
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -61,7 +66,7 @@ export default function FormSection() {
 		<section
 			ref={sectionRef}
 			id="contact-form"
-			className="relative min-h-screen bg-[#0e2345] py-6 md:py-16 flex items-center m-0"
+			className="relative min-h-screen bg-[#0e2345] py-8 flex items-center m-0"
 		>
 			<div className="mx-auto w-full max-w-7xl px-6 relative z-10">
 				{/* Header */}
@@ -130,6 +135,24 @@ export default function FormSection() {
 							</div>
 							<div className="space-y-1.5">
 								<label
+									htmlFor="status"
+									className="text-xs font-semibold text-foreground"
+								>
+									Status
+								</label>
+								<select
+									id="status"
+									className="w-full rounded-xl border border-foreground/20 bg-white px-4 py-2.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+									name="status"
+									required
+								>
+									<option value="">Pilih Status</option>
+									<option value="calon-mahasiswa">Calon Mahasiswa</option>
+									<option value="wali">Wali Calon Mahasiswa</option>
+								</select>
+							</div>
+							<div className="space-y-1.5">
+								<label
 									htmlFor="subject"
 									className="text-xs font-semibold text-foreground"
 								>
@@ -170,6 +193,7 @@ export default function FormSection() {
 
 					{/* Info Sidebar */}
 					<div className="space-y-4">
+						{/* Map Section */}
 						<div className="info-card rounded-2xl border border-foreground/10 bg-white/90 p-6 shadow-lg">
 							<div className="flex gap-3 mb-4">
 								<div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 shrink-0">
@@ -177,14 +201,27 @@ export default function FormSection() {
 								</div>
 								<div className="min-w-0">
 									<h4 className="text-sm font-bold text-foreground mb-1">
-										Sekretariat
+										Universitas Darussalam Gontor
 									</h4>
 									<p className="text-xs text-muted-foreground leading-relaxed">
-										Kampus Pusat UNIDA Gontor
+										Jl. Raya Siman, Desa Siman, Kec. Siman
 										<br />
-										Siman, Ponorogo
+										Kab. Ponorogo, Jawa Timur 63471, Indonesia
 									</p>
 								</div>
+							</div>
+							{/* Map Embed */}
+							<div className="w-full h-56 rounded-xl overflow-hidden mb-3 border border-foreground/10">
+								<iframe
+									src="https://maps.google.com/maps?q=UNIDA%20Gontor&z=16&output=embed"
+									title="Lokasi UNIDA Gontor (Google Maps)"
+									width="100%"
+									height="100%"
+									style={{ border: 0 }}
+									allowFullScreen
+									loading="lazy"
+									referrerPolicy="no-referrer-when-downgrade"
+								/>
 							</div>
 							<a
 								href="https://maps.google.com"
@@ -196,34 +233,124 @@ export default function FormSection() {
 							</a>
 						</div>
 
+						{/* Social Media & Contact Section */}
 						<div className="info-card rounded-2xl border border-foreground/10 bg-white/90 p-6 shadow-lg">
-							<div className="flex gap-3 mb-4">
-								<div className="flex h-11 w-11 items-center justify-center rounded-xl bg-secondary/10 shrink-0">
-									<Clock className="h-5 w-5 text-secondary" />
-								</div>
-								<div>
-									<h4 className="text-sm font-bold text-foreground mb-1">
-										Jam Operasional
-									</h4>
-									<p className="text-xs text-muted-foreground">
-										Waktu layanan kami
-									</p>
-								</div>
+							<h4 className="text-sm font-bold text-foreground mb-4">
+								Hubungi Kami
+							</h4>
+							<div className="space-y-3">
+								<a
+									href="mailto:pmb@.unida.gontor.ac.id"
+									className="flex items-center gap-3 p-3 rounded-lg bg-blue-50 hover:bg-blue-100 transition-all group"
+								>
+									<div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-500 shrink-0">
+										<Mail className="h-4 w-4 text-white" />
+									</div>
+									<div className="min-w-0 flex-1">
+										<p className="text-xs font-semibold text-foreground">
+											Email
+										</p>
+										<p className="text-xs text-muted-foreground truncate">
+											pmb@unida.gontor.ac.id
+										</p>
+									</div>
+								</a>
+
+								<a
+									href="tel:+6282139703726"
+									className="flex items-center gap-3 p-3 rounded-lg bg-green-50 hover:bg-green-100 transition-all group"
+								>
+									<div className="flex h-9 w-9 items-center justify-center rounded-lg bg-green-500 shrink-0">
+										<Phone className="h-4 w-4 text-white" />
+									</div>
+									<div className="min-w-0">
+										<p className="text-xs font-semibold text-foreground">
+											WhatsApp
+										</p>
+										<p className="text-xs text-muted-foreground">
+											+62 821 3970 3726
+										</p>
+									</div>
+								</a>
 							</div>
-							<ul className="space-y-2">
-								{OPERASIONAL.map((item) => (
-									<li
-										key={item.day}
-										className="flex items-center justify-between text-xs bg-gray-50 rounded-lg px-3 py-2"
-									>
-										<span className="text-muted-foreground">{item.day}</span>
-										<span className="font-bold text-foreground">
-											{item.time}
-										</span>
-									</li>
-								))}
-							</ul>
 						</div>
+					</div>
+				</div>
+				{/* Social Media Strip */}
+				<div className="info-card rounded-2xl border p-2 pt-4 lg:p-6">
+					<div className="flex flex-wrap items-center justify-center gap-2 md:gap-3 lg:py-6 md:overflow-x-auto md:no-scrollbar">
+						<a
+							href="https://unida.gontor.ac.id"
+							target="_blank"
+							rel="noreferrer"
+							className="flex items-center gap-1 md:gap-2 shrink-0 rounded-full border border-foreground/10 bg-white px-2 md:px-3 py-2 text-xs font-semibold text-foreground transition-all duration-300 md:hover:scale-110 md:hover:border-blue-500 md:hover:shadow-lg md:hover:shadow-blue-500/40"
+						>
+							<Globe className="h-3 md:h-4 w-3 md:w-4 text-foreground transition-colors duration-300 md:group-hover:text-blue-500" />
+							<span className="hidden md:inline">unida.gontor.ac.id</span>
+							<span className="md:hidden">Website</span>
+						</a>
+						<a
+							href="https://instagram.com/unida.gontor"
+							target="_blank"
+							rel="noreferrer"
+							className="flex items-center gap-1 md:gap-2 shrink-0 rounded-full border border-foreground/10 bg-white px-2 md:px-3 py-2 text-xs font-semibold text-foreground transition-all duration-300 md:hover:scale-110 md:hover:border-pink-500 md:hover:shadow-lg md:hover:shadow-pink-500/40"
+						>
+							<Instagram className="h-3 md:h-4 w-3 md:w-4 text-foreground transition-colors duration-300 md:group-hover:text-pink-500" />
+							<span className="hidden md:inline">@unida.gontor</span>
+							<span className="md:hidden">IG</span>
+						</a>
+						<a
+							href="https://instagram.com/ospekunida.gontor"
+							target="_blank"
+							rel="noreferrer"
+							className="flex items-center gap-1 md:gap-2 shrink-0 rounded-full border border-foreground/10 bg-white px-2 md:px-3 py-2 text-xs font-semibold text-foreground transition-all duration-300 md:hover:scale-110 md:hover:border-pink-500 md:hover:shadow-lg md:hover:shadow-pink-500/40"
+						>
+							<Instagram className="h-3 md:h-4 w-3 md:w-4 text-foreground transition-colors duration-300 md:group-hover:text-pink-500" />
+							<span className="hidden md:inline">@ospekunida.gontor</span>
+							<span className="md:hidden">OSPEK</span>
+						</a>
+						<a
+							href="https://www.youtube.com/@unidagontortv"
+							target="_blank"
+							rel="noreferrer"
+							className="flex items-center gap-1 md:gap-2 shrink-0 rounded-full border border-foreground/10 bg-white px-2 md:px-3 py-2 text-xs font-semibold text-foreground transition-all duration-300 md:hover:scale-110 md:hover:border-red-500 md:hover:shadow-lg md:hover:shadow-red-500/40"
+						>
+							<Youtube className="h-3 md:h-4 w-3 md:w-4 text-foreground transition-colors duration-300 md:group-hover:text-red-500" />
+							<span className="hidden md:inline">unidagontortv</span>
+							<span className="md:hidden">YT</span>
+						</a>
+						<a
+							href="https://www.youtube.com/@gontortv"
+							target="_blank"
+							rel="noreferrer"
+							className="flex items-center gap-1 md:gap-2 shrink-0 rounded-full border border-foreground/10 bg-white px-2 md:px-3 py-2 text-xs font-semibold text-foreground transition-all duration-300 md:hover:scale-110 md:hover:border-red-500 md:hover:shadow-lg md:hover:shadow-red-500/40"
+						>
+							<Youtube className="h-3 md:h-4 w-3 md:w-4 text-foreground transition-colors duration-300 md:group-hover:text-red-500" />
+							<span className="hidden md:inline">gontortv</span>
+							<span className="md:hidden">YT2</span>
+						</a>
+						<a
+							href="https://facebook.com/UniversitasDarussalamGontor"
+							target="_blank"
+							rel="noreferrer"
+							className="flex items-center gap-1 md:gap-2 shrink-0 rounded-full border border-foreground/10 bg-white px-2 md:px-3 py-2 text-xs font-semibold text-foreground transition-all duration-300 md:hover:scale-110 md:hover:border-blue-600 md:hover:shadow-lg md:hover:shadow-blue-600/40"
+						>
+							<Facebook className="h-3 md:h-4 w-3 md:w-4 text-foreground transition-colors duration-300 md:group-hover:text-blue-600" />
+							<span className="hidden md:inline">
+								Universitas Darussalam Gontor
+							</span>
+							<span className="md:hidden">FB</span>
+						</a>
+						<a
+							href="https://tiktok.com/@unida.gontor"
+							target="_blank"
+							rel="noreferrer"
+							className="flex items-center gap-1 md:gap-2 shrink-0 rounded-full border border-foreground/10 bg-white px-2 md:px-3 py-2 text-xs font-semibold text-foreground transition-all duration-300 md:hover:scale-110 md:hover:border-black md:hover:shadow-lg md:hover:shadow-black/40"
+						>
+							<Music2 className="h-3 md:h-4 w-3 md:w-4 text-foreground transition-colors duration-300 md:group-hover:text-black" />
+							<span className="hidden md:inline">@unida.gontor</span>
+							<span className="md:hidden">TikTok</span>
+						</a>
 					</div>
 				</div>
 			</div>
