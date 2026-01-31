@@ -43,7 +43,7 @@ export default function ScrollSlider() {
 
 		const totalSlides = SLIDE_COMPONENTS.length;
 		const isMobile = window.innerWidth < 768;
-		const pinDistance = window.innerHeight * totalSlides * (isMobile ? 4 : 2);
+		const pinDistance = window.innerHeight * totalSlides * (isMobile ? 4 : 1.5);
 
 		const ctx = gsap.context(() => {
 			const trigger = ScrollTrigger.create({
@@ -185,7 +185,7 @@ export default function ScrollSlider() {
 			</div>
 
 			<div
-				className={`${activeSlide === 0 ? "hidden" : "flex md:hidden"} absolute bottom-4 left-1/2 -translate-x-1/2 items-center gap-3 z-30`}
+				className={`${activeSlide === 0 ? "hidden" : "flex md:hidden"} absolute bottom-20 left-1/2 -translate-x-1/2 items-center gap-3 z-30`}
 			>
 				<button
 					onClick={handlePrevSlide}

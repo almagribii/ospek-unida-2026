@@ -57,7 +57,7 @@ export default function Slide7({ isActive }: SlideProps) {
 							</p>
 						</div>
 					</div>
-					<div className="scroll-down-animate absolute inset-x-0 bottom-14 z-20 flex justify-center pb-4 lg:pb-4">
+					<div className="scroll-down-animate absolute inset-x-0 bottom-30 lg:bottom-14 z-20 flex justify-center pb-4 lg:pb-4">
 						<ScrollDown />
 					</div>
 				</div>
