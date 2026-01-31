@@ -85,6 +85,7 @@ export default function Navbar({
 	// State & Refs
 	// --------------------------------------------------------
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const [isFormSectionInView, setIsFormSectionInView] = useState(false);
 
 	const { isHidden: ctxHidden, isAtTop: ctxAtTop } = useNavbar();
 	const pathname = usePathname();
@@ -410,6 +411,24 @@ export default function Navbar({
 	}, [isMenuOpen]);
 
 	// --------------------------------------------------------
+	// Detect FormSection Visibility
+	// --------------------------------------------------------
+	useEffect(() => {
+		const formSection = document.getElementById("contact-form");
+		if (!formSection) return;
+
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				setIsFormSectionInView(entry.isIntersecting);
+			},
+			{ threshold: 0.1 },
+		);
+
+		observer.observe(formSection);
+		return () => observer.disconnect();
+	}, []);
+
+	// --------------------------------------------------------
 	// Loop for Mouse Interaction (Parallax & Highlighter)
 	// --------------------------------------------------------
 	useEffect(() => {
@@ -540,6 +559,8 @@ export default function Navbar({
 								? "lg:text-background text-foreground border-foreground lg:border-background before:bg-background hover:text-foreground"
 								: "text-foreground border-foreground before:bg-foreground hover:text-background"
 						} ${
+							isFormSectionInView ? "text-background border-background" : ""
+						} ${
 							isHidden
 								? "bg-transparent backdrop-blur-none"
 								: "bg-background/10 backdrop-blur-md"
@@ -555,7 +576,7 @@ export default function Navbar({
 				<div
 					className={`flex items-center justify-center gap-4 ${
 						isAtTop ? "lg:text-background text-foreground" : "text-foreground"
-					} relative z-60`} // Increased z-index to stay above overlay
+					} ${isFormSectionInView ? "text-background" : ""} relative z-60`} // Increased z-index to stay above overlay
 				>
 					<button
 						type="button"
@@ -563,14 +584,14 @@ export default function Navbar({
 						className="cursor-pointer overflow-hidden"
 					>
 						<p
-							className={`nav-fade hidden font-product-sans font-thin uppercase tracking-[0.3em] transition-all duration-500 ease-out hover:tracking-widest text-shadow-md lg:block ${isAtTop ? "lg:text-background" : ""} ${isMenuOpen ? "text-background delay-500" : "text-foreground"}`}
+							className={`nav-fade hidden font-product-sans font-thin uppercase tracking-[0.3em] transition-all duration-500 ease-out hover:tracking-widest text-shadow-md lg:block ${isAtTop ? "lg:text-background" : ""} ${isMenuOpen ? "text-background delay-500" : isFormSectionInView ? "text-background" : "text-foreground"}`}
 						>
 							{isMenuOpen ? "CLOSE" : "MENU"}
 						</p>
 					</button>
 					<div className="nav-menu-extra overflow-hidden">
 						<MenuButton
-							Color={`${isAtTop ? "lg:bg-background" : ""} ${isMenuOpen ? "bg-background" : "bg-foreground"}`}
+							Color={`${isAtTop ? "lg:bg-background" : ""} ${isMenuOpen ? "bg-background" : isFormSectionInView ? "bg-background" : "bg-foreground"}`}
 							onClick={toggleMenu}
 							menuStatus={isMenuOpen}
 							// Assuming MenuButton handles its own internal "X" state visualization if passed a prop
