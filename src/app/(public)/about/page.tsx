@@ -3,9 +3,9 @@ import ScrollSlider from "./(component)/ScrollSlider";
 
 export default function Home() {
 	return (
-		<main>
+		<div className=" overflow-x-hidden">
 			<ScrollSlider />
 			<FooterSection />
-		</main>
+		</div>
 	);
 }

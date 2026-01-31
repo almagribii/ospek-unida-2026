@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Navbar from "@/components/Navbar";
+import { useNavbar } from "@/context/NavbarContext";
 import { HeroSection } from "./HeroSection";
 import { OutroSection } from "./OutroSection";
 import Preloader from "./Preloader";
@@ -14,6 +14,21 @@ export default function Home() {
 	const [preloaderComplete, setPreloaderComplete] = useState(false);
 	const { parentRef, canvasRef, isNavHidden, isAtTop } =
 		useHomeHero(preloaderComplete);
+
+	const { setNavbarState } = useNavbar();
+
+	useEffect(() => {
+		// This will now only trigger if isNavHidden or isAtTop actually change values
+		// because setNavbarState is now stable!
+		setNavbarState({ isHidden: isNavHidden, isAtTop: isAtTop });
+
+		// Cleanup: Reset only when truly unmounting or changing logic
+		return () => {
+			// We can wrap this in a check or leave as is.
+			// Since Next.js unmounts Home for the new page, this runs once at the end.
+			setNavbarState({ isHidden: false, isAtTop: false });
+		};
+	}, [isNavHidden, isAtTop, setNavbarState]);
 
 	const heroAssetUrls = useMemo(() => {
 		const frameCount = 90;
@@ -74,8 +89,6 @@ export default function Home() {
 					}}
 				/>
 			)}
-
-			<Navbar isHidden={isNavHidden} isAtTop={isAtTop} />
 
 			<div ref={parentRef}>
 				<HeroSection canvasRef={canvasRef} />

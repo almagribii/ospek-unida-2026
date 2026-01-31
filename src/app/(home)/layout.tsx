@@ -54,7 +54,7 @@ export default function Layout({
 	return (
 		<>
 			<ReactLenis root ref={lenisRef} autoRaf={false} />
-			<div>{children}</div>
+			<main className="overflow-x-hidden">{children}</main>
 		</>
 	);
 }

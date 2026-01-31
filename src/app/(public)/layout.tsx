@@ -4,7 +4,6 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ReactLenis } from "lenis/react";
 import { useEffect, useRef } from "react";
-import Navbar from "@/components/Navbar";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -53,14 +52,9 @@ export default function Layout({
 		};
 	}, []);
 	return (
-		<>
-			<header>
-				<Navbar />
-			</header>
-			<main>
-				<ReactLenis root ref={lenisRef} autoRaf={false} />
-				{children}
-			</main>
-		</>
+		<main>
+			<ReactLenis root ref={lenisRef} autoRaf={false} />
+			{children}
+		</main>
 	);
 }

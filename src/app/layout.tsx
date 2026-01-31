@@ -1,4 +1,6 @@
+import { NavbarProvider } from "@/context/NavbarContext";
 import "./globals.css";
+import Navbar from "@/components/Navbar";
 
 const baseUrl: string | undefined = process.env.BASE_URL;
 
@@ -57,7 +59,14 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body>{children}</body>
+			<body>
+				<NavbarProvider>
+					<header>
+						<Navbar />
+					</header>
+					{children}
+				</NavbarProvider>
+			</body>
 		</html>
 	);
 }

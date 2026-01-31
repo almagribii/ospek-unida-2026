@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 import type React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import MenuButton from "@/components/MenuButton"; // Keep your existing component
+import { useNavbar } from "@/context/NavbarContext";
 import AkhyarTextSvg from "./AkhyarTextSvg";
 import LogoSvg from "./LogoSvg";
 
@@ -77,8 +78,6 @@ const CONTACT_INFO = {
 };
 
 export default function Navbar({
-	isHidden = false,
-	isAtTop = false,
 	brandText = "AKHYAR",
 	brandHref = "/",
 }: NavbarProps) {
@@ -86,7 +85,13 @@ export default function Navbar({
 	// State & Refs
 	// --------------------------------------------------------
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+	const { isHidden: ctxHidden, isAtTop: ctxAtTop } = useNavbar();
 	const pathname = usePathname();
+	const isHomePage = pathname === "/";
+	const isHidden = isHomePage ? ctxHidden : false;
+	const isAtTop = isHomePage ? ctxAtTop : false;
+
 	const lastPathnameRef = useRef<string | null>(null);
 	const containerRef = useRef<HTMLDivElement>(null);
 	const overlayRef = useRef<HTMLDivElement>(null);
@@ -105,6 +110,75 @@ export default function Navbar({
 	const targetHighlighterX = useRef(0);
 	const currentHighlighterWidth = useRef(0);
 	const targetHighlighterWidth = useRef(0);
+
+	const animateClose = useCallback(() => {
+		// Prevent double-firing if already closed or animating
+		if (!isMenuOpen && !isAnimating.current) return;
+
+		isAnimating.current = true;
+		const tl = gsap.timeline({
+			onComplete: () => {
+				isAnimating.current = false;
+				setIsMenuOpen(false); // Update React state after animation finishes
+			},
+		});
+
+		tl.to(".menu-link-item-holder", {
+			y: "-200%",
+			duration: 1.25,
+			ease: "expo.out",
+		})
+			.to(
+				menuContentRef.current,
+				{
+					y: "-100%",
+					opacity: 0,
+					duration: 1.25,
+					ease: "expo.out",
+				},
+				"-=1",
+			)
+			.to(
+				menuImageRef.current,
+				{
+					y: "-100%",
+					opacity: 0,
+					duration: 1.25,
+					ease: "expo.out",
+				},
+				"-=1.25",
+			)
+			.to(
+				overlayRef.current,
+				{
+					clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)",
+					duration: 1.25,
+					ease: "expo.out",
+				},
+				"-=1",
+			)
+			// Reset positions for next open (Important!)
+			.set(overlayRef.current, {
+				clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
+			})
+			.set(".menu-link-item-holder", { y: "150%" })
+			.set(highlighterRef.current, { y: "150%" })
+			.set(menuContentRef.current, { y: "50%", opacity: 0 })
+			.set(menuImageRef.current, { y: "0%", scale: 0.5, opacity: 0 });
+	}, [isMenuOpen]); // Dependency on state to know if we should actually run
+
+	// const closeMenuImmediate = useCallback(() => {
+	// 	isAnimating.current = false;
+	// 	setIsMenuOpen(false);
+	// 	document.body.style.overflow = "auto";
+	// 	gsap.set(overlayRef.current, {
+	// 		clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
+	// 	});
+	// 	gsap.set(".menu-link-item-holder", { y: "150%" });
+	// 	gsap.set(highlighterRef.current, { y: "150%" });
+	// 	gsap.set(menuContentRef.current, { y: "50%", opacity: 0 });
+	// 	gsap.set(menuImageRef.current, { y: "0%", scale: 0.5, opacity: 0 });
+	// }, []);
 
 	// --------------------------------------------------------
 	// GSAP Animation Logic
@@ -159,19 +233,6 @@ export default function Navbar({
 		},
 		{ scope: containerRef },
 	);
-
-	const closeMenuImmediate = useCallback(() => {
-		isAnimating.current = false;
-		setIsMenuOpen(false);
-		document.body.style.overflow = "auto";
-		gsap.set(overlayRef.current, {
-			clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
-		});
-		gsap.set(".menu-link-item-holder", { y: "150%" });
-		gsap.set(highlighterRef.current, { y: "150%" });
-		gsap.set(menuContentRef.current, { y: "50%", opacity: 0 });
-		gsap.set(menuImageRef.current, { y: "0%", scale: 0.5, opacity: 0 });
-	}, []);
 
 	// --------------------------------------------------------
 	// Toggle Animation
@@ -294,9 +355,13 @@ export default function Navbar({
 
 		if (lastPathnameRef.current !== pathname) {
 			lastPathnameRef.current = pathname;
-			closeMenuImmediate();
+			// CHANGE: Call animateClose() instead of closeMenuImmediate()
+			// This runs the exit animation WHILE the new page loads/shows underneath.
+			if (isMenuOpen) {
+				animateClose();
+			}
 		}
-	}, [pathname, closeMenuImmediate]);
+	}, [pathname, isMenuOpen, animateClose]);
 
 	// --------------------------------------------------------
 	// Prevent Scrolling When Menu is Open
@@ -589,9 +654,9 @@ export default function Navbar({
 							<div className="menu-link-item-holder relative block">
 								<Link
 									href={link.href}
-									onClick={() => {
-										if (isMenuOpen) closeMenuImmediate();
-									}}
+									// onClick={() => {
+									// 	if (isMenuOpen) closeMenuImmediate();
+									// }}
 									className="relative block text-background px-4 font-mirage font-medium text-[2rem] lg:text-[8rem] leading-[0.9] tracking-tighter uppercase"
 								>
 									{/* Visible Text */}
