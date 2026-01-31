@@ -6,7 +6,13 @@ import { SplitText } from "gsap/SplitText";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type React from "react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+	useCallback,
+	useEffect,
+	useLayoutEffect,
+	useRef,
+	useState,
+} from "react";
 import MenuButton from "@/components/MenuButton"; // Keep your existing component
 import { useNavbar } from "@/context/NavbarContext";
 import AkhyarTextSvg from "./AkhyarTextSvg";
@@ -413,20 +419,53 @@ export default function Navbar({
 	// --------------------------------------------------------
 	// Detect FormSection Visibility
 	// --------------------------------------------------------
-	useEffect(() => {
-		const formSection = document.getElementById("contact-form");
-		if (!formSection) return;
+	useLayoutEffect(() => {
+		const checkFormSectionVisibility = () => {
+			const formSection = document.getElementById("contact-form");
+			if (!formSection) return;
 
-		const observer = new IntersectionObserver(
-			([entry]) => {
-				setIsFormSectionInView(entry.isIntersecting);
-			},
-			{ threshold: 0.1 },
-		);
+			const rect = formSection.getBoundingClientRect();
+			const isInView = rect.top < window.innerHeight && rect.bottom > 0;
+			setIsFormSectionInView(isInView);
+		};
 
-		observer.observe(formSection);
-		return () => observer.disconnect();
+		// Check immediately
+		checkFormSectionVisibility();
+
+		// Also check after a short delay for hydration
+		const delayedCheck = setTimeout(checkFormSectionVisibility, 50);
+
+		// Scroll listener for continuous checking
+		const handleScroll = () => {
+			checkFormSectionVisibility();
+		};
+
+		window.addEventListener("scroll", handleScroll, { passive: true });
+
+		return () => {
+			clearTimeout(delayedCheck);
+			window.removeEventListener("scroll", handleScroll);
+		};
 	}, []);
+
+	useEffect(() => {
+		// Re-check when pathname changes to ensure we're on the right page
+		const checkFormSectionVisibility = () => {
+			const formSection = document.getElementById("contact-form");
+			if (!formSection) return;
+
+			const rect = formSection.getBoundingClientRect();
+			const isInView = rect.top < window.innerHeight && rect.bottom > 0;
+			setIsFormSectionInView(isInView);
+		};
+
+		// Wait a bit for the page to fully load
+		const timer = setTimeout(() => {
+			checkFormSectionVisibility();
+		}, 300);
+
+		return () => clearTimeout(timer);
+	}, []); // eslint-disable-next-line react-hooks/exhaustive-deps
 
 	// --------------------------------------------------------
 	// Loop for Mouse Interaction (Parallax & Highlighter)
@@ -555,11 +594,11 @@ export default function Navbar({
 				<Link className="nav-menu-extra" href={brandHref}>
 					<div
 						className={`group relative inline-flex h-[2.6em] w-[8em] cursor-pointer select-none items-center justify-center overflow-hidden rounded-md border text-[17px] font-medium transition-all before:absolute before:top-full before:left-full before:-z-10 before:h-40 before:w-50 before:rounded-full before:transition-[top,left] before:duration-700 before:content-[''] hover:before:-top-8 hover:before:-left-8 active:before:bg-foreground active:before:duration-0 ${
-							isAtTop
-								? "lg:text-background text-foreground border-foreground lg:border-background before:bg-background hover:text-foreground"
-								: "text-foreground border-foreground before:bg-foreground hover:text-background"
-						} ${
-							isFormSectionInView ? "text-background border-background" : ""
+							isFormSectionInView
+								? "text-primary border-primary before:bg-foreground hover:text-primary"
+								: isAtTop
+									? "lg:text-background text-foreground border-foreground lg:border-background before:bg-background hover:text-foreground"
+									: "text-foreground border-foreground before:bg-foreground hover:text-background"
 						} ${
 							isHidden
 								? "bg-transparent backdrop-blur-none"
@@ -576,7 +615,7 @@ export default function Navbar({
 				<div
 					className={`flex items-center justify-center gap-4 ${
 						isAtTop ? "lg:text-background text-foreground" : "text-foreground"
-					} ${isFormSectionInView ? "text-background" : ""} relative z-60`} // Increased z-index to stay above overlay
+					} ${isFormSectionInView ? "text-primary" : ""} relative z-60`} // Increased z-index to stay above overlay
 				>
 					<button
 						type="button"
@@ -584,14 +623,14 @@ export default function Navbar({
 						className="cursor-pointer overflow-hidden"
 					>
 						<p
-							className={`nav-fade hidden font-product-sans font-thin uppercase tracking-[0.3em] transition-all duration-500 ease-out hover:tracking-widest text-shadow-md lg:block ${isAtTop ? "lg:text-background" : ""} ${isMenuOpen ? "text-background delay-500" : isFormSectionInView ? "text-background" : "text-foreground"}`}
+							className={`nav-fade hidden font-product-sans font-thin uppercase tracking-[0.3em] transition-all duration-500 ease-out hover:tracking-widest text-shadow-md lg:block ${isAtTop ? "lg:text-background" : ""} ${isMenuOpen ? "text-background delay-500" : isFormSectionInView ? "text-primary" : "text-foreground"}`}
 						>
 							{isMenuOpen ? "CLOSE" : "MENU"}
 						</p>
 					</button>
 					<div className="nav-menu-extra overflow-hidden">
 						<MenuButton
-							Color={`${isAtTop ? "lg:bg-background" : ""} ${isMenuOpen ? "bg-background" : isFormSectionInView ? "bg-background" : "bg-foreground"}`}
+							Color={`${isAtTop ? "lg:bg-background" : ""} ${isMenuOpen ? "bg-background" : isFormSectionInView ? "bg-primary" : "bg-foreground"}`}
 							onClick={toggleMenu}
 							menuStatus={isMenuOpen}
 							// Assuming MenuButton handles its own internal "X" state visualization if passed a prop
