@@ -1,3 +1,9 @@
+import Hero from "./components/Hero";
+
 export default function Informasi() {
-	return <div>Informasi</div>;
+	return (
+		<>
+			<Hero />
+		</>
+	);
 }
