@@ -7,16 +7,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import MenuButton from "@/components/MenuButton"; // Keep your existing component
+import MenuButton from "@/components/MenuButton";
 import { useNavbar } from "@/context/NavbarContext";
 import AkhyarTextSvg from "./AkhyarTextSvg";
 import LogoSvg from "./LogoSvg";
 
 gsap.registerPlugin(SplitText);
 
-// --------------------------------------------------------
-// Types
-// --------------------------------------------------------
 export type NavbarProps = {
 	isHidden?: boolean;
 	isAtTop?: boolean;
@@ -24,9 +21,6 @@ export type NavbarProps = {
 	brandHref?: string;
 };
 
-// --------------------------------------------------------
-// Data for the Menu
-// --------------------------------------------------------
 const MENU_LINKS = [
 	{ label: "Home", href: "/" },
 	{ label: "Jurusan", href: "/jurusan" },
@@ -81,10 +75,8 @@ export default function Navbar({
 	brandText = "AKHYAR",
 	brandHref = "/",
 }: NavbarProps) {
-	// --------------------------------------------------------
-	// State & Refs
-	// --------------------------------------------------------
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const [isFormSectionInView, setIsFormSectionInView] = useState(false);
 
 	const { isHidden: ctxHidden, isAtTop: ctxAtTop } = useNavbar();
 	const pathname = usePathname();
@@ -100,7 +92,6 @@ export default function Navbar({
 	const menuContentRef = useRef<HTMLDivElement>(null);
 	const menuImageRef = useRef<HTMLDivElement>(null);
 
-	// Refs for tracking animation state to prevent spamming
 	const isAnimating = useRef(false);
 
 	// Mouse tracking for parallax
@@ -112,20 +103,18 @@ export default function Navbar({
 	const targetHighlighterWidth = useRef(0);
 
 	const animateClose = useCallback(() => {
-		// Prevent double-firing if already closed or animating
 		if (!isMenuOpen && !isAnimating.current) return;
 
 		isAnimating.current = true;
 		const tl = gsap.timeline({
 			onComplete: () => {
 				isAnimating.current = false;
-				setIsMenuOpen(false); // Update React state after animation finishes
+				setIsMenuOpen(false);
 			},
 		});
 
 		tl.to(".menu-link-item-holder", {
-			y: "-200%",
-			duration: 1.25,
+			duration: 1,
 			ease: "expo.out",
 		})
 			.to(
@@ -157,7 +146,6 @@ export default function Navbar({
 				},
 				"-=1",
 			)
-			// Reset positions for next open (Important!)
 			.set(overlayRef.current, {
 				clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
 			})
@@ -165,29 +153,12 @@ export default function Navbar({
 			.set(highlighterRef.current, { y: "150%" })
 			.set(menuContentRef.current, { y: "50%", opacity: 0 })
 			.set(menuImageRef.current, { y: "0%", scale: 0.5, opacity: 0 });
-	}, [isMenuOpen]); // Dependency on state to know if we should actually run
+	}, [isMenuOpen]);
 
-	// const closeMenuImmediate = useCallback(() => {
-	// 	isAnimating.current = false;
-	// 	setIsMenuOpen(false);
-	// 	document.body.style.overflow = "auto";
-	// 	gsap.set(overlayRef.current, {
-	// 		clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
-	// 	});
-	// 	gsap.set(".menu-link-item-holder", { y: "150%" });
-	// 	gsap.set(highlighterRef.current, { y: "150%" });
-	// 	gsap.set(menuContentRef.current, { y: "50%", opacity: 0 });
-	// 	gsap.set(menuImageRef.current, { y: "0%", scale: 0.5, opacity: 0 });
-	// }, []);
-
-	// --------------------------------------------------------
-	// GSAP Animation Logic
-	// --------------------------------------------------------
 	useGSAP(
 		() => {
 			const q = gsap.utils.selector(containerRef);
 
-			// Initial Setup
 			gsap.set(menuContentRef.current, { y: "50%", opacity: 0 });
 			gsap.set(menuImageRef.current, { scale: 0.5, opacity: 0 });
 			gsap.set(".menu-link-item-holder", { y: "150%" });
@@ -196,12 +167,10 @@ export default function Navbar({
 				clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
 			});
 
-			// Initialize highlighter position to the first link
 			const firstLink = q(".menu-link-container:first-child")[0];
 			if (firstLink && linksWrapperRef.current) {
 				const linkRect = firstLink.getBoundingClientRect();
 				const wrapperRect = linksWrapperRef.current.getBoundingClientRect();
-				// Set initial values
 				targetHighlighterWidth.current = linkRect.width;
 				targetHighlighterX.current = linkRect.left - wrapperRect.left;
 				currentHighlighterWidth.current = linkRect.width;
@@ -234,9 +203,6 @@ export default function Navbar({
 		{ scope: containerRef },
 	);
 
-	// --------------------------------------------------------
-	// Toggle Animation
-	// --------------------------------------------------------
 	const toggleMenu = () => {
 		if (isAnimating.current) return;
 		const willOpen = !isMenuOpen;
@@ -251,7 +217,6 @@ export default function Navbar({
 
 		if (willOpen) {
 			// OPEN ANIMATION
-			// Optional: Animate main site container if you have a ref to it (omitted for safety)
 
 			tl.to(overlayRef.current, {
 				clipPath: "polygon(0% 100%, 100% 100%, 100% 0%, 0% 0%)",
@@ -333,7 +298,6 @@ export default function Navbar({
 					},
 					"-=1",
 				)
-				// Reset positions for next open
 				.set(overlayRef.current, {
 					clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
 				})
@@ -344,9 +308,6 @@ export default function Navbar({
 		}
 	};
 
-	// --------------------------------------------------------
-	// Close menu on route change
-	// --------------------------------------------------------
 	useEffect(() => {
 		if (lastPathnameRef.current === null) {
 			lastPathnameRef.current = pathname;
@@ -355,17 +316,12 @@ export default function Navbar({
 
 		if (lastPathnameRef.current !== pathname) {
 			lastPathnameRef.current = pathname;
-			// CHANGE: Call animateClose() instead of closeMenuImmediate()
-			// This runs the exit animation WHILE the new page loads/shows underneath.
 			if (isMenuOpen) {
 				animateClose();
 			}
 		}
 	}, [pathname, isMenuOpen, animateClose]);
 
-	// --------------------------------------------------------
-	// Prevent Scrolling When Menu is Open
-	// --------------------------------------------------------
 	useEffect(() => {
 		const preventWheel = (e: WheelEvent) => {
 			e.preventDefault();
@@ -409,15 +365,11 @@ export default function Navbar({
 		};
 	}, [isMenuOpen]);
 
-	// --------------------------------------------------------
-	// Loop for Mouse Interaction (Parallax & Highlighter)
-	// --------------------------------------------------------
 	useEffect(() => {
 		const lerpFactor = 0.05;
 		let requestID: number;
 
 		const animateLoop = () => {
-			// Lerp calculations
 			currentX.current += (targetX.current - currentX.current) * lerpFactor;
 			currentHighlighterX.current +=
 				(targetHighlighterX.current - currentHighlighterX.current) * lerpFactor;
@@ -442,9 +394,6 @@ export default function Navbar({
 		return () => cancelAnimationFrame(requestID);
 	}, []);
 
-	// --------------------------------------------------------
-	// Event Handlers
-	// --------------------------------------------------------
 	const handleMouseMove = (e: React.MouseEvent) => {
 		if (window.innerWidth < 1000) return;
 
@@ -452,7 +401,6 @@ export default function Navbar({
 		const viewportWidth = window.innerWidth;
 		const menuLinksWrapperWidth = linksWrapperRef.current?.offsetWidth || 0;
 
-		// Logic from script.js to move the link wrapper based on mouse X
 		const maxMoveLeft = 0;
 		const maxMoveRight = viewportWidth - menuLinksWrapperWidth;
 		const sensitivityRange = viewportWidth * 0.5;
@@ -479,7 +427,6 @@ export default function Navbar({
 			targetHighlighterWidth.current = linkRect.width;
 		}
 
-		// Split text animation (Reveal)
 		const visibleChars = target.querySelectorAll(".char-visible");
 		const animatedChars = target.querySelectorAll(".char-animated");
 
@@ -501,10 +448,6 @@ export default function Navbar({
 		if (window.innerWidth < 1000) return;
 		const target = e.currentTarget;
 
-		// Default highlighter back to first element (optional logic, based on original)
-		// Here we just let it stay or implement specific logic if needed.
-
-		// Split text animation (Reset)
 		const visibleChars = target.querySelectorAll(".char-visible");
 		const animatedChars = target.querySelectorAll(".char-animated");
 
@@ -524,9 +467,6 @@ export default function Navbar({
 
 	return (
 		<div ref={containerRef}>
-			{/* --------------------------------------------------------
-            FRONT LAYER (Original Navbar)
-           -------------------------------------------------------- */}
 			<nav
 				className={`nav fixed top-0 left-0 z-50 flex w-full flex-row items-stretch justify-between bg-transparent px-6 py-4 transition-opacity duration-200 ease-out ${
 					isHidden ? "opacity-0 pointer-events-none" : "opacity-100"
@@ -536,9 +476,11 @@ export default function Navbar({
 				<Link className="nav-menu-extra" href={brandHref}>
 					<div
 						className={`group relative inline-flex h-[2.6em] w-[8em] cursor-pointer select-none items-center justify-center overflow-hidden rounded-md border text-[17px] font-medium transition-all before:absolute before:top-full before:left-full before:-z-10 before:h-40 before:w-50 before:rounded-full before:transition-[top,left] before:duration-700 before:content-[''] hover:before:-top-8 hover:before:-left-8 active:before:bg-foreground active:before:duration-0 ${
-							isAtTop
-								? "lg:text-background text-foreground border-foreground lg:border-background before:bg-background hover:text-foreground"
-								: "text-foreground border-foreground before:bg-foreground hover:text-background"
+							isFormSectionInView
+								? "text-primary border-primary before:bg-foreground hover:text-primary"
+								: isAtTop
+									? "lg:text-background text-foreground border-foreground lg:border-background before:bg-background hover:text-foreground"
+									: "text-foreground border-foreground before:bg-foreground hover:text-background"
 						} ${
 							isHidden
 								? "bg-transparent backdrop-blur-none"
@@ -555,7 +497,7 @@ export default function Navbar({
 				<div
 					className={`flex items-center justify-center gap-4 ${
 						isAtTop ? "lg:text-background text-foreground" : "text-foreground"
-					} relative z-60`} // Increased z-index to stay above overlay
+					} ${isFormSectionInView ? "text-primary" : ""} relative z-60`} // Increased z-index to stay above overlay
 				>
 					<button
 						type="button"
@@ -563,17 +505,16 @@ export default function Navbar({
 						className="cursor-pointer overflow-hidden"
 					>
 						<p
-							className={`nav-fade hidden font-product-sans font-thin uppercase tracking-[0.3em] transition-all duration-500 ease-out hover:tracking-widest text-shadow-md lg:block ${isAtTop ? "lg:text-background" : ""} ${isMenuOpen ? "text-background delay-500" : "text-foreground"}`}
+							className={`nav-fade hidden font-product-sans font-thin uppercase tracking-[0.3em] transition-all duration-500 ease-out hover:tracking-widest text-shadow-md lg:block ${isAtTop ? "lg:text-background" : ""} ${isMenuOpen ? "text-background delay-500" : isFormSectionInView ? "text-primary" : "text-foreground"}`}
 						>
 							{isMenuOpen ? "CLOSE" : "MENU"}
 						</p>
 					</button>
 					<div className="nav-menu-extra overflow-hidden">
 						<MenuButton
-							Color={`${isAtTop ? "lg:bg-background" : ""} ${isMenuOpen ? "bg-background" : "bg-foreground"}`}
+							Color={`${isAtTop ? "lg:bg-background" : ""} ${isMenuOpen ? "bg-background" : isFormSectionInView ? "bg-primary" : "bg-foreground"}`}
 							onClick={toggleMenu}
 							menuStatus={isMenuOpen}
-							// Assuming MenuButton handles its own internal "X" state visualization if passed a prop
 						/>
 					</div>
 				</div>
@@ -654,9 +595,6 @@ export default function Navbar({
 							<div className="menu-link-item-holder relative block">
 								<Link
 									href={link.href}
-									// onClick={() => {
-									// 	if (isMenuOpen) closeMenuImmediate();
-									// }}
 									className="relative block text-background px-4 font-mirage font-medium text-[2rem] lg:text-[8rem] leading-[0.9] tracking-tighter uppercase"
 								>
 									{/* Visible Text */}
