@@ -276,7 +276,7 @@ export default function Content() {
 							<div id={card.id} className="flex flex-row justify-between">
 								<div className="card-info w-[75%] px-8 py-[4em] hidden lg:block text-center md:w-[75%] lg:w-[25%] lg:px-[4em] lg:text-left">
 									<p className="text-sm font-medium uppercase">
-										{card.name} Faculty
+										Fakultas {card.name}
 									</p>
 								</div>
 								<Link
