@@ -68,7 +68,7 @@ function FaqSection() {
 
 	return (
 		<section
-			className="relative overflow-hidden py-4"
+			className="relative overflow-hidden pt-20 pb-6 bg-[url('/background/white_texture.webp')]"
 			id="faq"
 			ref={sectionRef}
 		>
