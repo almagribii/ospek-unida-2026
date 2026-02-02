@@ -189,7 +189,7 @@ export default function List() {
 									<h1 className=" text-lg md:text-xl uppercase tracking-widest">
 										{information.name}
 									</h1>
-									<h1 className=" text-lg md:text-xl font-medium uppercase tracking-widest px-4">
+									<h1 className=" text-lg md:text-xl font-medium uppercase tracking-widest lg:px-4 px-0">
 										{information.description}
 									</h1>
 								</div>
@@ -199,7 +199,7 @@ export default function List() {
 									<h1 className=" text-lg md:text-xl text-primary-muted">
 										{information.nameHover}
 									</h1>
-									<h1 className=" text-lg md:text-xl uppercase tracking-widest text-primary-muted px-4">
+									<h1 className=" text-lg md:text-xl uppercase tracking-widest text-primary-muted lg:px-4 px-0">
 										{information.descriptionHover}
 									</h1>
 								</div>
@@ -209,7 +209,7 @@ export default function List() {
 									<h1 className=" text-lg md:text-xl uppercase tracking-widest">
 										{information.name}
 									</h1>
-									<h1 className=" text-lg md:text-xl uppercase tracking-widest px-4">
+									<h1 className=" text-lg md:text-xl uppercase tracking-widest lg:px-4 px-0">
 										{information.description}
 									</h1>
 								</div>
@@ -222,7 +222,7 @@ export default function List() {
 			{/* Preview Container */}
 			<div
 				ref={previewRef}
-				className="fixed bottom-4 right-4 w-[30%] h-[30%] z-20 pointer-events-none"
+				className="fixed bottom-4 right-4 md:w-[30%] md:h-[30%] w-[65%] h-[20%] z-20 pointer-events-none"
 			>
 				{/* Images are injected here by GSAP */}
 			</div>
