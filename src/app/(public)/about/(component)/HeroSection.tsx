@@ -82,6 +82,7 @@ const HeroSection: React.FC<{ isActive?: boolean }> = ({ isActive = true }) => {
 	return (
 		<div
 			ref={containerRef}
+			id="hero-section"
 			className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden"
 		>
 			<Background isActive={isActive} />
@@ -125,7 +126,7 @@ const HeroSection: React.FC<{ isActive?: boolean }> = ({ isActive = true }) => {
 						OSPEK UNIDA GONTOR 2026
 					</p>
 				</div>
-				<div className="scroll-down-animate absolute inset-x-0 bottom-14 z-20 flex justify-center pb-4 lg:pb-12">
+				<div className="scroll-down-animate absolute inset-x-0 bottom-20 lg:bottom-4 z-20 flex justify-center pb-4 lg:pb-12">
 					<ScrollDown />
 				</div>
 			</div>
