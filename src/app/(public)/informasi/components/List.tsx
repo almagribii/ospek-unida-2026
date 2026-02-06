@@ -54,11 +54,16 @@ export default function List() {
 				images: NodeListOf<HTMLImageElement> | HTMLImageElement[],
 			) => {
 				images.forEach((img) => {
+					gsap.killTweensOf(img);
 					gsap.to(img, {
 						scale: 0,
 						duration: 0.4,
 						ease: "power2.out",
-						onComplete: () => img.remove(),
+						onComplete: () => {
+							if (img.parentNode) {
+								img.parentNode.removeChild(img);
+							}
+						},
 					});
 				});
 			};
@@ -134,6 +139,13 @@ export default function List() {
 				});
 			};
 
+			// Store event listeners for cleanup
+			const eventListeners: Array<{
+				element: Element;
+				event: string;
+				handler: EventListener;
+			}> = [];
+
 			// Attach listeners to DOM elements directly
 			// This replicates the vanilla 'forEach' loop behavior efficiently
 			const items = containerRef.current?.querySelectorAll(".information-item");
@@ -143,21 +155,42 @@ export default function List() {
 				) as HTMLElement;
 				const imageSrc = informations[index]?.image || "";
 
-				item.addEventListener("mouseenter", () =>
-					handleMouseEnter(imageSrc, wrapper, item as HTMLElement),
-				);
-				item.addEventListener("mouseleave", (e) =>
-					handleMouseLeave(e as MouseEvent, wrapper, item as HTMLElement),
+				const mouseEnterHandler = () =>
+					handleMouseEnter(imageSrc, wrapper, item as HTMLElement);
+				const mouseLeaveHandler = (e: Event) =>
+					handleMouseLeave(e as MouseEvent, wrapper, item as HTMLElement);
+
+				item.addEventListener("mouseenter", mouseEnterHandler);
+				item.addEventListener("mouseleave", mouseLeaveHandler);
+
+				eventListeners.push(
+					{ element: item, event: "mouseenter", handler: mouseEnterHandler },
+					{ element: item, event: "mouseleave", handler: mouseLeaveHandler },
 				);
 			});
 
 			window.addEventListener("mousemove", handleGlobalMouseMove);
 
 			return () => {
-				// Cleanup
+				// Cleanup all event listeners
 				window.removeEventListener("mousemove", handleGlobalMouseMove);
 
-				items?.forEach(() => {});
+				eventListeners.forEach(({ element, event, handler }) => {
+					element.removeEventListener(event, handler);
+				});
+
+				// Kill all GSAP animations
+				gsap.killTweensOf("*");
+
+				// Clean up any remaining images
+				if (previewRef.current) {
+					const images = previewRef.current.querySelectorAll("img");
+					images.forEach((img) => {
+						if (img.parentNode) {
+							img.parentNode.removeChild(img);
+						}
+					});
+				}
 			};
 		},
 		{ scope: containerRef },

@@ -1,6 +1,4 @@
-import { UKMSection } from "./(component)/UKMSection";
-
-
+import { UKMSection } from "./components/UKMSection";
 
 export default function UKMPage() {
 	return <UKMSection />;

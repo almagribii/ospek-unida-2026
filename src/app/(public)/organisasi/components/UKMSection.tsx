@@ -156,6 +156,12 @@ export function UKMSection(): JSX.Element {
 
 		return () => {
 			clearTimeout(timeoutId);
+			if (handleResize) {
+				window.removeEventListener("resize", handleResize);
+			}
+			if (ctx) {
+				ctx.revert();
+			}
 			ScrollTrigger.getAll().forEach((trigger) => {
 				trigger.kill();
 			});

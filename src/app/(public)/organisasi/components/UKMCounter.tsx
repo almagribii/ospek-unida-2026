@@ -15,7 +15,6 @@ export function UKMCounter({ activeIndex, members }: UKMCounterProps) {
 				bottom: 0,
 				left: 0,
 				right: 0,
-				zIndex: 50,
 				display: "flex",
 				justifyContent: "center",
 				padding: "40px 0",
@@ -23,7 +22,7 @@ export function UKMCounter({ activeIndex, members }: UKMCounterProps) {
 		>
 			<div className="count text-center">
 				<div className="count-container text-center"></div>
-				
+
 				<Shuffle
 					key={activeIndex}
 					text={members[activeIndex]?.title || "UKM"}
