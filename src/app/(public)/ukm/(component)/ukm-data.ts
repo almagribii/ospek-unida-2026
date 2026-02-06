@@ -1,9 +1,9 @@
-export type CrewMember = {
+export type dataUkm = {
 	title: string;
 	image: string;
 };
 
-export const dataUkmPutra: CrewMember[] = [
+export const dataUkmPutra: dataUkm[] = [
 	{
 		title: "UKM Archery",
 		image: "/timeline/awal_kedatangan.png",
@@ -58,11 +58,11 @@ export const dataUkmPutra: CrewMember[] = [
 	},
 	{
 		title: "UKM Badminton",
-		image: "/timeline/awal_kedatangan.png",
+		image: "/panduan/4.webp",
 	},
 ];
 
-export const dataUkmPutri: CrewMember[] = [
+export const dataUkmPutri: dataUkm[] = [
 	{
 		title: "UKM Archery Putri",
 		image: "/timeline/awal_kedatangan.png",

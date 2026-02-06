@@ -49,10 +49,12 @@ export function UKMSection(): JSX.Element {
 					});
 
 					const totalCards = cards.length;
-					const stickyHeight = window.innerHeight * 7;
+					const stickyHeight = window.innerHeight * 5;
 					const arcAngle = Math.PI * 0.4;
-					const startAngle = Math.PI / 2 - arcAngle / 2;
-
+					const startAngle =
+						Math.PI / 2 -
+						arcAngle / 2 +
+					0.630;
 					const getRadius = () =>
 						window.innerWidth < 900
 							? window.innerWidth * 7.5

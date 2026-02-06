@@ -1,8 +1,8 @@
-import type { CrewMember } from "./ukm-data";
+import type { dataUkm } from "./ukm-data";
 
 interface UKMCounterProps {
 	activeIndex: number;
-	members: CrewMember[];
+	members: dataUkm[];
 }
 
 export function UKMCounter({ activeIndex, members }: UKMCounterProps) {
