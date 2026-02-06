@@ -5,7 +5,7 @@ export type dataUkm = {
 
 export const dataUkmPutra: dataUkm[] = [
 	{
-		title: "UKM Archery",
+		title: "Archery",
 		image: "/timeline/awal_kedatangan.png",
 	},
 	{
@@ -46,7 +46,7 @@ export const dataUkmPutra: dataUkm[] = [
 	},
 	{
 		title: "UKM KSEI",
-		image: "/timeline/awal_kedatangan.png",
+		image: "/ukm/ksei.jpg",
 	},
 	{
 		title: "UKM Luqmanul Hakim",

@@ -39,7 +39,7 @@ export function UKMCounter({ activeIndex, members }: UKMCounterProps) {
 					respectReducedMotion={false}
 					loop={false}
 					loopDelay={0}
-					className="font-mirage text-6xl md:text-7xl lg:text-8xl font-bold"
+					className="font-mirage text-5xl md:text-7xl lg:text-8xl font-bold"
 				/>
 			</div>
 		</div>
