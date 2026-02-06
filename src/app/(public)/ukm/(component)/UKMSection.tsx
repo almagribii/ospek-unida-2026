@@ -35,7 +35,7 @@ export function UKMSection(): JSX.Element {
 				ctx = gsap.context(() => {
 					const cards = section.querySelectorAll<HTMLDivElement>(".card");
 					const countContainer =
-						section.querySelector<HTMLDivElement>(".count-container");
+						document.querySelector<HTMLDivElement>(".count-container");
 
 					if (!cards.length || !countContainer) {
 						return;
@@ -49,12 +49,9 @@ export function UKMSection(): JSX.Element {
 					});
 
 					const totalCards = cards.length;
-					const stickyHeight = window.innerHeight * 5;
+					const stickyHeight = window.innerHeight * (1 + totalCards * 0.8);
 					const arcAngle = Math.PI * 0.4;
-					const startAngle =
-						Math.PI / 2 -
-						arcAngle / 2 +
-					0.630;
+					const startAngle = Math.PI / 2 - arcAngle / 2 + 0.63;
 					const getRadius = () =>
 						window.innerWidth < 900
 							? window.innerWidth * 7.5
@@ -166,16 +163,18 @@ export function UKMSection(): JSX.Element {
 	}, [activeGender]);
 
 	return (
-		<section
-			className="team bg-[url('/background/white_texture.webp')]"
-			ref={sectionRef}
-		>
-			<UKMTabs activeGender={activeGender} onGenderChange={setActiveGender} />
+		<>
+			<section
+				className="team bg-[url('/background/white_texture.webp')]"
+				ref={sectionRef}
+			>
+				<UKMTabs activeGender={activeGender} onGenderChange={setActiveGender} />
+				<UKMCards activeGender={activeGender} />
+			</section>
 			<UKMCounter
 				activeIndex={activeIndex}
 				members={activeGender === "mahasiswa" ? dataUkmPutra : dataUkmPutri}
 			/>
-			<UKMCards activeGender={activeGender} />
-		</section>
+		</>
 	);
 }
