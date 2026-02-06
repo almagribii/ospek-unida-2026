@@ -1,5 +1,6 @@
 "use client";
 
+import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef, useState } from "react";
@@ -23,48 +24,53 @@ function FaqSection() {
 	useEffect(() => {
 		// Check if desktop
 		setIsDesktop(typeof window !== "undefined" && window.innerWidth >= 1024);
+	}, []);
 
-		// Animate title and description
-		if (titleRef.current) {
-			gsap.from(titleRef.current, {
-				opacity: 0,
-				y: -20,
-				duration: 0.6,
-				scrollTrigger: {
-					trigger: sectionRef.current,
-					start: "top 80%",
-				},
-			});
-		}
-
-		if (descRef.current) {
-			gsap.from(descRef.current, {
-				opacity: 0,
-				duration: 0.6,
-				delay: 0.2,
-				scrollTrigger: {
-					trigger: sectionRef.current,
-					start: "top 80%",
-				},
-			});
-		}
-
-		// Animate accordion items
-		itemsRef.current.forEach((item, index) => {
-			if (item) {
-				gsap.from(item, {
+	useGSAP(
+		() => {
+			// Animate title and description
+			if (titleRef.current) {
+				gsap.from(titleRef.current, {
 					opacity: 0,
-					y: 30,
-					duration: 0.4,
-					delay: index * 0.1,
+					y: -20,
+					duration: 0.6,
 					scrollTrigger: {
 						trigger: sectionRef.current,
 						start: "top 80%",
 					},
 				});
 			}
-		});
-	}, []);
+
+			if (descRef.current) {
+				gsap.from(descRef.current, {
+					opacity: 0,
+					duration: 0.6,
+					delay: 0.2,
+					scrollTrigger: {
+						trigger: sectionRef.current,
+						start: "top 80%",
+					},
+				});
+			}
+
+			// Animate accordion items
+			itemsRef.current.forEach((item, index) => {
+				if (item) {
+					gsap.from(item, {
+						opacity: 0,
+						y: 30,
+						duration: 0.4,
+						delay: index * 0.1,
+						scrollTrigger: {
+							trigger: sectionRef.current,
+							start: "top 80%",
+						},
+					});
+				}
+			});
+		},
+		{ scope: sectionRef },
+	);
 
 	return (
 		<section

@@ -2,31 +2,19 @@
 
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { informations } from "./data";
-
-gsap.registerPlugin(ScrollToPlugin);
 
 export default function List() {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const previewRef = useRef<HTMLDivElement>(null);
 	const informationsListRef = useRef<HTMLDivElement>(null);
-	const router = useRouter();
 
 	const POSITIONS = {
 		BOTTOM: 0,
 		MIDDLE: -80,
 		TOP: -160,
-	};
-
-	const scrollToSection = (id: string) => {
-		gsap.to(window, {
-			duration: 1.5,
-			scrollTo: `${id}`,
-			ease: "expo.out",
-		});
 	};
 
 	useEffect(() => {
@@ -216,52 +204,47 @@ export default function List() {
 					className="informations-list border-t border-foreground w-full"
 				>
 					{informations.map((information, i) => (
-						// biome-ignore lint/a11y/noStaticElementInteractions: enable click
-						// biome-ignore lint/a11y/useKeyWithClickEvents: enable click
 						<div
 							key={`${information.name}-${i}`}
 							className="information-item h-20 w-full border-b border-foreground cursor-pointer overflow-hidden clip-path-information"
 							style={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)" }}
-							onClick={() => {
-								information.image.startsWith("#")
-									? scrollToSection(information.image)
-									: router.push(information.link);
-							}}
 						>
-							<div
-								className="information-wrapper relative h-60 w-full will-change-transform"
-								style={{ transform: `translateY(${POSITIONS.TOP}px)` }}
-							>
-								{/* Top Panel (Matches Bottom Panel) */}
-								<div className="information-panel flex justify-between items-center h-20 px-4 bg-background">
-									<h1 className=" text-lg md:text-xl uppercase tracking-widest">
-										{information.name}
-									</h1>
-									<h1 className=" text-lg md:text-xl font-medium uppercase tracking-widest lg:px-4 px-0">
-										{information.description}
-									</h1>
-								</div>
+							<Link href={information.link}>
+								<div
+									className="information-wrapper relative h-60 w-full will-change-transform"
+									style={{ transform: `translateY(${POSITIONS.TOP}px)` }}
+								>
+									{/* Top Panel (Matches Bottom Panel) */}
+									<div className="information-panel flex justify-between items-center h-20 px-4 bg-background">
+										<h1 className=" text-lg md:text-xl uppercase tracking-widest">
+											{information.name}
+										</h1>
+										<h1 className=" text-lg md:text-xl font-medium uppercase tracking-widest lg:px-4 px-0">
+											{information.description}
+										</h1>
+									</div>
 
-								{/* Middle Panel (Active State) */}
-								<div className="information-panel flex justify-between items-center h-20 px-4 bg-foreground text-foreground">
-									<h1 className=" text-lg md:text-xl text-primary-muted">
-										{information.nameHover}
-									</h1>
-									<h1 className=" text-lg md:text-xl uppercase tracking-widest text-primary-muted lg:px-4 px-0">
-										{information.descriptionHover}
-									</h1>
-								</div>
+									{/* Middle Panel (Active State) */}
+									<div className="information-panel flex justify-between items-center h-20 px-4 bg-foreground text-foreground">
+										<h1 className=" text-lg md:text-xl text-primary-muted">
+											{information.nameHover}
+										</h1>
+										<h1 className=" text-lg md:text-xl uppercase tracking-widest text-primary-muted lg:px-4 px-0">
+											{information.descriptionHover}
+										</h1>
+									</div>
 
-								{/* Bottom Panel (Default View) */}
-								<div className="information-panel flex justify-between items-center h-20 px-4 bg-background">
-									<h1 className=" text-lg md:text-xl uppercase tracking-widest">
-										{information.name}
-									</h1>
-									<h1 className=" text-lg md:text-xl uppercase tracking-widest lg:px-4 px-0">
-										{information.description}
-									</h1>
+									{/* Bottom Panel (Default View) */}
+									<div className="information-panel flex justify-between items-center h-20 px-4 bg-background">
+										<h1 className=" text-lg md:text-xl uppercase tracking-widest">
+											{information.name}
+										</h1>
+										<h1 className=" text-lg md:text-xl uppercase tracking-widest lg:px-4 px-0">
+											{information.description}
+										</h1>
+									</div>
 								</div>
-							</div>
+							</Link>
 						</div>
 					))}
 				</div>
