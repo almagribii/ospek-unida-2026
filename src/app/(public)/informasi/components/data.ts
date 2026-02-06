@@ -21,7 +21,7 @@ export const informations: Informations[] = [
 		nameHover: "Cari tahu Tata Cara Pendaftaran Mahasiswa Baru.",
 		description: "Informasi",
 		descriptionHover: "Pendaftaran",
-		link: "#tata-cara",
+		link: "/tata-cara",
 		image: "/informasi/daftar.jpg",
 	},
 	{
@@ -61,7 +61,7 @@ export const informations: Informations[] = [
 		nameHover: "Cari tahu perlengkapan apa saja yang harus dibawa.",
 		description: "Informasi",
 		descriptionHover: "Perlengkapan",
-		link: "#perlengkapan",
+		link: "/perlengkapan",
 		image: "/informasi/perlengkapan.jpg",
 	},
 	{
@@ -69,7 +69,7 @@ export const informations: Informations[] = [
 		nameHover: "Cari tahu bagaimana outfit di UNIDA.",
 		description: "Informasi",
 		descriptionHover: "Outfit",
-		link: "#outfit",
+		link: "/outfit",
 		image: "/informasi/outfit.jpg",
 	},
 	{
@@ -77,7 +77,7 @@ export const informations: Informations[] = [
 		nameHover: "Cari tahu apa saja organisasi yang ada di UNIDA.",
 		description: "Informasi",
 		descriptionHover: "Organisasi",
-		link: "#organisasi",
+		link: "/organisasi",
 		image: "/informasi/organisasi.png",
 	},
 	{
@@ -94,7 +94,7 @@ export const informations: Informations[] = [
 		nameHover: "Cari tahu apakah pertanyaan kamu sudah dijawab disini.",
 		description: "Informasi",
 		descriptionHover: "Pertanyaan",
-		link: "#faq",
+		link: "/faq",
 		image: "/informasi/faq.webp",
 	},
 	{

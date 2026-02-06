@@ -4,7 +4,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useRouter } from "next/navigation";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { informations } from "./data";
 
 gsap.registerPlugin(ScrollToPlugin);
@@ -28,6 +28,17 @@ export default function List() {
 			ease: "expo.out",
 		});
 	};
+
+	useEffect(() => {
+		const imagesToPreload = informations.map(
+			(information) => information.image,
+		);
+
+		imagesToPreload.forEach((url) => {
+			const img = new Image();
+			img.src = url;
+		});
+	}, []);
 
 	useGSAP(
 		() => {
@@ -222,7 +233,7 @@ export default function List() {
 			{/* Preview Container */}
 			<div
 				ref={previewRef}
-				className="fixed bottom-4 right-4 md:w-[30%] md:h-[30%] w-[65%] h-[20%] z-20 pointer-events-none"
+				className="fixed bottom-4 right-4 md:w-[30%] md:h-[30%] w-[65%] h-[20%] z-20 pointer-events-none hidden lg:block"
 			>
 				{/* Images are injected here by GSAP */}
 			</div>
