@@ -2,7 +2,7 @@
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { type JSX, useEffect, useRef, useState } from "react";
+import { type JSX, useLayoutEffect, useRef, useState } from "react";
 import { UKMCards } from "./UKMCards";
 import { UKMCounter } from "./UKMCounter";
 import { UKMTabs } from "./UKMTabs";
@@ -17,22 +17,43 @@ export function UKMSection(): JSX.Element {
 		"mahasiswa",
 	);
 	const genderRef = useRef(activeGender);
+	const handleResizeRef = useRef<(() => void) | null>(null);
+	const ctxRef = useRef<ReturnType<typeof gsap.context> | null>(null);
+	const timeoutIdRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		genderRef.current = activeGender;
 	}, [activeGender]);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: activeGender is necessary to reinitialize animations when displayed cards change
-	useEffect(() => {
+	useLayoutEffect(() => {
 		const section = sectionRef.current;
 		if (!section) return;
 
-		let handleResize: (() => void) | undefined;
-		let ctx: ReturnType<typeof gsap.context> | undefined;
+		// Cleanup previous context first
+		if (ctxRef.current) {
+			ctxRef.current.revert();
+			ctxRef.current = null;
+		}
+		if (handleResizeRef.current) {
+			window.removeEventListener("resize", handleResizeRef.current);
+			handleResizeRef.current = null;
+		}
+		if (timeoutIdRef.current) {
+			clearTimeout(timeoutIdRef.current);
+			timeoutIdRef.current = null;
+		}
 
-		const timeoutId = setTimeout(() => {
+		// Kill all existing ScrollTriggers for this section
+		ScrollTrigger.getAll().forEach((trigger) => {
+			if (trigger.vars.trigger === section) {
+				trigger.kill();
+			}
+		});
+
+		timeoutIdRef.current = setTimeout(() => {
 			try {
-				ctx = gsap.context(() => {
+				ctxRef.current = gsap.context(() => {
 					const cards = section.querySelectorAll<HTMLDivElement>(".card");
 					const countContainer =
 						document.querySelector<HTMLDivElement>(".count-container");
@@ -132,39 +153,42 @@ export function UKMSection(): JSX.Element {
 						invalidateOnRefresh: true,
 					});
 
-					handleResize = () => {
+					handleResizeRef.current = () => {
 						positionCards(0);
 						ScrollTrigger.refresh();
 					};
 
-					window.addEventListener("resize", handleResize);
+					window.addEventListener("resize", handleResizeRef.current);
 				}, section);
 			} catch (error) {
 				console.error("Error initializing UKM animations:", error);
 			}
-
-			return () => {
-				clearTimeout(timeoutId);
-				if (handleResize) {
-					window.removeEventListener("resize", handleResize);
-				}
-				if (ctx) {
-					ctx.revert();
-				}
-			};
 		}, 50);
 
 		return () => {
-			clearTimeout(timeoutId);
-			if (handleResize) {
-				window.removeEventListener("resize", handleResize);
+			// Clear timeout first
+			if (timeoutIdRef.current) {
+				clearTimeout(timeoutIdRef.current);
+				timeoutIdRef.current = null;
 			}
-			if (ctx) {
-				ctx.revert();
+
+			// Remove resize listener
+			if (handleResizeRef.current) {
+				window.removeEventListener("resize", handleResizeRef.current);
+				handleResizeRef.current = null;
 			}
+
+			// Kill all ScrollTriggers BEFORE reverting context
+			// This ensures pins are properly cleaned up
 			ScrollTrigger.getAll().forEach((trigger) => {
 				trigger.kill();
 			});
+
+			// Revert GSAP context (restores DOM to original state)
+			if (ctxRef.current) {
+				ctxRef.current.revert();
+				ctxRef.current = null;
+			}
 		};
 	}, [activeGender]);
 
