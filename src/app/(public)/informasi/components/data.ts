@@ -21,7 +21,7 @@ export const informations: Informations[] = [
 		nameHover: "Cari tahu Tata Cara Pendaftaran Mahasiswa Baru.",
 		description: "Informasi",
 		descriptionHover: "Pendaftaran",
-		link: "/tata-cara",
+		link: "/tutorial-pendaftaran",
 		image: "/informasi/daftar.jpg",
 	},
 	{
