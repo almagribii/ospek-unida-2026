@@ -591,6 +591,12 @@ export default function Navbar({
 							onMouseEnter={handleLinkEnter}
 							onMouseLeave={handleLinkLeave}
 							type="button"
+							onClick={() => {
+								// Close menu when any link is clicked
+								if (isMenuOpen) {
+									animateClose();
+								}
+							}}
 						>
 							<div className="menu-link-item-holder relative block">
 								<Link

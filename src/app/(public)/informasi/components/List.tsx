@@ -179,11 +179,15 @@ export default function List() {
 					element.removeEventListener(event, handler);
 				});
 
-				// Kill all GSAP animations
-				gsap.killTweensOf("*");
+				// Kill GSAP animations only within this component's scope
+				if (containerRef.current) {
+					gsap.killTweensOf(containerRef.current);
+					gsap.killTweensOf(containerRef.current.querySelectorAll("*"));
+				}
 
 				// Clean up any remaining images
 				if (previewRef.current) {
+					gsap.killTweensOf(previewRef.current.querySelectorAll("img"));
 					const images = previewRef.current.querySelectorAll("img");
 					images.forEach((img) => {
 						if (img.parentNode) {
