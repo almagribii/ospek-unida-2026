@@ -21,13 +21,13 @@ export function UKMCards({ activeGender }: UKMCardsProps) {
 					key={member.title}
 				>
 					<div className="relative flex flex-col rounded-3xl border-4 border-white shadow-2xl overflow-hidden p-4">
-						<div className="card-header bg-primary text-center px-6 py-3 rounded-xl shadow-lg">
+						<div className="card-header bg-primary text-center px-6 py-3 rounded-2xl shadow-lg">
 							<h3 className="text-lg lg:text-xl font-bold text-white font-mirage uppercase tracking-wide">
-								UKM {member.title}
+								{member.title}
 							</h3>
 						</div>
 						<div className="relative rounded-b-xl overflow-hidden shadow-lg border-4 border-transparent rounded-2xl bg-linear-to-r from-[#4270ED] via-[#91167c] to-[#e2b870] bg-clip-padding p-1 mt-2">
-							<div className="card-img relative w-56 sm:w-64 md:w-70 lg:w-140 aspect-square rounded-lg overflow-hidden bg-white">
+							<div className="card-img relative w-56 sm:w-64 md:w-70 lg:w-90 aspect-square rounded-lg overflow-hidden bg-white">
 								<Image
 									src={member.image}
 									alt={member.title}

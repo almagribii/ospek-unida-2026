@@ -5,23 +5,33 @@ export type dataUkm = {
 
 export const dataUkmPutra: dataUkm[] = [
 	{
-		title: "Archery",
-		image: "/timeline/awal_kedatangan.png",
+		title: "UKM Bola",
+		image: "/ukm/bola.webp",
+	},
+	{
+		title: "UKM Badminton",
+		image: "/ukm/pb.webp",
 	},
 	{
 		title: "UKM Basket",
-		image: "/timeline/awal_kedatangan.png",
+		image: "/ukm/basket.webp",
+	},
+
+	{
+		title: "UKM Takraw",
+		image: "/ukm/takraw.webp",
+	},
+	{
+		title: "UKM Voli",
+		image: "/ukm/voli.webp",
 	},
 	{
 		title: "UKM Taekwondo",
-		image: "/timeline/awal_kedatangan.png",
+		image: "/ukm/taekwondo.webp",
 	},
+
 	{
-		title: "UKM Bola",
-		image: "/timeline/awal_kedatangan.png",
-	},
-	{
-		title: "UKM Choir",
+		title: "UKM Dzikrussalam",
 		image: "/timeline/awal_kedatangan.png",
 	},
 	{
@@ -30,23 +40,19 @@ export const dataUkmPutra: dataUkm[] = [
 	},
 	{
 		title: "UKM Dimensi Band",
-		image: "/timeline/awal_kedatangan.png",
+		image: "/ukm/dimensi.webp",
 	},
 	{
 		title: "UKM Al-Faraby",
-		image: "/timeline/awal_kedatangan.png",
-	},
-	{
-		title: "UKM Tim Ilustrasi",
-		image: "/timeline/awal_kedatangan.png",
+		image: "/ukm/faraby.webp",
 	},
 	{
 		title: "UKM Markaz Khot",
-		image: "/timeline/awal_kedatangan.png",
+		image: "/ukm/khat.webp",
 	},
 	{
 		title: "UKM KSEI",
-		image: "/ukm/ksei.jpg",
+		image: "/ukm/ksei.webp",
 	},
 	{
 		title: "UKM Luqmanul Hakim",
@@ -54,11 +60,17 @@ export const dataUkmPutra: dataUkm[] = [
 	},
 	{
 		title: "UKM Resimen Mahasiswa",
-		image: "/timeline/awal_kedatangan.png",
+		image: "/ukm/menwa.webp",
 	},
+
 	{
-		title: "UKM Badminton",
-		image: "/panduan/4.webp",
+		title: "UKM Archery",
+		image: "/ukm/archery.webp",
+	},
+
+	{
+		title: "UKM Marching Band",
+		image: "/ukm/mb.webp",
 	},
 ];
 
