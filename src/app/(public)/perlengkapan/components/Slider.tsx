@@ -2,7 +2,12 @@
 
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { CircleXIcon, FastForwardIcon, Maximize2Icon } from "lucide-react";
+import {
+	CircleXIcon,
+	FastForwardIcon,
+	MarsIcon,
+	Maximize2Icon,
+} from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { itemsCewe, itemsCowo } from "./items";
@@ -446,8 +451,40 @@ export default function Slider() {
 						<button
 							ref={prevBtnRef}
 							type="button"
+							onClick={() => {
+								if (isCowo) return;
+								setIsCowo(true);
+							}}
+							className="nav-btn prev absolute top-8 transform -translate-x-1/2 -translate-y-1/2 left-1/2 text-lg text-background cursor-pointer will-change-[opacity] border-none"
+						>
+							<span
+								className={`rounded-lg ${isCowo ? "bg-foreground" : "bg-transparent"} px-2 py-1 hover:bg-foreground font-bold transition-colors text-sm`}
+							>
+								Men
+							</span>
+						</button>
+
+						<button
+							ref={prevBtnRef}
+							type="button"
+							onClick={() => {
+								if (!isCowo) return;
+								setIsCowo(false);
+							}}
+							className="nav-btn prev absolute bottom-2 transform -translate-x-1/2 -translate-y-1/2 left-1/2 text-lg text-background cursor-pointer will-change-[opacity] border-none"
+						>
+							<span
+								className={`rounded-lg ${!isCowo ? "bg-foreground" : "bg-transparent"} px-2 py-1 hover:bg-foreground font-bold transition-colors text-sm`}
+							>
+								Women
+							</span>
+						</button>
+
+						<button
+							ref={prevBtnRef}
+							type="button"
 							onClick={movePrev}
-							className="nav-btn prev absolute top-1/2 -translate-y-1/2 left-4 text-lg text-(--base-100) cursor-pointer will-change-[opacity] border-none"
+							className="nav-btn prev absolute top-1/2 -translate-y-1/2 left-4 text-lg text-background cursor-pointer will-change-[opacity] border-none"
 						>
 							<FastForwardIcon className="transform -scale-x-100" />
 						</button>
@@ -455,7 +492,7 @@ export default function Slider() {
 							ref={nextBtnRef}
 							type="button"
 							onClick={moveNext}
-							className="nav-btn next absolute top-1/2 -translate-y-1/2 right-4 text-lg text-(--base-100) cursor-pointer will-change-[opacity] border-none"
+							className="nav-btn next absolute top-1/2 -translate-y-1/2 right-4 text-lg text-background cursor-pointer will-change-[opacity] border-none"
 						>
 							<FastForwardIcon />
 						</button>
