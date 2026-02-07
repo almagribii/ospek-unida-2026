@@ -35,7 +35,6 @@ export default function Slider() {
 	const [isPreviewAnimating, setIsPreviewAnimating] = useState(false);
 	const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 	const [currentIndex, setCurrentIndex] = useState(0);
-	const [isInitialized, setIsInitialized] = useState(false);
 
 	const slideItemsRef = useRef<SlideItem[]>([]);
 	const currentProductIndexRef = useRef(0);
@@ -317,15 +316,51 @@ export default function Slider() {
 
 	// Initialize slider
 	useEffect(() => {
-		if (isInitialized || !productsRef.current) return;
+		if (!productsRef.current) return;
+
+		// Clear pre-existing items to prevent duplication (Strict Mode / re-navigation safe)
+		productsRef.current.innerHTML = "";
+		slideItemsRef.current = [];
 
 		for (let i = -BUFFER_SIZE; i <= BUFFER_SIZE; i++) {
 			addSlideItem(i);
 		}
 		updateSliderPosition();
 		updatePreviewContent();
-		setIsInitialized(true);
-	}, [isInitialized, addSlideItem, updateSliderPosition, updatePreviewContent]);
+
+		// Set initial states for GSAP animations to prevent first-render glitches
+		contextSafe(() => {
+			if (controllerInnerRef.current) {
+				gsap.set(controllerInnerRef.current, {
+					clipPath: "circle(40% at 50% 50%)",
+				});
+			}
+			if (controllerOuterRef.current) {
+				gsap.set(controllerOuterRef.current, {
+					clipPath: "circle(50% at 50% 50%)",
+				});
+			}
+			if (openIconRef.current) {
+				gsap.set(openIconRef.current, {
+					y: 0,
+					autoAlpha: 1,
+				});
+			}
+			if (closeIconRef.current) {
+				gsap.set(closeIconRef.current, {
+					y: 100,
+					autoAlpha: 0,
+				});
+			}
+		})();
+
+		return () => {
+			slideItemsRef.current = [];
+			if (productsRef.current) {
+				productsRef.current.innerHTML = "";
+			}
+		};
+	}, [addSlideItem, updateSliderPosition, updatePreviewContent, contextSafe]);
 
 	// Update button states when animation/preview state changes
 	useEffect(() => {
@@ -410,7 +445,10 @@ export default function Slider() {
 			>
 				<div className="product-preview-info flex items-center gap-2">
 					<div className="product-preview-name">
-						<p ref={previewNameRef} className="text-[0.95rem] font-medium">
+						<p
+							ref={previewNameRef}
+							className="text-[0.95rem] font-medium text-secondary"
+						>
 							{currentProduct.name}
 						</p>
 					</div>
