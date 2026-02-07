@@ -83,4 +83,9 @@ export const items: Items[] = [
 		name: "Materai",
 		tag: "Requirement",
 	},
+	{
+		image: "/perlengkapan/cowo/pas-foto.png",
+		name: "Pas Foto 3x4 & 5x6",
+		tag: "Requirement",
+	},
 ];

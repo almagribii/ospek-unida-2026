@@ -31,7 +31,9 @@ export default function Slider() {
 	const previewImgRef = useRef<HTMLImageElement>(null);
 	const previewTagRef = useRef<HTMLParagraphElement>(null);
 	const bannerImgRef = useRef<HTMLImageElement>(null);
+	const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+	const [isCowo, setIsCowo] = useState(true);
 	const [isPreviewAnimating, setIsPreviewAnimating] = useState(false);
 	const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 	const [currentIndex, setCurrentIndex] = useState(0);
@@ -369,6 +371,32 @@ export default function Slider() {
 
 	const currentProduct = items[getActualIndex(currentIndex)];
 
+	useEffect(() => {
+		const handleWheel = (e: WheelEvent) => {
+			if (isPreviewOpen || isPreviewAnimating || scrollTimeoutRef.current)
+				return;
+
+			scrollTimeoutRef.current = setTimeout(() => {
+				scrollTimeoutRef.current = null;
+			}, 800);
+
+			if (e.deltaY > 0) {
+				movePrev();
+			} else {
+				moveNext();
+			}
+		};
+
+		window.addEventListener("wheel", handleWheel);
+		return () => {
+			window.removeEventListener("wheel", handleWheel);
+			if (scrollTimeoutRef.current) {
+				clearTimeout(scrollTimeoutRef.current);
+				scrollTimeoutRef.current = null;
+			}
+		};
+	}, [moveNext, movePrev, isPreviewOpen, isPreviewAnimating]);
+
 	return (
 		<section
 			ref={containerRef}
@@ -447,12 +475,12 @@ export default function Slider() {
 					<div className="product-preview-name">
 						<p
 							ref={previewNameRef}
-							className="text-[0.95rem] font-medium text-secondary"
+							className="text-[0.95rem] font-medium text-foreground"
 						>
 							{currentProduct.name}
 						</p>
 					</div>
-					<div className="product-preview-tag px-2 py-1 rounded bg-secondary text-background">
+					<div className="product-preview-tag px-2 py-1 rounded bg-foreground text-background">
 						<p ref={previewTagRef} className="text-xs font-medium uppercase ">
 							{currentProduct.tag}
 						</p>
