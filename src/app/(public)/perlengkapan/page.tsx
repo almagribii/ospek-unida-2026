@@ -1,3 +1,9 @@
+import Slider from "./components/Slider";
+
 export default function Perlengkapan() {
-	return <div>Perlengkapan</div>;
+	return (
+		<>
+			<Slider />
+		</>
+	);
 }
