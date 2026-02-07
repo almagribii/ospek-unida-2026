@@ -30,7 +30,6 @@ export function UKMSection(): JSX.Element {
 		const section = sectionRef.current;
 		if (!section) return;
 
-		// Cleanup previous context first
 		if (ctxRef.current) {
 			ctxRef.current.revert();
 			ctxRef.current = null;
@@ -44,7 +43,6 @@ export function UKMSection(): JSX.Element {
 			timeoutIdRef.current = null;
 		}
 
-		// Kill all existing ScrollTriggers for this section
 		ScrollTrigger.getAll().forEach((trigger) => {
 			if (trigger.vars.trigger === section) {
 				trigger.kill();
@@ -67,16 +65,19 @@ export function UKMSection(): JSX.Element {
 						left: 0,
 						top: 0,
 						transformOrigin: "center center",
+						visibility: "visible",
+						willChange: "transform, opacity",
 					});
 
 					const totalCards = cards.length;
-					const stickyHeight = window.innerHeight * (1 + totalCards * 0.8);
+					const isMobile = window.innerWidth < 900;
+					const stickyHeight = isMobile
+						? window.innerHeight * (0.8 + totalCards * 0.6)
+						: window.innerHeight * (1 + totalCards * 0.8);
 					const arcAngle = Math.PI * 0.4;
 					const startAngle = Math.PI / 2 - arcAngle / 2 + 0.63;
 					const getRadius = () =>
-						window.innerWidth < 900
-							? window.innerWidth * 7.5
-							: window.innerWidth * 2.5;
+						isMobile ? window.innerWidth * 4.5 : window.innerWidth * 2.5;
 
 					const positionCards = (progress = 0) => {
 						const radius = getRadius();
@@ -143,6 +144,12 @@ export function UKMSection(): JSX.Element {
 					positionCards(0);
 					updateTeamCounter();
 
+					gsap.to(cards, {
+						opacity: 1,
+						duration: 0.3,
+						overwrite: "auto",
+					});
+
 					ScrollTrigger.create({
 						trigger: section,
 						start: "top top",
@@ -151,6 +158,7 @@ export function UKMSection(): JSX.Element {
 						pinSpacing: true,
 						onUpdate: updateOnScroll,
 						invalidateOnRefresh: true,
+						fastScrollEnd: true,
 					});
 
 					handleResizeRef.current = () => {
@@ -166,25 +174,20 @@ export function UKMSection(): JSX.Element {
 		}, 50);
 
 		return () => {
-			// Clear timeout first
 			if (timeoutIdRef.current) {
 				clearTimeout(timeoutIdRef.current);
 				timeoutIdRef.current = null;
 			}
 
-			// Remove resize listener
 			if (handleResizeRef.current) {
 				window.removeEventListener("resize", handleResizeRef.current);
 				handleResizeRef.current = null;
 			}
 
-			// Kill all ScrollTriggers BEFORE reverting context
-			// This ensures pins are properly cleaned up
 			ScrollTrigger.getAll().forEach((trigger) => {
 				trigger.kill();
 			});
 
-			// Revert GSAP context (restores DOM to original state)
 			if (ctxRef.current) {
 				ctxRef.current.revert();
 				ctxRef.current = null;
@@ -194,10 +197,7 @@ export function UKMSection(): JSX.Element {
 
 	return (
 		<>
-			<section
-				className="team bg-[url('/background/white_texture.webp')]"
-				ref={sectionRef}
-			>
+			<section className="team" ref={sectionRef}>
 				<UKMTabs activeGender={activeGender} onGenderChange={setActiveGender} />
 				<UKMCards activeGender={activeGender} />
 			</section>
