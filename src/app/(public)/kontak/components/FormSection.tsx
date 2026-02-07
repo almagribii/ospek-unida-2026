@@ -12,7 +12,6 @@ import {
 	Music2,
 	Phone,
 	Send,
-	Sparkles,
 	Youtube,
 } from "lucide-react";
 import { useRef } from "react";
@@ -66,17 +65,14 @@ export default function FormSection() {
 		<section
 			ref={sectionRef}
 			id="contact-form"
-			className="relative min-h-screen bg-[#0e2345] py-8 flex items-center m-0"
+			className="relative min-h-screen bg-primary py-8 flex items-center m-0"
 		>
 			<div className="mx-auto w-full max-w-7xl px-6 relative z-10">
 				{/* Header */}
 				<div className="text-center mb-12">
-					<div className="flex items-center justify-center gap-2 text-xs uppercase tracking-[0.3em] text-white/60 mb-3">
-						<Sparkles className="h-4 w-4" />
-						<span className="font-product-sans">Hubungi Kami</span>
-					</div>
+					
 					<h2 className="channel-title font-mirage text-3xl md:text-5xl font-semibold text-white mb-3">
-						Siap Membantu <span className="text-primary">Kapan Saja</span>
+						Siap Membantu <span className="text-foreground">Kapan Saja</span>
 					</h2>
 					<p className="max-w-2xl mx-auto text-sm md:text-base text-white/70">
 						Ceritakan kebutuhanmu melalui form di bawah ini. Tim kami siap
@@ -183,7 +179,7 @@ export default function FormSection() {
 							</div>
 							<button
 								type="submit"
-								className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
+								className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
 							>
 								<Send className="h-4 w-4" />
 								Kirim Pesan
@@ -277,7 +273,7 @@ export default function FormSection() {
 					</div>
 				</div>
 				{/* Social Media Strip */}
-				<div className="info-card rounded-2xl border p-2 pt-4 lg:p-6">
+				<div className="info-card rounded-2xl  p-2 pt-4 lg:p-6">
 					<div className="flex flex-wrap items-center justify-center gap-2 md:gap-3 lg:py-6 md:overflow-x-auto md:no-scrollbar">
 						<a
 							href="https://unida.gontor.ac.id"
