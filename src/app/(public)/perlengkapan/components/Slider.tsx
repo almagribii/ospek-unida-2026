@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { CircleXIcon, FastForwardIcon, Maximize2Icon } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { items } from "./items";
+import { itemsCewe, itemsCowo } from "./items";
 
 interface SlideItem {
 	element: HTMLLIElement;
@@ -43,13 +43,19 @@ export default function Slider() {
 
 	const { contextSafe } = useGSAP({ scope: containerRef });
 
-	const getActualIndex = useCallback((index: number): number => {
-		return ((index % items.length) + items.length) % items.length;
-	}, []);
+	const getActualIndex = useCallback(
+		(index: number): number => {
+			const itemsLength = isCowo ? itemsCowo.length : itemsCewe.length;
+			return ((index % itemsLength) + itemsLength) % itemsLength;
+		},
+		[isCowo],
+	);
 
 	const updatePreviewContent = useCallback(() => {
 		const actualIndex = getActualIndex(currentProductIndexRef.current);
-		const currentProduct = items[actualIndex];
+		const currentProduct = isCowo
+			? itemsCowo[actualIndex]
+			: itemsCewe[actualIndex];
 
 		if (previewNameRef.current) {
 			previewNameRef.current.textContent = currentProduct.name;
@@ -65,7 +71,7 @@ export default function Slider() {
 			bannerImgRef.current.src = currentProduct.image;
 			bannerImgRef.current.alt = currentProduct.name;
 		}
-	}, [getActualIndex]);
+	}, [getActualIndex, isCowo]);
 
 	const updateButtonStates = useCallback(() => {
 		const disabled = isPreviewAnimating || isPreviewOpen;
@@ -85,7 +91,9 @@ export default function Slider() {
 			const productIndex = getActualIndex(
 				currentProductIndexRef.current + relativeIndex,
 			);
-			const product = items[productIndex];
+			const product = isCowo
+				? itemsCowo[productIndex]
+				: itemsCewe[productIndex];
 
 			const li = document.createElement("li");
 			li.className =
@@ -104,7 +112,7 @@ export default function Slider() {
 			productsRef.current.appendChild(li);
 			slideItemsRef.current.push({ element: li, relativeIndex });
 		},
-		[contextSafe, getActualIndex],
+		[contextSafe, getActualIndex, isCowo],
 	);
 
 	const removeSlideItem = useCallback((relativeIndex: number) => {
@@ -369,7 +377,9 @@ export default function Slider() {
 		updateButtonStates();
 	}, [updateButtonStates]);
 
-	const currentProduct = items[getActualIndex(currentIndex)];
+	const currentProduct = isCowo
+		? itemsCowo[getActualIndex(currentIndex)]
+		: itemsCewe[getActualIndex(currentIndex)];
 
 	useEffect(() => {
 		const handleWheel = (e: WheelEvent) => {

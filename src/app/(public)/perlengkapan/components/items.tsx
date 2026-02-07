@@ -4,7 +4,7 @@ interface Items {
 	tag: string;
 }
 
-export const items: Items[] = [
+export const itemsCowo: Items[] = [
 	{
 		image: "/perlengkapan/cowo/kemeja-kuliah.png",
 		name: "Kemeja Kuliah",
@@ -85,6 +85,14 @@ export const items: Items[] = [
 	},
 	{
 		image: "/perlengkapan/cowo/pas-foto.png",
+		name: "Pas Foto 3x4 & 5x6",
+		tag: "Requirement",
+	},
+];
+
+export const itemsCewe: Items[] = [
+	{
+		image: "/perlengkapan/cewe/pas-foto.png",
 		name: "Pas Foto 3x4 & 5x6",
 		tag: "Requirement",
 	},
