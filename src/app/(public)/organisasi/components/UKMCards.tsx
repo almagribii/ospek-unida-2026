@@ -29,6 +29,7 @@ export function UKMCards({ activeGender }: UKMCardsProps) {
 									src={member.image}
 									alt={member.title}
 									fill
+									loading="lazy"
 									className="object-cover group-hover:scale-105 transition-transform duration-500 l"
 								/>
 								<div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
