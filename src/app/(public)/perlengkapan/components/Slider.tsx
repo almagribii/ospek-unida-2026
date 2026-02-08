@@ -2,18 +2,16 @@
 
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import {
-	CircleXIcon,
-	FastForwardIcon,
-	MarsIcon,
-	Maximize2Icon,
-} from "lucide-react";
+import { CircleXIcon, FastForwardIcon, MaximizeIcon } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { MahasiswaSvg } from "@/components/MahasiswaSvg";
+import { MahasiswiSvg } from "@/components/MahasiswiSvg";
 import { itemsCewe, itemsCowo } from "./items";
 
 interface SlideItem {
 	element: HTMLLIElement;
+
 	relativeIndex: number;
 }
 
@@ -434,7 +432,7 @@ export default function Slider() {
 							ref={openIconRef}
 							className="absolute w-full h-full flex items-center justify-center text-background"
 						>
-							<Maximize2Icon className="w-5 h-5" />
+							<MaximizeIcon className="w-5 h-5" />
 						</div>
 						<div
 							ref={closeIconRef}
@@ -457,11 +455,11 @@ export default function Slider() {
 							}}
 							className="nav-btn prev absolute top-8 transform -translate-x-1/2 -translate-y-1/2 left-1/2 text-lg text-background cursor-pointer will-change-[opacity] border-none"
 						>
-							<span
-								className={`rounded-lg ${isCowo ? "bg-foreground" : "bg-transparent"} px-2 py-1 hover:bg-foreground font-bold transition-colors text-sm`}
+							<div
+								className={`p-1 ${isCowo ? "bg-foreground text-primary-muted" : "bg-transparent text-background"}  rounded-full hover:bg-foreground transition-colors`}
 							>
-								Men
-							</span>
+								<MahasiswaSvg className="w-8 h-8" />
+							</div>{" "}
 						</button>
 
 						<button
@@ -471,13 +469,13 @@ export default function Slider() {
 								if (!isCowo) return;
 								setIsCowo(false);
 							}}
-							className="nav-btn prev absolute bottom-2 transform -translate-x-1/2 -translate-y-1/2 left-1/2 text-lg text-background cursor-pointer will-change-[opacity] border-none"
+							className="nav-btn prev absolute -bottom-2 transform -translate-x-1/2 -translate-y-1/2 left-1/2 text-lg text-background cursor-pointer will-change-[opacity] border-none"
 						>
-							<span
-								className={`rounded-lg ${!isCowo ? "bg-foreground" : "bg-transparent"} px-2 py-1 hover:bg-foreground font-bold transition-colors text-sm`}
+							<div
+								className={`p-1 ${!isCowo ? "bg-foreground text-primary-muted" : "bg-transparent text-background"}  rounded-full hover:bg-foreground transition-colors`}
 							>
-								Women
-							</span>
+								<MahasiswiSvg className="w-8 h-8" />
+							</div>
 						</button>
 
 						<button
