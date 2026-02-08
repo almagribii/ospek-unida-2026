@@ -212,7 +212,8 @@ export default function Slider() {
 						const slide = slidesRef.current[idx];
 						if (!slide) return;
 
-						const posKey = posIdx === 0 ? "prev" : posIdx === 1 ? "active" : "next";
+						const posKey =
+							posIdx === 0 ? "prev" : posIdx === 1 ? "active" : "next";
 						const pos = slidePositions[posKey];
 						const isActive = posIdx === 1;
 
@@ -417,7 +418,7 @@ export default function Slider() {
 			// 6. Animate Preview Image
 			if (previewRef.current) {
 				const newImg = document.createElement("img");
-				newImg.src = outfits[nextIdx].img;
+				newImg.src = outfits[nextIdx].bg;
 				newImg.className =
 					"absolute top-0 left-0 w-full h-full object-cover opacity-0 animate-pan";
 				previewRef.current.appendChild(newImg);
@@ -447,7 +448,7 @@ export default function Slider() {
 	return (
 		<div
 			ref={containerRef}
-			className="relative w-screen h-screen overflow-hidden"
+			className="relative w-screen h-screen overflow-hidden bg-[linear-gradient(rgba(0,0,0,0.2),rgba(243,243,243,1)),url('/background/white_texture.webp')] bg-cover bg-center"
 		>
 			{/* Main Slider Area */}
 			{/** biome-ignore lint/a11y/noStaticElementInteractions: Why not */}
@@ -556,7 +557,7 @@ export default function Slider() {
 					<Image
 						width={1000}
 						height={1000}
-						src={outfits[activeIndex].img}
+						src={outfits[activeIndex].bg}
 						alt="preview-bg"
 						className="absolute top-0 left-0 w-full h-full object-cover animate-pan"
 					/>
