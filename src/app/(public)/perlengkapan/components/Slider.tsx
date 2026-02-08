@@ -437,7 +437,7 @@ export default function Slider() {
 			gsap.from(splitTextRef.current.words, {
 				y: 100,
 				opacity: 0,
-				stagger: 0.05,
+				stagger: 0.2,
 				duration: 0.8,
 				ease: "expo.out",
 			});
@@ -508,12 +508,12 @@ export default function Slider() {
 				ref={descTextRef}
 				className="flex lg:flex-row flex-col justify-center items-center w-full gap-2 p-4 absolute top-20 overflow-hidden"
 			>
-				<p className="font-mirage font-semibold text-foreground lg:text-4xl text-2xl text-center">
+				<p className="font-mirage font-semibold text-foreground lg:text-4xl text-2xl text-center overflow-hidden">
 					Daftar Perlengkapan
 				</p>
 				<p
 					key={isCowo ? "mahasiswa" : "mahasiswi"}
-					className="font-mirage font-semibold text-foreground lg:text-4xl text-2xl text-center"
+					className="font-mirage font-semibold text-foreground lg:text-4xl text-2xl text-center overflow-hidden"
 				>
 					{isCowo ? "Mahasiswa" : "Mahasiswi"}
 				</p>
