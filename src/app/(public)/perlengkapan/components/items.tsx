@@ -192,6 +192,11 @@ export const itemsCewe: Items[] = [
 		tag: "Requirement",
 	},
 	{
+		image: "/perlengkapan/cewe/materai.png",
+		name: "Materai",
+		tag: "Requirement",
+	},
+	{
 		image: "/perlengkapan/cewe/celana-olahraga.png",
 		name: "Celana Olahraga",
 		tag: "Bottom",
