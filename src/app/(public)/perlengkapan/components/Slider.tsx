@@ -2,12 +2,15 @@
 
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { SplitText } from "gsap/SplitText";
 import { CircleXIcon, FastForwardIcon, MaximizeIcon } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { MahasiswaSvg } from "@/components/MahasiswaSvg";
 import { MahasiswiSvg } from "@/components/MahasiswiSvg";
 import { itemsCewe, itemsCowo } from "./items";
+
+gsap.registerPlugin(SplitText);
 
 interface SlideItem {
 	element: HTMLLIElement;
@@ -35,6 +38,8 @@ export default function Slider() {
 	const previewTagRef = useRef<HTMLParagraphElement>(null);
 	const bannerImgRef = useRef<HTMLImageElement>(null);
 	const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+	const descTextRef = useRef<HTMLDivElement>(null);
+	const splitTextRef = useRef<SplitText | null>(null);
 
 	const [isCowo, setIsCowo] = useState(true);
 	const [isPreviewAnimating, setIsPreviewAnimating] = useState(false);
@@ -410,16 +415,58 @@ export default function Slider() {
 		};
 	}, [moveNext, movePrev, isPreviewOpen, isPreviewAnimating]);
 
+	// Animate description text
+	// biome-ignore lint/correctness/useExhaustiveDependencies: so that the title is animated every change of the gender
+	useEffect(() => {
+		if (!descTextRef.current) return;
+
+		// Revert previous split to restore original DOM before React updates
+		if (splitTextRef.current) {
+			splitTextRef.current.revert();
+			splitTextRef.current = null;
+		}
+
+		contextSafe(() => {
+			const paragraphs = descTextRef.current?.querySelectorAll("p");
+			if (!paragraphs) return;
+
+			splitTextRef.current = SplitText.create(paragraphs, {
+				type: "words, chars",
+			});
+
+			gsap.from(splitTextRef.current.words, {
+				y: 100,
+				opacity: 0,
+				stagger: 0.05,
+				duration: 0.8,
+				ease: "expo.out",
+			});
+		})();
+
+		return () => {
+			if (splitTextRef.current) {
+				splitTextRef.current.revert();
+				splitTextRef.current = null;
+			}
+		};
+	}, [contextSafe, isCowo]);
+
 	return (
 		<section
 			ref={containerRef}
 			className="relative w-full h-screen overflow-hidden bg-[linear-gradient(rgba(0,0,0,0.2),rgba(243,243,243,1)),url('/background/white_texture.webp')] bg-cover bg-center"
 		>
-			<div className="flex lg:flex-row flex-col justify-center items-center w-full lg:gap-4 gap-2 p-4 absolute top-20">
+			<div
+				ref={descTextRef}
+				className="flex lg:flex-row flex-col justify-center items-center w-full gap-2 p-4 absolute top-20"
+			>
 				<p className="font-mirage font-semibold text-foreground lg:text-4xl text-2xl text-center">
 					Daftar Perlengkapan
 				</p>
-				<p className="font-mirage font-semibold text-foreground lg:text-4xl text-2xl text-center">
+				<p
+					key={isCowo ? "mahasiswa" : "mahasiswi"}
+					className="font-mirage font-semibold text-foreground lg:text-4xl text-2xl text-center"
+				>
 					{isCowo ? "Mahasiswa" : "Mahasiswi"}
 				</p>
 			</div>
@@ -508,7 +555,7 @@ export default function Slider() {
 
 			<div
 				ref={productBannerRef}
-				className="product-banner absolute top-0 left-0 w-full h-full z-1 opacity-0 will-change-[opacity]"
+				className="product-banner absolute top-0 left-0 w-full h-full z-1 opacity-0 will-change-[opacity] hidden lg:block"
 			>
 				<Image
 					ref={bannerImgRef as React.RefObject<HTMLImageElement | null>}
