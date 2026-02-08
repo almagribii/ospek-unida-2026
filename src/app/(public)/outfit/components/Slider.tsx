@@ -624,7 +624,7 @@ export default function Slider() {
 	return (
 		<div
 			ref={containerRef}
-			className="relative w-screen h-screen overflow-hidden bg-[linear-gradient(rgba(0,0,0,0.2),rgba(243,243,243,1)),url('/background/white_texture.webp')] bg-cover bg-center"
+			className="relative w-screen lg:h-screen h-dvh overflow-hidden bg-[linear-gradient(rgba(0,0,0,0.2),rgba(243,243,243,1)),url('/background/white_texture.webp')] bg-cover bg-center"
 		>
 			{/* Main Slider Area */}
 			{/** biome-ignore lint/a11y/noStaticElementInteractions: Why not */}
@@ -668,7 +668,7 @@ export default function Slider() {
 									src={outfit.img}
 									alt={outfit.name}
 									fill
-									className="object-cover object-top will-change-transform"
+									className="object-contain lg:object-cover object-top will-change-transform"
 								/>
 							</div>
 						</div>
@@ -778,7 +778,7 @@ export default function Slider() {
 				{/* Preview Background */}
 				<div
 					ref={previewRef}
-					className="absolute top-[25%] left-1/2 -translate-x-1/2 w-[75%] h-full z-0 opacity-50 overflow-hidden pointer-events-none"
+					className="absolute lg:block hidden top-[25%] left-1/2 -translate-x-1/2 w-[75%] h-full z-0 opacity-50 overflow-hidden pointer-events-none"
 				>
 					<Img
 						width={1000}

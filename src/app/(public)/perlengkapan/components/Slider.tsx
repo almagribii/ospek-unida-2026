@@ -502,7 +502,7 @@ export default function Slider() {
 	return (
 		<section
 			ref={containerRef}
-			className="relative w-full h-screen overflow-hidden bg-[linear-gradient(rgba(0,0,0,0.2),rgba(243,243,243,1)),url('/background/white_texture.webp')] bg-cover bg-center"
+			className="relative w-full lg:h-screen h-dvh overflow-hidden bg-[linear-gradient(rgba(0,0,0,0.2),rgba(243,243,243,1)),url('/background/white_texture.webp')] bg-cover bg-center"
 		>
 			<div
 				ref={descTextRef}
