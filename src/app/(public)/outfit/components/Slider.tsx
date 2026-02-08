@@ -3,8 +3,8 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { CustomEase } from "gsap/dist/CustomEase";
-import Image from "next/image";
-import { useRef, useState } from "react";
+import Img from "next/image";
+import { useEffect, useRef, useState } from "react";
 import { outfits } from "./outfits";
 
 if (typeof window !== "undefined") {
@@ -61,6 +61,21 @@ export default function Slider() {
 	};
 
 	// --- Animation Logic ---
+
+	useEffect(() => {
+		const imgOutfit = outfits.map((outfit) => outfit.img);
+		const imgOutfitBg = outfits.map((outfit) => outfit.bg);
+
+		imgOutfit.forEach((src) => {
+			const img = new Image();
+			img.src = src;
+		});
+
+		imgOutfitBg.forEach((src) => {
+			const img = new Image();
+			img.src = src;
+		});
+	}, []);
 
 	const { contextSafe } = useGSAP(
 		() => {
@@ -488,7 +503,7 @@ export default function Slider() {
 						>
 							<div className="bg-[linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0.5))] bottom-0 absolute h-[50%] w-full z-1"></div>
 							<div className="relative w-full h-full overflow-hidden ">
-								<Image
+								<Img
 									src={outfit.img}
 									alt={outfit.name}
 									fill
@@ -554,7 +569,7 @@ export default function Slider() {
 					ref={previewRef}
 					className="absolute top-[25%] left-1/2 -translate-x-1/2 w-[75%] h-full z-0 opacity-50 overflow-hidden pointer-events-none"
 				>
-					<Image
+					<Img
 						width={1000}
 						height={1000}
 						src={outfits[activeIndex].bg}
