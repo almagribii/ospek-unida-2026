@@ -191,4 +191,9 @@ export const itemsCewe: Items[] = [
 		name: "Pas Foto 3x4 & 5x6",
 		tag: "Requirement",
 	},
+	{
+		image: "/perlengkapan/cewe/celana-olahraga.png",
+		name: "Celana Olahraga",
+		tag: "Bottom",
+	},
 ];
