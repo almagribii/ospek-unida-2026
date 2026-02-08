@@ -156,6 +156,137 @@ export default function Slider() {
 					? targetIndex
 					: getIndex(direction === "next" ? currentIdx + 1 : currentIdx - 1);
 
+			// Check if this is a multi-step jump (more than 1 step away)
+			const isMultiStep =
+				targetIndex !== undefined &&
+				Math.abs(targetIndex - currentIdx) > 1 &&
+				targetIndex !== getIndex(currentIdx + 1) &&
+				targetIndex !== getIndex(currentIdx - 1);
+
+			const slidePositions = {
+				prev: { left: "15%", rotation: -90 },
+				active: { left: "50%", rotation: 0 },
+				next: { left: "85%", rotation: 90 },
+			};
+
+			if (isMultiStep) {
+				// Multi-step jump: fade out all current visible slides, then set up new ones
+				const currentVisibleIndices = [
+					getIndex(currentIdx - 1),
+					currentIdx,
+					getIndex(currentIdx + 1),
+				];
+				const newVisibleIndices = [
+					getIndex(nextIdx - 1),
+					nextIdx,
+					getIndex(nextIdx + 1),
+				];
+
+				// Fade out all currently visible slides
+				currentVisibleIndices.forEach((idx) => {
+					const slide = slidesRef.current[idx];
+					if (slide) {
+						gsap.to(slide, {
+							opacity: 0,
+							scale: 0,
+							duration: 1,
+							ease: "power2.inOut",
+						});
+					}
+				});
+
+				// After fade out, set up and fade in new slides
+				setTimeout(() => {
+					// Hide all slides first
+					slidesRef.current.forEach((slide) => {
+						if (!slide) return;
+						gsap.set(slide, {
+							opacity: 0,
+							scale: 0,
+							zIndex: 0,
+						});
+					});
+
+					// Set up new visible slides
+					newVisibleIndices.forEach((idx, posIdx) => {
+						const slide = slidesRef.current[idx];
+						if (!slide) return;
+
+						const posKey = posIdx === 0 ? "prev" : posIdx === 1 ? "active" : "next";
+						const pos = slidePositions[posKey];
+						const isActive = posIdx === 1;
+
+						gsap.set(slide, {
+							...pos,
+							xPercent: -50,
+							yPercent: -50,
+							scale: 0,
+							opacity: 0,
+							clipPath: isActive ? CLIP_PATHS.open : CLIP_PATHS.closed,
+							zIndex: isActive ? 10 : 5,
+						});
+
+						gsap.to(slide, {
+							scale: 1,
+							opacity: 1,
+							duration: 1,
+							ease: "power2.out",
+						});
+
+						const img = slide.querySelector("img");
+						if (img) {
+							gsap.set(img, {
+								rotation: -pos.rotation,
+								scale: 1.5,
+								yPercent: isActive ? 15 : 0,
+							});
+						}
+					});
+
+					// Animate title
+					titlesRef.current.forEach((t) => {
+						if (t) gsap.set(t, { visibility: "hidden" });
+					});
+					const nextTitle = titlesRef.current[nextIdx];
+					if (nextTitle) {
+						const spans = nextTitle.querySelectorAll("span");
+						gsap.set(nextTitle, { visibility: "visible" });
+						gsap.fromTo(
+							spans,
+							{ y: 60 },
+							{ y: 0, duration: 1, stagger: 0.02, ease: "hop" },
+						);
+					}
+
+					// Update preview
+					if (previewRef.current) {
+						const newImg = document.createElement("img");
+						newImg.src = outfits[nextIdx].img;
+						newImg.className =
+							"absolute top-0 left-0 w-full h-full object-cover opacity-0 animate-pan";
+						previewRef.current.appendChild(newImg);
+
+						gsap.to(newImg, {
+							opacity: 1,
+							duration: 0.5,
+							ease: "power2.inOut",
+							onComplete: () => {
+								const images = previewRef.current?.querySelectorAll("img");
+								if (images && images.length > 1) {
+									images[0].remove();
+								}
+							},
+						});
+					}
+
+					setActiveIndex(nextIdx);
+					isAnimating.current = false;
+				}, 1000);
+
+				return;
+			}
+
+			// Single-step transition (original logic)
 			const prevIdx = getIndex(currentIdx - 1);
 			const nextNeighborIdx = getIndex(currentIdx + 1);
 
@@ -171,12 +302,6 @@ export default function Slider() {
 				direction === "next" ? nextIdx + 1 : nextIdx - 1,
 			);
 			const newNeighborSlide = slidesRef.current[newNeighborIdx];
-
-			const slidePositions = {
-				prev: { left: "15%", rotation: -90 },
-				active: { left: "50%", rotation: 0 },
-				next: { left: "85%", rotation: 90 },
-			};
 
 			const outgoingPos = direction === "next" ? "prev" : "next";
 			const newNeighborPos = direction === "next" ? "next" : "prev";
