@@ -452,6 +452,7 @@ export default function Slider() {
 	}, [contextSafe, isCowo]);
 
 	// Animate products intro (re-animates when gender changes)
+	// biome-ignore lint/correctness/useExhaustiveDependencies: animates when gender changes
 	useEffect(() => {
 		if (slideItemsRef.current.length === 0) return;
 
