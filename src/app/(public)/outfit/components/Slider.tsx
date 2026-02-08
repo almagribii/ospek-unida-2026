@@ -79,6 +79,8 @@ export default function Slider() {
 
 	const { contextSafe } = useGSAP(
 		() => {
+			const isMobile = window.innerWidth < 640;
+
 			// Initial Setup for positions (equivalent to useEffect with empty dependency)
 			slidesRef.current.forEach((slide, i) => {
 				if (!slide) return;
@@ -108,7 +110,7 @@ export default function Slider() {
 						left: "50%",
 						rotation: 0,
 					};
-				} else if (isPrev) {
+				} else if (isPrev && !isMobile) {
 					config = {
 						...config,
 						scale: 1,
@@ -118,7 +120,7 @@ export default function Slider() {
 						left: "15%",
 						rotation: -90,
 					};
-				} else if (isNext) {
+				} else if (isNext && !isMobile) {
 					config = {
 						...config,
 						scale: 1,
@@ -178,11 +180,104 @@ export default function Slider() {
 				targetIndex !== getIndex(currentIdx + 1) &&
 				targetIndex !== getIndex(currentIdx - 1);
 
+			// Check if we're on mobile (sm breakpoint is 640px)
+			const isMobile = window.innerWidth < 640;
+
 			const slidePositions = {
 				prev: { left: "15%", rotation: -90 },
 				active: { left: "50%", rotation: 0 },
 				next: { left: "85%", rotation: 90 },
 			};
+
+			// Mobile: Use simple fade animation
+			if (isMobile) {
+				const currentSlide = slidesRef.current[currentIdx];
+				const nextSlide = slidesRef.current[nextIdx];
+
+				// Fade out current slide
+				if (currentSlide) {
+					gsap.to(currentSlide, {
+						opacity: 0,
+						duration: 0.5,
+						ease: "power2.inOut",
+					});
+				}
+
+				// Set up and fade in next slide
+				if (nextSlide) {
+					gsap.set(nextSlide, {
+						left: "50%",
+						xPercent: -50,
+						yPercent: -50,
+						scale: 1,
+						opacity: 0,
+						clipPath: CLIP_PATHS.open,
+						zIndex: 10,
+						rotation: 0,
+					});
+
+					const img = nextSlide.querySelector("img");
+					if (img) {
+						gsap.set(img, {
+							rotation: 0,
+							scale: 1.5,
+							yPercent: 15,
+						});
+					}
+
+					gsap.to(nextSlide, {
+						opacity: 1,
+						duration: 0.5,
+						ease: "power2.inOut",
+					});
+				}
+
+				// Animate title
+				const currentTitle = titlesRef.current[currentIdx];
+				const nextTitle = titlesRef.current[nextIdx];
+
+				if (currentTitle) {
+					gsap.to(currentTitle, { visibility: "hidden", duration: 0.3 });
+				}
+
+				if (nextTitle) {
+					const spans = nextTitle.querySelectorAll("span");
+					gsap.set(nextTitle, { visibility: "visible" });
+					gsap.fromTo(
+						spans,
+						{ y: 40 },
+						{ y: 0, duration: 0.5, stagger: 0.02, ease: "power2.out" },
+					);
+				}
+
+				// Update preview
+				if (previewRef.current) {
+					const newImg = document.createElement("img");
+					newImg.src = outfits[nextIdx].bg;
+					newImg.className =
+						"absolute top-0 left-0 w-full h-full object-cover opacity-0 animate-pan";
+					previewRef.current.appendChild(newImg);
+
+					gsap.to(newImg, {
+						opacity: 1,
+						duration: 0.5,
+						ease: "power2.inOut",
+						onComplete: () => {
+							const images = previewRef.current?.querySelectorAll("img");
+							if (images && images.length > 1) {
+								images[0].remove();
+							}
+						},
+					});
+				}
+
+				setTimeout(() => {
+					setActiveIndex(nextIdx);
+					isAnimating.current = false;
+				}, 500);
+
+				return;
+			}
 
 			if (isMultiStep) {
 				// Multi-step jump: fade out all current visible slides, then set up new ones
@@ -515,7 +610,7 @@ export default function Slider() {
 				})}
 
 				{/* Titles */}
-				<div className="absolute bottom-32 sm:bottom-40 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] sm:w-1/2 h-15 text-center z-20 pointer-events-none">
+				<div className="absolute bottom-40 sm:bottom-40 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] sm:w-1/2 h-15 text-center z-20 pointer-events-none">
 					{outfits.map((outfit, index) => (
 						<div
 							key={outfit.img}
@@ -584,7 +679,7 @@ export default function Slider() {
 
 				{/* Counter */}
 				<div className="absolute left-1/2 -translate-x-1/2 bottom-10 text-center z-20 pointer-events-none">
-					<p className="flex gap-4 justify-center text-[13px] font-medium text-background uppercase">
+					<p className="flex gap-4 justify-center text-[13px] font-medium text-foreground uppercase">
 						<span>{activeIndex + 1}</span>
 						<span className="text-foreground">/</span>
 						<span className="text-foreground">{outfits.length}</span>
