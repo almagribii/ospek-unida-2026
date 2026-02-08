@@ -415,6 +415,14 @@ export default function Slider() {
 			ref={containerRef}
 			className="relative w-full h-screen overflow-hidden bg-[linear-gradient(rgba(0,0,0,0.2),rgba(243,243,243,1)),url('/background/white_texture.webp')] bg-cover bg-center"
 		>
+			<div className="flex lg:flex-row flex-col justify-center items-center w-full lg:gap-4 gap-2 p-4 absolute top-20">
+				<p className="font-mirage font-semibold text-foreground lg:text-4xl text-2xl text-center">
+					Daftar Perlengkapan
+				</p>
+				<p className="font-mirage font-semibold text-foreground lg:text-4xl text-2xl text-center">
+					{isCowo ? "Mahasiswa" : "Mahasiswi"}
+				</p>
+			</div>
 			<div className="gallery absolute w-full h-svh overflow-hidden">
 				<ul
 					ref={productsRef}
