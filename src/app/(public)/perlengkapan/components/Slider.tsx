@@ -413,7 +413,7 @@ export default function Slider() {
 	return (
 		<section
 			ref={containerRef}
-			className="relative w-full h-screen overflow-hidden"
+			className="relative w-full h-screen overflow-hidden bg-[linear-gradient(rgba(0,0,0,0.2),rgba(243,243,243,1)),url('/background/white_texture.webp')] bg-cover bg-center"
 		>
 			<div className="gallery absolute w-full h-svh overflow-hidden">
 				<ul
@@ -500,7 +500,7 @@ export default function Slider() {
 
 			<div
 				ref={productBannerRef}
-				className="product-banner absolute top-0 left-0 w-full h-full -z-1 opacity-0 will-change-[opacity]"
+				className="product-banner absolute top-0 left-0 w-full h-full z-1 opacity-0 will-change-[opacity]"
 			>
 				<Image
 					ref={bannerImgRef as React.RefObject<HTMLImageElement | null>}
@@ -508,7 +508,7 @@ export default function Slider() {
 					alt={currentProduct.name}
 					height={1000}
 					width={1000}
-					className="w-full h-full object-cover scale-125 blur-lg"
+					className="w-full h-full object-cover scale-105 blur-lg"
 				/>
 			</div>
 
