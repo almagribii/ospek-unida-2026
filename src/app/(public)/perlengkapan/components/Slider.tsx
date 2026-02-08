@@ -603,7 +603,7 @@ export default function Slider() {
 
 			<div
 				ref={productBannerRef}
-				className="product-banner absolute top-0 left-0 w-full h-full z-0 opacity-0 will-change-[opacity] hidden lg:block"
+				className="product-banner absolute top-0 left-0 w-full h-full z-0 opacity-0 will-change-[opacity]"
 			>
 				<Image
 					ref={bannerImgRef as React.RefObject<HTMLImageElement | null>}
@@ -611,7 +611,7 @@ export default function Slider() {
 					alt={currentProduct.name}
 					height={1000}
 					width={1000}
-					className="w-full h-full object-cover scale-105 blur-lg"
+					className="w-full h-full object-cover scale-105 blur-lg bg-background"
 				/>
 			</div>
 
