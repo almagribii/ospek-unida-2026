@@ -121,7 +121,7 @@ export default function Slider() {
 					gsap.set(img, {
 						rotation: -config.rotation,
 						scale: 1.5,
-						transformOrigin: "top center",
+						yPercent: isActive ? 15 : 0,
 					});
 			});
 
@@ -195,7 +195,7 @@ export default function Slider() {
 
 				const img = incomingSlide.querySelector("img");
 				if (img) {
-					gsap.to(img, { rotation: 0, duration: 2, ease: "hop" });
+					gsap.to(img, { rotation: 0, yPercent: 15, duration: 2, ease: "hop" });
 				}
 			}
 
@@ -212,6 +212,7 @@ export default function Slider() {
 				if (img) {
 					gsap.to(img, {
 						rotation: -slidePositions[outgoingPos].rotation,
+						yPercent: 0,
 						duration: 2,
 						ease: "hop",
 					});
@@ -254,7 +255,7 @@ export default function Slider() {
 					gsap.set(img, {
 						rotation: -slidePositions[newNeighborPos].rotation,
 						scale: 1.5,
-						transformOrigin: "top center",
+						yPercent: 0,
 					});
 				}
 			}
