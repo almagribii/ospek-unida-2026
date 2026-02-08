@@ -158,6 +158,72 @@ export default function Slider() {
 			titlesRef.current.forEach((t, i) => {
 				if (i !== activeIndex && t) gsap.set(t, { visibility: "hidden" });
 			});
+
+			// --- Opening Animation ---
+			const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
+
+			// Animate active slide
+			const activeSlide = slidesRef.current[activeIndex];
+			if (activeSlide) {
+				gsap.set(activeSlide, { autoAlpha: 0, y: 80 });
+				tl.to(activeSlide, { autoAlpha: 1, y: 0, duration: 1 }, 0);
+			}
+
+			// Animate side slides (desktop only)
+			if (!isMobile) {
+				const prevSlide = slidesRef.current[getIndex(activeIndex - 1)];
+				const nextSlide = slidesRef.current[getIndex(activeIndex + 1)];
+
+				if (prevSlide) {
+					gsap.set(prevSlide, { autoAlpha: 0, y: 60 });
+					tl.to(prevSlide, { autoAlpha: 1, y: 0, duration: 1 }, 0.2);
+				}
+				if (nextSlide) {
+					gsap.set(nextSlide, { autoAlpha: 0, y: 60 });
+					tl.to(nextSlide, { autoAlpha: 1, y: 0, duration: 1 }, 0.2);
+				}
+			}
+
+			// Animate navigation arrows (mobile)
+			const navArrows = containerRef.current?.querySelectorAll(
+				"[aria-label*='slide']",
+			);
+			if (navArrows && isMobile) {
+				gsap.set(navArrows, { autoAlpha: 0, y: 20 });
+				tl.to(
+					navArrows,
+					{ autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.1 },
+					0.5,
+				);
+			}
+
+			// Animate counter
+			const counter = containerRef.current?.querySelector(
+				".bottom-10.left-1\\/2",
+			);
+			if (counter) {
+				gsap.set(counter, { autoAlpha: 0, y: 30 });
+				tl.to(counter, { autoAlpha: 1, y: 0, duration: 0.6 }, 0.6);
+			}
+
+			// Animate list items (desktop)
+			const listItems = containerRef.current?.querySelectorAll(
+				".left-10.bottom-10 p",
+			);
+			if (listItems && !isMobile) {
+				gsap.set(listItems, { autoAlpha: 0, y: 20 });
+				tl.to(
+					listItems,
+					{ autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.05 },
+					0.7,
+				);
+			}
+
+			// Animate preview background
+			if (previewRef.current) {
+				gsap.set(previewRef.current, { autoAlpha: 0 });
+				tl.to(previewRef.current, { autoAlpha: 0.5, duration: 1 }, 0.3);
+			}
 		},
 		{ scope: containerRef },
 	); // Run once on mount

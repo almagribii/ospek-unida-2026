@@ -4,6 +4,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ReactLenis } from "lenis/react";
 import { useEffect, useRef } from "react";
+import PageLoader from "@/components/PageLoader";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -53,6 +54,7 @@ export default function Layout({
 	}, []);
 	return (
 		<main>
+			<PageLoader />
 			<ReactLenis root ref={lenisRef} autoRaf={false} />
 			{children}
 		</main>
