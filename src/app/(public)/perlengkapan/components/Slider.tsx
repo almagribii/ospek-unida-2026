@@ -451,6 +451,53 @@ export default function Slider() {
 		};
 	}, [contextSafe, isCowo]);
 
+	// Animate products intro (re-animates when gender changes)
+	useEffect(() => {
+		if (slideItemsRef.current.length === 0) return;
+
+		contextSafe(() => {
+			const elements = slideItemsRef.current.map((item) => item.element);
+
+			gsap.fromTo(
+				elements,
+				{
+					y: 100,
+					autoAlpha: 0,
+				},
+				{
+					y: 0,
+					autoAlpha: 1,
+					duration: 1,
+					stagger: 0.08,
+					ease: "expo.out",
+				},
+			);
+		})();
+	}, [contextSafe, isCowo]);
+
+	// Animate controller intro (one-time only)
+	useEffect(() => {
+		contextSafe(() => {
+			const controller = containerRef.current?.querySelector(".controller");
+			if (!controller) return;
+
+			gsap.fromTo(
+				controller,
+				{
+					y: 100,
+					autoAlpha: 0,
+				},
+				{
+					y: 0,
+					autoAlpha: 1,
+					duration: 1,
+					ease: "expo.out",
+					delay: 0.3,
+				},
+			);
+		})();
+	}, [contextSafe]);
+
 	return (
 		<section
 			ref={containerRef}
@@ -458,7 +505,7 @@ export default function Slider() {
 		>
 			<div
 				ref={descTextRef}
-				className="flex lg:flex-row flex-col justify-center items-center w-full gap-2 p-4 absolute top-20"
+				className="flex lg:flex-row flex-col justify-center items-center w-full gap-2 p-4 absolute top-20 overflow-hidden"
 			>
 				<p className="font-mirage font-semibold text-foreground lg:text-4xl text-2xl text-center">
 					Daftar Perlengkapan
@@ -555,7 +602,7 @@ export default function Slider() {
 
 			<div
 				ref={productBannerRef}
-				className="product-banner absolute top-0 left-0 w-full h-full z-1 opacity-0 will-change-[opacity] hidden lg:block"
+				className="product-banner absolute top-0 left-0 w-full h-full z-0 opacity-0 will-change-[opacity] hidden lg:block"
 			>
 				<Image
 					ref={bannerImgRef as React.RefObject<HTMLImageElement | null>}
