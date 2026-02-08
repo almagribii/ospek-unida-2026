@@ -492,9 +492,9 @@ export default function Slider() {
 							ref={(el) => {
 								slidesRef.current[index] = el;
 							}}
-							className={`absolute top-1/2 left-1/2 w-[30%] h-[70%] bg-foreground will-change-transform ${
+							className={`absolute top-1/2 left-1/2 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-[60%] sm:h-[65%] md:h-[70%] bg-foreground will-change-transform ${
 								isVisible ? "cursor-pointer" : "pointer-events-none"
-							}`}
+							} ${!isActive ? "hidden sm:block" : ""}`}
 							onClick={(e) => {
 								e.stopPropagation();
 								if (isNext) transitionSlides("next");
@@ -515,7 +515,7 @@ export default function Slider() {
 				})}
 
 				{/* Titles */}
-				<div className="absolute bottom-40 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/2 h-15 text-center z-20 pointer-events-none">
+				<div className="absolute bottom-32 sm:bottom-40 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] sm:w-1/2 h-15 text-center z-20 pointer-events-none">
 					{outfits.map((outfit, index) => (
 						<div
 							key={outfit.img}
@@ -526,10 +526,60 @@ export default function Slider() {
 						>
 							<SplitText
 								text={outfit.name}
-								className="text-[50px] font-mirage font-medium text-background drop-shadow-lg"
+								className="text-[28px] sm:text-[36px] md:text-[50px] font-mirage font-medium text-background drop-shadow-lg"
 							/>
 						</div>
 					))}
+				</div>
+
+				{/* Navigation Arrows for Mobile */}
+				<div className="absolute bottom-1/2 translate-y-1/2 left-4 z-30 sm:hidden">
+					<button
+						type="button"
+						onClick={() => transitionSlides("prev")}
+						className="w-10 h-10 rounded-full bg-background/80 flex items-center justify-center text-foreground"
+						aria-label="Previous slide"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							strokeWidth={2}
+							stroke="currentColor"
+							className="w-5 h-5"
+							aria-hidden="true"
+						>
+							<path
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								d="M15.75 19.5L8.25 12l7.5-7.5"
+							/>
+						</svg>
+					</button>
+				</div>
+				<div className="absolute bottom-1/2 translate-y-1/2 right-4 z-30 sm:hidden">
+					<button
+						type="button"
+						onClick={() => transitionSlides("next")}
+						className="w-10 h-10 rounded-full bg-background/80 flex items-center justify-center text-foreground"
+						aria-label="Next slide"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							strokeWidth={2}
+							stroke="currentColor"
+							className="w-5 h-5"
+							aria-hidden="true"
+						>
+							<path
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								d="M8.25 4.5l7.5 7.5-7.5 7.5"
+							/>
+						</svg>
+					</button>
 				</div>
 
 				{/* Counter */}
