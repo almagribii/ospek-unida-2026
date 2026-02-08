@@ -137,7 +137,7 @@ export default function Slider() {
 				if (img)
 					gsap.set(img, {
 						rotation: -config.rotation,
-						scale: 1.5,
+						scale: 1.2,
 						yPercent: isActive ? 15 : 0,
 					});
 			});
@@ -286,7 +286,7 @@ export default function Slider() {
 					if (img) {
 						gsap.set(img, {
 							rotation: 0,
-							scale: 1.5,
+							scale: 1.2,
 							yPercent: 15,
 						});
 					}
@@ -414,7 +414,7 @@ export default function Slider() {
 						if (img) {
 							gsap.set(img, {
 								rotation: -pos.rotation,
-								scale: 1.5,
+								scale: 1.2,
 								yPercent: isActive ? 15 : 0,
 							});
 						}
@@ -556,7 +556,7 @@ export default function Slider() {
 				if (img) {
 					gsap.set(img, {
 						rotation: -slidePositions[newNeighborPos].rotation,
-						scale: 1.5,
+						scale: 1.2,
 						yPercent: 0,
 					});
 				}
@@ -668,7 +668,7 @@ export default function Slider() {
 									src={outfit.img}
 									alt={outfit.name}
 									fill
-									className="object-contain lg:object-cover object-top will-change-transform"
+									className="object-cover scale-[80%] object-top will-change-transform"
 								/>
 							</div>
 						</div>
