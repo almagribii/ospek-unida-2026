@@ -3,8 +3,16 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import {
+	BanknoteIcon,
+	CalendarDaysIcon,
+	ContactIcon,
+	InfoIcon,
+	SchoolIcon,
+	SearchIcon,
+} from "lucide-react";
 import Link from "next/link";
-import { useRef } from "react";
+import { type ReactNode, useRef } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -89,7 +97,7 @@ interface PageSlideData {
 	description: string;
 	href: string;
 	buttonText: string;
-	icon: string;
+	icon: ReactNode;
 	bg: "dark" | "accent";
 }
 
@@ -101,7 +109,7 @@ const PAGE_SLIDES: PageSlideData[] = [
 			"Semua informasi penting seputar pelaksanaan OSPEK AKHYAR 2026 mulai dari jadwal, persyaratan, hingga hal-hal yang perlu dipersiapkan.",
 		href: "/informasi",
 		buttonText: "Lihat Informasi",
-		icon: "📋",
+		icon: <InfoIcon className="w-12 h-12" />,
 		bg: "dark",
 	},
 	{
@@ -111,47 +119,47 @@ const PAGE_SLIDES: PageSlideData[] = [
 			"Rangkaian acara dan jadwal kegiatan OSPEK dari hari pertama hingga akhir. Pastikan kamu tidak melewatkan satu pun.",
 		href: "/timeline",
 		buttonText: "Lihat Timeline",
-		icon: "📅",
+		icon: <CalendarDaysIcon className="w-12 h-12" />,
 		bg: "accent",
 	},
 	{
 		number: "03",
-		title: "Perlengkapan",
+		title: "Jurusan & Fakultas",
 		description:
-			"Daftar perlengkapan wajib yang harus disiapkan sebelum hari-H. Persiapkan semuanya dari sekarang.",
-		href: "/perlengkapan",
-		buttonText: "Lihat Perlengkapan",
-		icon: "🎒",
+			"Daftar jurusan dan fakultas yang ada di Universitas Darussalam Gontor.",
+		href: "/jurusan",
+		buttonText: "Lihat Jurusan",
+		icon: <SchoolIcon className="w-12 h-12" />,
 		bg: "dark",
 	},
 	{
 		number: "04",
-		title: "Outfit & Dresscode",
+		title: "Pembayaran",
 		description:
-			"Panduan berpakaian selama masa OSPEK. Lihat dresscode harian dan pastikan penampilanmu sesuai ketentuan.",
-		href: "/outfit",
-		buttonText: "Lihat Outfit",
-		icon: "👔",
+			"Informasi terkait pembayaran dan biaya uang masuk atau daftar ulang untuk Mahasiswa Baru 2026.",
+		href: "/pembayaran",
+		buttonText: "Lihat Pembayaran",
+		icon: <BanknoteIcon className="w-12 h-12" />,
 		bg: "accent",
 	},
 	{
 		number: "05",
-		title: "Jurusan & Fakultas",
+		title: "Kontak",
 		description:
-			"Kenali jurusan dan fakultas yang ada di UNIDA Gontor. Temukan program studi yang sesuai dengan minat dan bakatmu.",
-		href: "/jurusan",
-		buttonText: "Jelajahi Jurusan",
-		icon: "🎓",
+			"Punya kendala atau pertanyaan? anda bisa menghubungi kami disini.",
+		href: "/kontak",
+		buttonText: "Hubungi Kami",
+		icon: <ContactIcon className="w-12 h-12" />,
 		bg: "dark",
 	},
 	{
 		number: "06",
-		title: "Organisasi & UKM",
+		title: "Tentang OSPEK 2026",
 		description:
-			"Jelajahi berbagai organisasi dan Unit Kegiatan Mahasiswa. Temukan wadah untuk mengembangkan bakat dan minatmu.",
-		href: "/organisasi",
-		buttonText: "Jelajahi UKM",
-		icon: "🏛️",
+			"Ingin tahu lebih lanjut tentang OSPEK tahun ini? anda dapat mengetahuinya disini.",
+		href: "/about",
+		buttonText: "Ketahui Lebih Lanjut",
+		icon: <SearchIcon className="w-12 h-12" />,
 		bg: "accent",
 	},
 ];
@@ -265,9 +273,7 @@ function PageSlide({ data, index }: { data: PageSlideData; index: number }) {
 				{/* Content */}
 				<div className="flex flex-col gap-5">
 					{/* Icon */}
-					<span className="page-slide-icon text-4xl lg:text-5xl">
-						{data.icon}
-					</span>
+					<span className="page-slide-icon text-background">{data.icon}</span>
 
 					{/* Title */}
 					<h3
@@ -290,6 +296,7 @@ function PageSlide({ data, index }: { data: PageSlideData; index: number }) {
 					{/* Button */}
 					<div className="page-slide-btn mt-2">
 						<Link
+							scroll={true}
 							href={data.href}
 							className={`inline-block rounded-full px-8 py-3 font-product-sans text-sm font-semibold tracking-wide transition-all duration-300 hover:scale-105 sm:text-base ${
 								isDark
