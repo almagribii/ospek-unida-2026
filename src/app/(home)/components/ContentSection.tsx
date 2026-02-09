@@ -273,7 +273,9 @@ function PageSlide({ data, index }: { data: PageSlideData; index: number }) {
 				{/* Content */}
 				<div className="flex flex-col gap-5">
 					{/* Icon */}
-					<span className="page-slide-icon text-background">{data.icon}</span>
+					<span className="page-slide-icon text-background self-center lg:self-start">
+						{data.icon}
+					</span>
 
 					{/* Title */}
 					<h3
@@ -298,6 +300,7 @@ function PageSlide({ data, index }: { data: PageSlideData; index: number }) {
 						<Link
 							scroll={true}
 							href={data.href}
+							onClick={() => window.scrollTo(0, 0)}
 							className={`inline-block rounded-full px-8 py-3 font-product-sans text-sm font-semibold tracking-wide transition-all duration-300 hover:scale-105 sm:text-base ${
 								isDark
 									? "bg-background text-foreground hover:bg-background/90"
