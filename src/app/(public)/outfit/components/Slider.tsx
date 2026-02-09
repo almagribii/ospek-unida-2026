@@ -5,6 +5,8 @@ import gsap from "gsap";
 import { CustomEase } from "gsap/dist/CustomEase";
 import Img from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { MahasiswaSvg } from "@/components/MahasiswaSvg";
+import { MahasiswiSvg } from "@/components/MahasiswiSvg";
 import { outfits } from "./outfits";
 
 if (typeof window !== "undefined") {
@@ -54,7 +56,7 @@ export default function Slider() {
 
 	const [activeIndex, setActiveIndex] = useState(0);
 	const isAnimating = useRef(false);
-	const [isCowo, setIsCowo] = useState(false);
+	const [isCowo, setIsCowo] = useState(true);
 
 	// Helper to handle cyclic indices
 	const getIndex = (index: number) => {
@@ -791,6 +793,32 @@ export default function Slider() {
 							{outfit.name}
 						</p>
 					))}
+				</div>
+
+				{/* Switch Gender Button */}
+				<div className="absolute w-fit rounded-4xl bg-foreground left-1/2 bottom-20 -translate-x-1/2 lg:left-auto lg:right-10 lg:bottom-10 lg:translate-x-0 z-30 text-center p-2">
+					<div className="flex flex-row gap-2">
+						<button
+							type="button"
+							onClick={() => {
+								if (isCowo) return;
+								setIsCowo(true);
+							}}
+							className={`p-2 rounded-full ${isCowo ? "bg-primary text-background hover:text-background/75 hover:bg-primary/75" : "bg-background text-foreground hover:bg-primary hover:text-background"} transition-colors cursor-pointer`}
+						>
+							<MahasiswaSvg className="h-8 w-8" />
+						</button>
+						<button
+							type="button"
+							onClick={() => {
+								if (!isCowo) return;
+								setIsCowo(false);
+							}}
+							className={`p-2 rounded-full ${!isCowo ? "bg-primary text-background hover:text-background/75 hover:bg-primary/75" : "bg-background text-foreground hover:bg-primary hover:text-background"} transition-colors cursor-pointer`}
+						>
+							<MahasiswiSvg className="h-8 w-8" />
+						</button>
+					</div>
 				</div>
 
 				{/* Preview Background */}
