@@ -14,11 +14,6 @@ gsap.registerPlugin(CustomEase);
 // TYPES & CONFIG
 // -----------------------------------------------------------------------------
 
-interface SplitTypeInstance {
-	words: HTMLElement[] | null;
-	revert: () => void;
-}
-
 type VisibleItem = {
 	id: string;
 	col: number;
@@ -46,7 +41,6 @@ export default function Gallery() {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const canvasRef = useRef<HTMLDivElement>(null);
 	const titleRef = useRef<HTMLDivElement>(null);
-	const splitTitleRef = useRef<SplitTypeInstance | null>(null);
 
 	const [mounted, setMounted] = useState(false);
 	const [visibleItems, setVisibleItems] = useState<VisibleItem[]>([]);
@@ -239,13 +233,6 @@ export default function Gallery() {
 
 			const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
 
-			gsap.set(e.currentTarget, { autoAlpha: 0 });
-			gsap.to(".gallery-item-visible", {
-				opacity: 0,
-				duration: 0.3,
-				ease: "power2.out",
-			});
-
 			setTitleText(item.data.name);
 			setExpandedItem({
 				data: item.data,
@@ -258,11 +245,11 @@ export default function Gallery() {
 
 	// --- CLOSE START ---
 	const onCloseExpanded = useCallback(() => {
-		if (splitTitleRef.current?.words) {
-			gsap.to(splitTitleRef.current.words, {
-				y: "-100",
+		const el = titleRef.current?.querySelector("p");
+		if (el) {
+			gsap.to(el, {
+				y: "100%",
 				duration: 0.4,
-				stagger: 0.05,
 				ease: "power2.in",
 			});
 		}
@@ -272,13 +259,6 @@ export default function Gallery() {
 	const onFinishClosing = useCallback(() => {
 		setExpandedItem(null);
 		setTitleText("");
-
-		gsap.to(".gallery-item-visible", {
-			autoAlpha: 1,
-			opacity: 1,
-			duration: 0.5,
-			delay: 0.1,
-		});
 	}, []);
 
 	// ---------------------------------------------------------------------------
@@ -315,11 +295,7 @@ export default function Gallery() {
 		CustomEase.create("hop", "0.9, 0, 0.1, 1");
 
 		if (wrapperRef.current) {
-			gsap.to(wrapperRef.current, {
-				opacity: 1,
-				duration: 1.5,
-				ease: "power2.out",
-			});
+			wrapperRef.current.style.opacity = "1";
 		}
 
 		updateGrid();
@@ -334,7 +310,6 @@ export default function Gallery() {
 			window.removeEventListener("pointermove", handlePointerMove);
 			window.removeEventListener("pointerup", handlePointerUp);
 			if (rafId.current) cancelAnimationFrame(rafId.current);
-			if (splitTitleRef.current) splitTitleRef.current.revert();
 		};
 	}, [
 		isLoading,
@@ -350,33 +325,19 @@ export default function Gallery() {
 		const el = titleRef.current?.querySelector("p");
 		if (!el) return;
 
-		if (splitTitleRef.current) {
-			splitTitleRef.current.revert();
-			splitTitleRef.current = null;
-		}
-
 		if (!titleText) {
 			el.innerText = "";
+			gsap.set(el, { y: "100%" });
 			return;
 		}
 
 		el.innerText = titleText;
-
-		import("split-type").then((module) => {
-			const SplitType = module.default;
-
-			const instance = new SplitType(el, { types: "words" });
-			splitTitleRef.current = instance as unknown as SplitTypeInstance;
-
-			gsap.set(instance.words, { y: "140%" });
-
-			gsap.to(instance.words, {
-				y: "0%",
-				duration: 1,
-				stagger: 0.05,
-				delay: 0.8,
-				ease: "power3.out",
-			});
+		gsap.set(el, { y: "100%" });
+		gsap.to(el, {
+			y: "0%",
+			duration: 0.6,
+			delay: 0.8,
+			ease: "power3.out",
 		});
 	}, [titleText]);
 
@@ -443,21 +404,13 @@ export default function Gallery() {
 							</div>
 						))}
 					</div>
-
-					<div
-						className={`fixed inset-0 bg-background pointer-events-none transition-opacity duration-500 z-60 ${
-							expandedItem ? "opacity-100" : "opacity-0"
-						}`}
-					/>
 				</div>
 
 				<div
 					ref={titleRef}
-					className={`fixed left-1/2 -translate-x-1/2 -translate-y-1/2 bottom-20 w-full text-center pointer-events-none z-80 ${
-						expandedItem ? "mix-blend-normal" : "mix-blend-difference"
-					}`}
+					className="fixed left-1/2 -translate-x-1/2 bottom-25 text-center pointer-events-none z-80 overflow-hidden"
 				>
-					<p className="relative h-12 overflow-hidden text-foreground font-mirage drop-shadow-2xl lg:text-4xl text-2xl font-semibold ra tracking-tighter">
+					<p className="relative px-6 py-2 translate-y-full bg-background text-foreground rounded-4xl font-mirage lg:text-4xl text-2xl font-medium tracking-tighter drop-shadow-2xl">
 						{/* Text inserted via effect */}
 					</p>
 				</div>
@@ -505,7 +458,10 @@ function ExpandedView({
 		if (!el) return;
 
 		const viewportW = window.innerWidth;
-		const targetWidth = Math.min(viewportW * 0.4, 500);
+		const isSmall = viewportW < 768;
+		const targetWidth = isSmall
+			? Math.min(viewportW * 0.8, 400)
+			: Math.min(viewportW * 0.4, 500);
 		const targetHeight = targetWidth * 1.2;
 
 		gsap.set(el, {
@@ -581,7 +537,7 @@ function ExpandedView({
 				ref={buttonRef}
 				type="button"
 				onClick={handleClose}
-				className="fixed bottom-10 left-1/2 -translate-x-1/2 z-80 px-8 py-3 bg-foreground/80 text-background font-semibold rounded-4xl hover:bg-foreground transition-colors cursor-pointer opacity-0"
+				className="fixed bottom-10 left-1/2 -translate-x-1/2 z-80 px-8 py-3 bg-foreground text-background font-semibold rounded-4xl hover:bg-foreground/80 transition-colors cursor-pointer opacity-0"
 			>
 				Back
 			</button>
