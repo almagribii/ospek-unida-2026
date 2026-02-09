@@ -97,7 +97,9 @@ export default function Slider() {
 
 	const { contextSafe } = useGSAP(
 		() => {
+			// Reset animation state and kill any pending delayed calls
 			isAnimating.current = false;
+
 			const isMobile = window.innerWidth < 640;
 
 			// Initial Setup for positions (equivalent to useEffect with empty dependency)
@@ -641,201 +643,211 @@ export default function Slider() {
 	);
 
 	return (
-		<div
-			ref={containerRef}
-			className="relative w-screen lg:h-screen h-dvh overflow-hidden bg-[linear-gradient(rgba(0,0,0,0.2),rgba(243,243,243,1)),url('/background/white_texture.webp')] bg-cover bg-center"
-		>
-			{/* Main Slider Area */}
-			{/** biome-ignore lint/a11y/noStaticElementInteractions: Why not */}
-			{/** biome-ignore lint/a11y/useKeyWithClickEvents: Why not */}
+		<div key={isCowo ? "cowo" : "cewe"} className="contents">
 			<div
-				className="slider relative w-full h-full"
-				onClick={(e) => {
-					const width = window.innerWidth;
-					const x = e.clientX;
-					if (x < width * 0.3) transitionSlides("prev");
-					else if (x > width * 0.7) transitionSlides("next");
-				}}
+				ref={containerRef}
+				className="relative w-screen lg:h-screen h-dvh overflow-hidden bg-[linear-gradient(rgba(0,0,0,0.2),rgba(243,243,243,1)),url('/background/white_texture.webp')] bg-cover bg-center"
 			>
-				{/* Slides */}
-				{(isCowo ? outfits.cowo : outfits.cewe).map((outfit, index) => {
-					const isPrev = index === getIndex(activeIndex - 1);
-					const isActive = index === activeIndex;
-					const isNext = index === getIndex(activeIndex + 1);
-					const isVisible = isPrev || isActive || isNext;
+				{/* Main Slider Area */}
+				{/** biome-ignore lint/a11y/noStaticElementInteractions: Why not */}
+				{/** biome-ignore lint/a11y/useKeyWithClickEvents: Why not */}
+				<div
+					className="slider relative w-full h-full"
+					onClick={(e) => {
+						if (isAnimating.current) return;
+						const width = window.innerWidth;
+						const x = e.clientX;
+						if (x < width * 0.3) transitionSlides("prev");
+						else if (x > width * 0.7) transitionSlides("next");
+					}}
+				>
+					{/* Slides */}
+					{(isCowo ? outfits.cowo : outfits.cewe).map((outfit, index) => {
+						const isPrev = index === getIndex(activeIndex - 1);
+						const isActive = index === activeIndex;
+						const isNext = index === getIndex(activeIndex + 1);
+						const isVisible = isPrev || isActive || isNext;
 
-					return (
-						// biome-ignore lint/a11y/noStaticElementInteractions: why not
-						// biome-ignore lint/a11y/useKeyWithClickEvents: why not
-						<div
-							key={outfit.img}
-							ref={(el) => {
-								slidesRef.current[index] = el;
-							}}
-							className={`absolute top-1/2 left-1/2 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-[60%] sm:h-[65%] md:h-[70%] bg-foreground will-change-transform ${
-								isVisible ? "cursor-pointer" : "pointer-events-none"
-							} ${!isActive ? "hidden sm:block" : ""}`}
-							onClick={(e) => {
-								e.stopPropagation();
-								if (isNext) transitionSlides("next");
-								if (isPrev) transitionSlides("prev");
-							}}
-						>
-							<div className="bg-[linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0.5))] bottom-0 absolute h-[50%] w-full z-1"></div>
-							<div className="relative w-full h-full overflow-hidden ">
-								<Img
-									src={outfit.img}
-									alt={outfit.name}
-									fill
-									className="object-cover scale-[80%] object-top will-change-transform"
+						return (
+							// biome-ignore lint/a11y/noStaticElementInteractions: why not
+							// biome-ignore lint/a11y/useKeyWithClickEvents: why not
+							<div
+								key={outfit.img}
+								ref={(el) => {
+									slidesRef.current[index] = el;
+								}}
+								className={`absolute top-1/2 left-1/2 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-[60%] sm:h-[65%] md:h-[70%] bg-foreground will-change-transform ${
+									isVisible ? "cursor-pointer" : "pointer-events-none"
+								} ${!isActive ? "hidden sm:block" : ""}`}
+								onClick={(e) => {
+									e.stopPropagation();
+									if (isAnimating.current) return;
+									if (isNext) transitionSlides("next");
+									if (isPrev) transitionSlides("prev");
+								}}
+							>
+								<div className="bg-[linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0.5))] bottom-0 absolute h-[50%] w-full z-1"></div>
+								<div className="relative w-full h-full overflow-hidden ">
+									<Img
+										src={outfit.img}
+										alt={outfit.name}
+										fill
+										className="object-cover scale-[80%] object-top will-change-transform"
+									/>
+								</div>
+							</div>
+						);
+					})}
+
+					{/* Titles */}
+					<div className="absolute bottom-40 sm:bottom-40 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] sm:w-1/2 h-15 text-center z-20 pointer-events-none">
+						{(isCowo ? outfits.cowo : outfits.cewe).map((outfit, index) => (
+							<div
+								key={outfit.img}
+								ref={(el) => {
+									titlesRef.current[index] = el;
+								}}
+								className="absolute z-10 w-full h-full flex justify-center items-center"
+							>
+								<SplitText
+									text={outfit.name}
+									className="text-[28px] sm:text-[36px] md:text-[50px] font-mirage font-medium text-background drop-shadow-lg"
 								/>
 							</div>
-						</div>
-					);
-				})}
+						))}
+					</div>
 
-				{/* Titles */}
-				<div className="absolute bottom-40 sm:bottom-40 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] sm:w-1/2 h-15 text-center z-20 pointer-events-none">
-					{(isCowo ? outfits.cowo : outfits.cewe).map((outfit, index) => (
-						<div
-							key={outfit.img}
-							ref={(el) => {
-								titlesRef.current[index] = el;
-							}}
-							className="absolute z-10 w-full h-full flex justify-center items-center"
-						>
-							<SplitText
-								text={outfit.name}
-								className="text-[28px] sm:text-[36px] md:text-[50px] font-mirage font-medium text-background drop-shadow-lg"
-							/>
-						</div>
-					))}
-				</div>
-
-				{/* Navigation Arrows for Mobile */}
-				<div className="absolute bottom-1/2 translate-y-1/2 left-4 z-30 sm:hidden">
-					<button
-						type="button"
-						onClick={() => transitionSlides("prev")}
-						className="w-10 h-10 rounded-full bg-background/80 flex items-center justify-center text-foreground"
-						aria-label="Previous slide"
-					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 24 24"
-							strokeWidth={2}
-							stroke="currentColor"
-							className="w-5 h-5"
-							aria-hidden="true"
-						>
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								d="M15.75 19.5L8.25 12l7.5-7.5"
-							/>
-						</svg>
-					</button>
-				</div>
-				<div className="absolute bottom-1/2 translate-y-1/2 right-4 z-30 sm:hidden">
-					<button
-						type="button"
-						onClick={() => transitionSlides("next")}
-						className="w-10 h-10 rounded-full bg-background/80 flex items-center justify-center text-foreground"
-						aria-label="Next slide"
-					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 24 24"
-							strokeWidth={2}
-							stroke="currentColor"
-							className="w-5 h-5"
-							aria-hidden="true"
-						>
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								d="M8.25 4.5l7.5 7.5-7.5 7.5"
-							/>
-						</svg>
-					</button>
-				</div>
-
-				{/* Counter */}
-				<div className="absolute left-1/2 -translate-x-1/2 bottom-10 text-center z-20 pointer-events-none">
-					<p className="flex gap-4 justify-center text-[13px] font-medium text-foreground uppercase">
-						<span>{activeIndex + 1}</span>
-						<span className="text-foreground">/</span>
-						<span className="text-foreground">
-							{isCowo ? outfits.cowo.length : outfits.cewe.length}
-						</span>
-					</p>
-				</div>
-
-				{/* List Items */}
-				<div className="absolute left-10 bottom-10 z-20 hidden md:block">
-					{(isCowo ? outfits.cowo : outfits.cewe).map((outfit, index) => (
-						// biome-ignore lint/a11y/useKeyWithClickEvents: why not
-						<p
-							key={outfit.img}
-							onClick={() => {
-								if (index !== activeIndex && !isAnimating.current) {
-									const direction = index > activeIndex ? "next" : "prev";
-									transitionSlides(direction, index);
-								}
-							}}
-							className={`text-[13px] font-medium uppercase cursor-pointer transition-colors duration-500 mb-1 ${
-								index === activeIndex
-									? "text-primary"
-									: "text-foreground hover:text-primary"
-							}`}
-						>
-							{outfit.name}
-						</p>
-					))}
-				</div>
-
-				{/* Switch Gender Button */}
-				<div className="absolute w-fit rounded-4xl bg-foreground left-1/2 bottom-20 -translate-x-1/2 lg:left-auto lg:right-10 lg:bottom-10 lg:translate-x-0 z-30 text-center p-2">
-					<div className="flex flex-row gap-2">
+					{/* Navigation Arrows for Mobile */}
+					<div className="absolute bottom-1/2 translate-y-1/2 left-4 z-30 sm:hidden">
 						<button
 							type="button"
 							onClick={() => {
-								if (isCowo) return;
-								setIsCowo(true);
-								setActiveIndex(0);
+								if (isAnimating.current) return;
+								transitionSlides("prev");
 							}}
-							className={`p-2 rounded-full ${isCowo ? "bg-primary text-background hover:text-background/75 hover:bg-primary/75" : "bg-background text-foreground hover:bg-primary hover:text-background"} transition-colors cursor-pointer`}
+							className="w-10 h-10 rounded-full bg-background/80 flex items-center justify-center text-foreground"
+							aria-label="Previous slide"
 						>
-							<MahasiswaSvg className="h-8 w-8" />
-						</button>
-						<button
-							type="button"
-							onClick={() => {
-								if (!isCowo) return;
-								setActiveIndex(0);
-								setIsCowo(false);
-							}}
-							className={`p-2 rounded-full ${!isCowo ? "bg-primary text-background hover:text-background/75 hover:bg-primary/75" : "bg-background text-foreground hover:bg-primary hover:text-background"} transition-colors cursor-pointer`}
-						>
-							<MahasiswiSvg className="h-8 w-8" />
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+								strokeWidth={2}
+								stroke="currentColor"
+								className="w-5 h-5"
+								aria-hidden="true"
+							>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									d="M15.75 19.5L8.25 12l7.5-7.5"
+								/>
+							</svg>
 						</button>
 					</div>
-				</div>
+					<div className="absolute bottom-1/2 translate-y-1/2 right-4 z-30 sm:hidden">
+						<button
+							type="button"
+							onClick={() => {
+								if (isAnimating.current) return;
+								transitionSlides("next");
+							}}
+							className="w-10 h-10 rounded-full bg-background/80 flex items-center justify-center text-foreground"
+							aria-label="Next slide"
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+								strokeWidth={2}
+								stroke="currentColor"
+								className="w-5 h-5"
+								aria-hidden="true"
+							>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									d="M8.25 4.5l7.5 7.5-7.5 7.5"
+								/>
+							</svg>
+						</button>
+					</div>
 
-				{/* Preview Background */}
-				<div
-					ref={previewRef}
-					className="absolute lg:block hidden top-[25%] left-1/2 -translate-x-1/2 w-[75%] h-full z-0 opacity-50 overflow-hidden pointer-events-none"
-				>
-					<Img
-						width={1000}
-						height={1000}
-						src={(isCowo ? outfits.cowo : outfits.cewe)[activeIndex].bg}
-						alt="preview-bg"
-						className="absolute top-0 left-0 w-full h-full object-cover animate-pan"
-					/>
+					{/* Counter */}
+					<div className="absolute left-1/2 -translate-x-1/2 bottom-10 text-center z-20 pointer-events-none">
+						<p className="flex gap-4 justify-center text-[13px] font-medium text-foreground uppercase">
+							<span>{activeIndex + 1}</span>
+							<span className="text-foreground">/</span>
+							<span className="text-foreground">
+								{isCowo ? outfits.cowo.length : outfits.cewe.length}
+							</span>
+						</p>
+					</div>
+
+					{/* List Items */}
+					<div className="absolute left-10 bottom-10 z-20 hidden md:block">
+						{(isCowo ? outfits.cowo : outfits.cewe).map((outfit, index) => (
+							// biome-ignore lint/a11y/useKeyWithClickEvents: why not
+							<p
+								key={outfit.img}
+								onClick={() => {
+									if (index !== activeIndex && !isAnimating.current) {
+										const direction = index > activeIndex ? "next" : "prev";
+										transitionSlides(direction, index);
+									}
+								}}
+								className={`text-[13px] font-medium uppercase cursor-pointer transition-colors duration-500 mb-1 ${
+									index === activeIndex
+										? "text-primary"
+										: "text-foreground hover:text-primary"
+								}`}
+							>
+								{outfit.name}
+							</p>
+						))}
+					</div>
+
+					{/* Switch Gender Button */}
+					<div className="absolute w-fit rounded-4xl bg-foreground left-1/2 bottom-20 -translate-x-1/2 lg:left-auto lg:right-10 lg:bottom-10 lg:translate-x-0 z-30 text-center p-2">
+						<div className="flex flex-row gap-2">
+							<button
+								type="button"
+								onClick={() => {
+									if (isCowo) return;
+									setIsCowo(true);
+									setActiveIndex(0);
+								}}
+								className={`p-2 rounded-full ${isCowo ? "bg-primary text-background hover:text-background/75 hover:bg-primary/75" : "bg-background text-foreground hover:bg-primary hover:text-background"} transition-colors cursor-pointer`}
+							>
+								<MahasiswaSvg className="h-8 w-8" />
+							</button>
+							<button
+								type="button"
+								onClick={() => {
+									if (!isCowo) return;
+									setActiveIndex(0);
+									setIsCowo(false);
+								}}
+								className={`p-2 rounded-full ${!isCowo ? "bg-primary text-background hover:text-background/75 hover:bg-primary/75" : "bg-background text-foreground hover:bg-primary hover:text-background"} transition-colors cursor-pointer`}
+							>
+								<MahasiswiSvg className="h-8 w-8" />
+							</button>
+						</div>
+					</div>
+
+					{/* Preview Background */}
+					<div
+						ref={previewRef}
+						className="absolute lg:block hidden top-[25%] left-1/2 -translate-x-1/2 w-[75%] h-full z-0 opacity-50 overflow-hidden pointer-events-none"
+					>
+						<Img
+							width={1000}
+							height={1000}
+							src={(isCowo ? outfits.cowo : outfits.cewe)[activeIndex].bg}
+							alt="preview-bg"
+							className="absolute top-0 left-0 w-full h-full object-cover animate-pan"
+						/>
+					</div>
 				</div>
 			</div>
 		</div>
