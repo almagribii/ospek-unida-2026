@@ -54,17 +54,23 @@ export default function Slider() {
 
 	const [activeIndex, setActiveIndex] = useState(0);
 	const isAnimating = useRef(false);
+	const [isCowo, setIsCowo] = useState(false);
 
 	// Helper to handle cyclic indices
 	const getIndex = (index: number) => {
-		return (index + outfits.length) % outfits.length;
+		return (
+			(index + (isCowo ? outfits.cowo.length : outfits.cewe.length)) %
+			(isCowo ? outfits.cowo.length : outfits.cewe.length)
+		);
 	};
 
 	// --- Animation Logic ---
 
 	useEffect(() => {
-		const imgOutfit = outfits.map((outfit) => outfit.img);
-		const imgOutfitBg = outfits.map((outfit) => outfit.bg);
+		const imgOutfit = outfits.cowo.map((outfit) => outfit.img);
+		const imgOutfitBg = outfits.cowo.map((outfit) => outfit.bg);
+		const imgOutfitCewe = outfits.cewe.map((outfit) => outfit.img);
+		const imgOutfitBgCewe = outfits.cewe.map((outfit) => outfit.bg);
 
 		imgOutfit.forEach((src) => {
 			const img = new Image();
@@ -72,6 +78,16 @@ export default function Slider() {
 		});
 
 		imgOutfitBg.forEach((src) => {
+			const img = new Image();
+			img.src = src;
+		});
+
+		imgOutfitCewe.forEach((src) => {
+			const img = new Image();
+			img.src = src;
+		});
+
+		imgOutfitBgCewe.forEach((src) => {
 			const img = new Image();
 			img.src = src;
 		});
@@ -225,7 +241,7 @@ export default function Slider() {
 				tl.to(previewRef.current, { autoAlpha: 0.5, duration: 1 }, 0.3);
 			}
 		},
-		{ scope: containerRef },
+		{ scope: containerRef, dependencies: [isCowo] },
 	); // Run once on mount
 
 	const transitionSlides = contextSafe(
@@ -319,7 +335,7 @@ export default function Slider() {
 				// Update preview
 				if (previewRef.current) {
 					const newImg = document.createElement("img");
-					newImg.src = outfits[nextIdx].bg;
+					newImg.src = (isCowo ? outfits.cowo : outfits.cewe)[nextIdx].bg;
 					newImg.className =
 						"absolute top-0 left-0 w-full h-full object-cover opacity-0 animate-pan";
 					previewRef.current.appendChild(newImg);
@@ -438,7 +454,7 @@ export default function Slider() {
 					// Update preview
 					if (previewRef.current) {
 						const newImg = document.createElement("img");
-						newImg.src = outfits[nextIdx].img;
+						newImg.src = (isCowo ? outfits.cowo : outfits.cewe)[nextIdx].bg;
 						newImg.className =
 							"absolute top-0 left-0 w-full h-full object-cover opacity-0 animate-pan";
 						previewRef.current.appendChild(newImg);
@@ -594,7 +610,7 @@ export default function Slider() {
 			// 6. Animate Preview Image
 			if (previewRef.current) {
 				const newImg = document.createElement("img");
-				newImg.src = outfits[nextIdx].bg;
+				newImg.src = (isCowo ? outfits.cowo : outfits.cewe)[nextIdx].bg;
 				newImg.className =
 					"absolute top-0 left-0 w-full h-full object-cover opacity-0 animate-pan";
 				previewRef.current.appendChild(newImg);
@@ -639,7 +655,7 @@ export default function Slider() {
 				}}
 			>
 				{/* Slides */}
-				{outfits.map((outfit, index) => {
+				{(isCowo ? outfits.cowo : outfits.cewe).map((outfit, index) => {
 					const isPrev = index === getIndex(activeIndex - 1);
 					const isActive = index === activeIndex;
 					const isNext = index === getIndex(activeIndex + 1);
@@ -677,7 +693,7 @@ export default function Slider() {
 
 				{/* Titles */}
 				<div className="absolute bottom-40 sm:bottom-40 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] sm:w-1/2 h-15 text-center z-20 pointer-events-none">
-					{outfits.map((outfit, index) => (
+					{(isCowo ? outfits.cowo : outfits.cewe).map((outfit, index) => (
 						<div
 							key={outfit.img}
 							ref={(el) => {
@@ -748,13 +764,15 @@ export default function Slider() {
 					<p className="flex gap-4 justify-center text-[13px] font-medium text-foreground uppercase">
 						<span>{activeIndex + 1}</span>
 						<span className="text-foreground">/</span>
-						<span className="text-foreground">{outfits.length}</span>
+						<span className="text-foreground">
+							{isCowo ? outfits.cowo.length : outfits.cewe.length}
+						</span>
 					</p>
 				</div>
 
 				{/* List Items */}
 				<div className="absolute left-10 bottom-10 z-20 hidden md:block">
-					{outfits.map((outfit, index) => (
+					{(isCowo ? outfits.cowo : outfits.cewe).map((outfit, index) => (
 						// biome-ignore lint/a11y/useKeyWithClickEvents: why not
 						<p
 							key={outfit.img}
@@ -783,7 +801,7 @@ export default function Slider() {
 					<Img
 						width={1000}
 						height={1000}
-						src={outfits[activeIndex].bg}
+						src={(isCowo ? outfits.cowo : outfits.cewe)[activeIndex].bg}
 						alt="preview-bg"
 						className="absolute top-0 left-0 w-full h-full object-cover animate-pan"
 					/>
