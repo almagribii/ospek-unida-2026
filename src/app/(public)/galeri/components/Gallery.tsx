@@ -2,6 +2,7 @@
 
 import gsap from "gsap";
 import { CustomEase } from "gsap/CustomEase";
+import { PointerIcon } from "lucide-react";
 import type React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -23,14 +24,24 @@ type VisibleItem = {
 	data: GalleryItemData;
 };
 
-const CONFIG = {
-	itemWidth: 250,
-	itemHeight: 340,
-	itemGap: 30,
-	columns: 4,
-	pad: 2,
-	ease: 0.075,
+const getConfig = () => {
+	const mobile = typeof window !== "undefined" && window.innerWidth < 768;
+	return {
+		itemWidth: mobile ? 180 : 250,
+		itemHeight: mobile ? 240 : 340,
+		itemGap: mobile ? 20 : 30,
+		columns: 4,
+		pad: mobile ? 1 : 2,
+		ease: mobile ? 0.12 : 0.075,
+		dragScale: mobile ? 0.6 : 1,
+		momentum: mobile ? 80 : 200,
+		updateThreshold: mobile ? 150 : 50,
+		updateInterval: mobile ? 250 : 100,
+		mobile,
+	};
 };
+
+let CONFIG = getConfig();
 
 // -----------------------------------------------------------------------------
 // MAIN COMPONENT
@@ -146,7 +157,10 @@ export default function Gallery() {
 		);
 		const now = Date.now();
 
-		if (dist > 50 || now - s.lastUpdateTime > 100) {
+		if (
+			dist > CONFIG.updateThreshold ||
+			now - s.lastUpdateTime > CONFIG.updateInterval
+		) {
 			updateGrid();
 			s.lastX = s.currentX;
 			s.lastY = s.currentY;
@@ -197,8 +211,8 @@ export default function Gallery() {
 			s.dragVelocityX = dx / dt;
 			s.dragVelocityY = dy / dt;
 
-			s.targetX += dx;
-			s.targetY += dy;
+			s.targetX += dx * CONFIG.dragScale;
+			s.targetY += dy * CONFIG.dragScale;
 
 			s.startX = e.clientX;
 			s.startY = e.clientY;
@@ -214,15 +228,16 @@ export default function Gallery() {
 		if (containerRef.current) containerRef.current.style.cursor = "grab";
 
 		if (!expandedItem) {
-			const MOMENTUM = 200;
+			const M = CONFIG.momentum;
 			if (Math.abs(s.dragVelocityX) > 0.1 || Math.abs(s.dragVelocityY) > 0.1) {
-				s.targetX += s.dragVelocityX * MOMENTUM;
-				s.targetY += s.dragVelocityY * MOMENTUM;
+				s.targetX += s.dragVelocityX * M;
+				s.targetY += s.dragVelocityY * M;
 			}
 		}
 	}, [expandedItem]);
 
 	const handleResize = useCallback(() => {
+		CONFIG = getConfig();
 		updateGrid();
 	}, [updateGrid]);
 
@@ -269,7 +284,7 @@ export default function Gallery() {
 	useEffect(() => {
 		let loaded = 0;
 		const total = ITEMS.length;
-		const threshold = Math.ceil(total * 0.5);
+		const threshold = Math.ceil(total * 0.8);
 		let resolved = false;
 
 		for (const item of ITEMS) {
@@ -398,8 +413,6 @@ export default function Gallery() {
 									alt={item.data.name}
 									className="w-full h-full object-cover pointer-events-none"
 									draggable={false}
-									loading="lazy"
-									decoding="async"
 								/>
 							</div>
 						))}
@@ -412,6 +425,13 @@ export default function Gallery() {
 				>
 					<p className="relative px-6 py-2 translate-y-full bg-background text-foreground rounded-4xl font-mirage lg:text-4xl text-2xl font-medium tracking-tighter drop-shadow-2xl">
 						{/* Text inserted via effect */}
+					</p>
+				</div>
+
+				<div className="fixed bottom-5 right-5 px-2 py-1 lg:px-6 lg:py-2 bg-foreground text-background tracking-widest pointer-events-none rounded-4xl flex flex-row justify-center items-center gap-2">
+					<PointerIcon className="w-4 h-4 lg:w-6 lg:h-6" />
+					<p className="lg:text-base text-sm text-start">
+						Geser layar untuk melihat galeri!
 					</p>
 				</div>
 			</div>
@@ -464,28 +484,50 @@ function ExpandedView({
 			: Math.min(viewportW * 0.4, 500);
 		const targetHeight = targetWidth * 1.2;
 
-		gsap.set(el, {
-			autoAlpha: 1,
-			width: initialRect.width,
-			height: initialRect.height,
-			x: initialRect.left,
-			y: initialRect.top,
-		});
-
-		gsap.to(el, {
-			width: targetWidth,
-			height: targetHeight,
-			x: window.innerWidth / 2 - targetWidth / 2,
-			y: window.innerHeight / 2 - targetHeight / 2,
-			duration: 1,
-			ease: "hop",
-		});
+		if (isSmall) {
+			// Mobile: simple slide-up from bottom, no width/height tween
+			gsap.set(el, {
+				autoAlpha: 1,
+				width: targetWidth,
+				height: targetHeight,
+				x: viewportW / 2 - targetWidth / 2,
+				y: window.innerHeight,
+			});
+			gsap.to(el, {
+				y: window.innerHeight / 2 - targetHeight / 2,
+				duration: 0.6,
+				ease: "power3.out",
+			});
+		} else {
+			// Desktop: expand from clicked position
+			gsap.set(el, {
+				autoAlpha: 1,
+				width: initialRect.width,
+				height: initialRect.height,
+				x: initialRect.left,
+				y: initialRect.top,
+			});
+			gsap.to(el, {
+				width: targetWidth,
+				height: targetHeight,
+				x: viewportW / 2 - targetWidth / 2,
+				y: window.innerHeight / 2 - targetHeight / 2,
+				duration: 1,
+				ease: "hop",
+			});
+		}
 
 		if (btn) {
 			gsap.fromTo(
 				btn,
 				{ y: 100, opacity: 0 },
-				{ y: 0, opacity: 1, duration: 0.5, delay: 0.8, ease: "power2.out" },
+				{
+					y: 0,
+					opacity: 1,
+					duration: 0.5,
+					delay: isSmall ? 0.4 : 0.8,
+					ease: "power2.out",
+				},
 			);
 		}
 	}, [initialRect]);
@@ -498,22 +540,35 @@ function ExpandedView({
 
 		const el = elRef.current;
 		const btn = buttonRef.current;
+		const isSmall = window.innerWidth < 768;
 
 		if (btn) {
 			gsap.to(btn, { y: 100, opacity: 0, duration: 0.3 });
 		}
 
-		gsap.to(el, {
-			width: initialRect.width,
-			height: initialRect.height,
-			x: initialRect.left,
-			y: initialRect.top,
-			duration: 0.8,
-			ease: "hop",
-			onComplete: () => {
-				onFinishClosing();
-			},
-		});
+		if (isSmall) {
+			// Mobile: slide down off screen
+			gsap.to(el, {
+				y: window.innerHeight,
+				duration: 0.5,
+				ease: "power2.in",
+				onComplete: () => {
+					onFinishClosing();
+				},
+			});
+		} else {
+			gsap.to(el, {
+				width: initialRect.width,
+				height: initialRect.height,
+				x: initialRect.left,
+				y: initialRect.top,
+				duration: 0.8,
+				ease: "hop",
+				onComplete: () => {
+					onFinishClosing();
+				},
+			});
+		}
 	};
 
 	return (
