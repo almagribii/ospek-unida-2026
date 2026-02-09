@@ -97,6 +97,7 @@ export default function Slider() {
 
 	const { contextSafe } = useGSAP(
 		() => {
+			isAnimating.current = false;
 			const isMobile = window.innerWidth < 640;
 
 			// Initial Setup for positions (equivalent to useEffect with empty dependency)
@@ -355,10 +356,10 @@ export default function Slider() {
 					});
 				}
 
-				setTimeout(() => {
+				gsap.delayedCall(0.5, () => {
 					setActiveIndex(nextIdx);
 					isAnimating.current = false;
-				}, 500);
+				});
 
 				return;
 			}
@@ -390,7 +391,7 @@ export default function Slider() {
 				});
 
 				// After fade out, set up and fade in new slides
-				setTimeout(() => {
+				gsap.delayedCall(1, () => {
 					// Hide all slides first
 					slidesRef.current.forEach((slide) => {
 						if (!slide) return;
@@ -476,7 +477,7 @@ export default function Slider() {
 
 					setActiveIndex(nextIdx);
 					isAnimating.current = false;
-				}, 1000);
+				});
 
 				return;
 			}
@@ -632,10 +633,10 @@ export default function Slider() {
 			}
 
 			// Clean up state after animation
-			setTimeout(() => {
+			gsap.delayedCall(2, () => {
 				setActiveIndex(nextIdx);
 				isAnimating.current = false;
-			}, 2000);
+			});
 		},
 	);
 
@@ -803,6 +804,7 @@ export default function Slider() {
 							onClick={() => {
 								if (isCowo) return;
 								setIsCowo(true);
+								setActiveIndex(0);
 							}}
 							className={`p-2 rounded-full ${isCowo ? "bg-primary text-background hover:text-background/75 hover:bg-primary/75" : "bg-background text-foreground hover:bg-primary hover:text-background"} transition-colors cursor-pointer`}
 						>
@@ -812,6 +814,7 @@ export default function Slider() {
 							type="button"
 							onClick={() => {
 								if (!isCowo) return;
+								setActiveIndex(0);
 								setIsCowo(false);
 							}}
 							className={`p-2 rounded-full ${!isCowo ? "bg-primary text-background hover:text-background/75 hover:bg-primary/75" : "bg-background text-foreground hover:bg-primary hover:text-background"} transition-colors cursor-pointer`}
