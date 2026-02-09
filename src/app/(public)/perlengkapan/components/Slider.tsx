@@ -2,18 +2,19 @@
 
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import {
-	CircleXIcon,
-	FastForwardIcon,
-	MarsIcon,
-	Maximize2Icon,
-} from "lucide-react";
+import { SplitText } from "gsap/SplitText";
+import { CircleXIcon, FastForwardIcon, MaximizeIcon } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { MahasiswaSvg } from "@/components/MahasiswaSvg";
+import { MahasiswiSvg } from "@/components/MahasiswiSvg";
 import { itemsCewe, itemsCowo } from "./items";
+
+gsap.registerPlugin(SplitText);
 
 interface SlideItem {
 	element: HTMLLIElement;
+
 	relativeIndex: number;
 }
 
@@ -37,6 +38,8 @@ export default function Slider() {
 	const previewTagRef = useRef<HTMLParagraphElement>(null);
 	const bannerImgRef = useRef<HTMLImageElement>(null);
 	const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+	const descTextRef = useRef<HTMLDivElement>(null);
+	const splitTextRef = useRef<SplitText | null>(null);
 
 	const [isCowo, setIsCowo] = useState(true);
 	const [isPreviewAnimating, setIsPreviewAnimating] = useState(false);
@@ -412,11 +415,109 @@ export default function Slider() {
 		};
 	}, [moveNext, movePrev, isPreviewOpen, isPreviewAnimating]);
 
+	// Animate description text
+	// biome-ignore lint/correctness/useExhaustiveDependencies: so that the title is animated every change of the gender
+	useEffect(() => {
+		if (!descTextRef.current) return;
+
+		// Revert previous split to restore original DOM before React updates
+		if (splitTextRef.current) {
+			splitTextRef.current.revert();
+			splitTextRef.current = null;
+		}
+
+		contextSafe(() => {
+			const paragraphs = descTextRef.current?.querySelectorAll("p");
+			if (!paragraphs) return;
+
+			splitTextRef.current = SplitText.create(paragraphs, {
+				type: "words, chars",
+			});
+
+			gsap.from(splitTextRef.current.words, {
+				y: 100,
+				opacity: 0,
+				stagger: 0.2,
+				duration: 0.8,
+				ease: "expo.out",
+			});
+		})();
+
+		return () => {
+			if (splitTextRef.current) {
+				splitTextRef.current.revert();
+				splitTextRef.current = null;
+			}
+		};
+	}, [contextSafe, isCowo]);
+
+	// Animate products intro (re-animates when gender changes)
+	// biome-ignore lint/correctness/useExhaustiveDependencies: animates when gender changes
+	useEffect(() => {
+		if (slideItemsRef.current.length === 0) return;
+
+		contextSafe(() => {
+			const elements = slideItemsRef.current.map((item) => item.element);
+
+			gsap.fromTo(
+				elements,
+				{
+					y: 100,
+					autoAlpha: 0,
+				},
+				{
+					y: 0,
+					autoAlpha: 1,
+					duration: 1,
+					stagger: 0.08,
+					ease: "expo.out",
+				},
+			);
+		})();
+	}, [contextSafe, isCowo]);
+
+	// Animate controller intro (one-time only)
+	useEffect(() => {
+		contextSafe(() => {
+			const controller = containerRef.current?.querySelector(".controller");
+			if (!controller) return;
+
+			gsap.fromTo(
+				controller,
+				{
+					y: 100,
+					autoAlpha: 0,
+				},
+				{
+					y: 0,
+					autoAlpha: 1,
+					duration: 1,
+					ease: "expo.out",
+					delay: 0.3,
+				},
+			);
+		})();
+	}, [contextSafe]);
+
 	return (
 		<section
 			ref={containerRef}
-			className="relative w-full h-screen overflow-hidden"
+			className="relative w-full lg:h-screen h-dvh overflow-hidden bg-[linear-gradient(rgba(0,0,0,0.2),rgba(243,243,243,1)),url('/background/white_texture.webp')] bg-cover bg-center"
 		>
+			<div
+				ref={descTextRef}
+				className="flex lg:flex-row flex-col justify-center items-center w-full gap-2 p-4 absolute top-20 overflow-hidden"
+			>
+				<p className="font-mirage font-semibold text-foreground lg:text-4xl text-2xl text-center overflow-hidden">
+					Daftar Perlengkapan
+				</p>
+				<p
+					key={isCowo ? "mahasiswa" : "mahasiswi"}
+					className="font-mirage font-semibold text-foreground lg:text-4xl text-2xl text-center overflow-hidden"
+				>
+					{isCowo ? "Mahasiswa" : "Mahasiswi"}
+				</p>
+			</div>
 			<div className="gallery absolute w-full h-svh overflow-hidden">
 				<ul
 					ref={productsRef}
@@ -434,7 +535,7 @@ export default function Slider() {
 							ref={openIconRef}
 							className="absolute w-full h-full flex items-center justify-center text-background"
 						>
-							<Maximize2Icon className="w-5 h-5" />
+							<MaximizeIcon className="w-5 h-5" />
 						</div>
 						<div
 							ref={closeIconRef}
@@ -457,11 +558,11 @@ export default function Slider() {
 							}}
 							className="nav-btn prev absolute top-8 transform -translate-x-1/2 -translate-y-1/2 left-1/2 text-lg text-background cursor-pointer will-change-[opacity] border-none"
 						>
-							<span
-								className={`rounded-lg ${isCowo ? "bg-foreground" : "bg-transparent"} px-2 py-1 hover:bg-foreground font-bold transition-colors text-sm`}
+							<div
+								className={`p-1 ${isCowo ? "bg-foreground text-primary-muted" : "bg-transparent text-background"}  rounded-full hover:bg-foreground transition-colors`}
 							>
-								Men
-							</span>
+								<MahasiswaSvg className="w-8 h-8" />
+							</div>{" "}
 						</button>
 
 						<button
@@ -471,13 +572,13 @@ export default function Slider() {
 								if (!isCowo) return;
 								setIsCowo(false);
 							}}
-							className="nav-btn prev absolute bottom-2 transform -translate-x-1/2 -translate-y-1/2 left-1/2 text-lg text-background cursor-pointer will-change-[opacity] border-none"
+							className="nav-btn prev absolute -bottom-2 transform -translate-x-1/2 -translate-y-1/2 left-1/2 text-lg text-background cursor-pointer will-change-[opacity] border-none"
 						>
-							<span
-								className={`rounded-lg ${!isCowo ? "bg-foreground" : "bg-transparent"} px-2 py-1 hover:bg-foreground font-bold transition-colors text-sm`}
+							<div
+								className={`p-1 ${!isCowo ? "bg-foreground text-primary-muted" : "bg-transparent text-background"}  rounded-full hover:bg-foreground transition-colors`}
 							>
-								Women
-							</span>
+								<MahasiswiSvg className="w-8 h-8" />
+							</div>
 						</button>
 
 						<button
@@ -502,7 +603,7 @@ export default function Slider() {
 
 			<div
 				ref={productBannerRef}
-				className="product-banner absolute top-0 left-0 w-full h-full -z-1 opacity-0 will-change-[opacity]"
+				className="product-banner absolute top-0 left-0 w-full h-full z-0 opacity-0 will-change-[opacity]"
 			>
 				<Image
 					ref={bannerImgRef as React.RefObject<HTMLImageElement | null>}
@@ -510,7 +611,7 @@ export default function Slider() {
 					alt={currentProduct.name}
 					height={1000}
 					width={1000}
-					className="w-full h-full object-cover scale-125 blur-lg"
+					className="w-full h-full object-cover scale-105 blur-lg bg-background"
 				/>
 			</div>
 

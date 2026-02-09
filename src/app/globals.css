@@ -243,3 +243,18 @@ body {
 		transform: translateY(55px) scale3d(0.5, 0.5, 0.5);
 	}
 }
+
+@keyframes pan {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.25);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+.animate-pan {
+	animation: pan 20s infinite linear;
+}
