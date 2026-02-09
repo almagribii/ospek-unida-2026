@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useNavbar } from "@/context/NavbarContext";
+import { ContentSection } from "./ContentSection";
 import { HeroSection } from "./HeroSection";
-import { OutroSection } from "./OutroSection";
 import Preloader from "./Preloader";
 import { useHomeHero } from "./useHomeHero";
 
@@ -100,7 +100,7 @@ export default function Home() {
 
 			<div ref={parentRef}>
 				<HeroSection canvasRef={canvasRef} />
-				<OutroSection />
+				<ContentSection />
 			</div>
 		</>
 	);
