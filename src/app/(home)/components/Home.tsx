@@ -17,6 +17,14 @@ export default function Home() {
 
 	const { setNavbarState } = useNavbar();
 
+	// Scroll to top on page load/reload
+	useEffect(() => {
+		window.scrollTo(0, 0);
+		if ("scrollRestoration" in history) {
+			history.scrollRestoration = "manual";
+		}
+	}, []);
+
 	useEffect(() => {
 		// This will now only trigger if isNavHidden or isAtTop actually change values
 		// because setNavbarState is now stable!
