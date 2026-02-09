@@ -29,11 +29,11 @@ type VisibleItem = {
 };
 
 const CONFIG = {
-	itemWidth: 120,
-	itemHeight: 160,
-	itemGap: 150,
+	itemWidth: 250,
+	itemHeight: 340,
+	itemGap: 30,
 	columns: 4,
-	buffer: 2.5,
+	pad: 2,
 	ease: 0.075,
 };
 
@@ -56,6 +56,8 @@ export default function Gallery() {
 		originalId: string;
 	} | null>(null);
 	const [titleText, setTitleText] = useState("");
+	const [isLoading, setIsLoading] = useState(true);
+	const [loadProgress, setLoadProgress] = useState(0);
 
 	// Physics State
 	const state = useRef({
@@ -86,31 +88,21 @@ export default function Gallery() {
 		if (!canvasRef.current) return;
 
 		const s = state.current;
-		const { itemWidth, itemHeight, itemGap, columns, buffer } = CONFIG;
-		const viewWidth = window.innerWidth * (1 + buffer);
-		const viewHeight = window.innerHeight * (1 + buffer);
+		const { itemWidth, itemHeight, itemGap, columns, pad } = CONFIG;
+		const spacingX = itemWidth + itemGap;
+		const spacingY = itemHeight + itemGap;
 
-		const movingRight = s.targetX > s.currentX;
-		const movingDown = s.targetY > s.currentY;
-		const dirBuffX = movingRight ? -300 : 300;
-		const dirBuffY = movingDown ? -300 : 300;
+		// Visible area in canvas coordinates
+		const viewLeft = -s.currentX;
+		const viewRight = -s.currentX + window.innerWidth;
+		const viewTop = -s.currentY;
+		const viewBottom = -s.currentY + window.innerHeight;
 
-		const startCol = Math.floor(
-			(-s.currentX - viewWidth / 2 + (movingRight ? dirBuffX : 0)) /
-				(itemWidth + itemGap),
-		);
-		const endCol = Math.ceil(
-			(-s.currentX + viewWidth * 1.5 + (!movingRight ? dirBuffX : 0)) /
-				(itemWidth + itemGap),
-		);
-		const startRow = Math.floor(
-			(-s.currentY - viewHeight / 2 + (movingDown ? dirBuffY : 0)) /
-				(itemHeight + itemGap),
-		);
-		const endRow = Math.ceil(
-			(-s.currentY + viewHeight * 1.5 + (!movingDown ? dirBuffY : 0)) /
-				(itemHeight + itemGap),
-		);
+		// Grid indices with fixed item padding
+		const startCol = Math.floor(viewLeft / spacingX) - pad;
+		const endCol = Math.ceil(viewRight / spacingX) + pad;
+		const startRow = Math.floor(viewTop / spacingY) - pad;
+		const endRow = Math.ceil(viewBottom / spacingY) + pad;
 
 		const newItems: VisibleItem[] = [];
 		const newIds = new Set<string>();
@@ -120,7 +112,9 @@ export default function Gallery() {
 			for (let col = startCol; col <= endCol; col++) {
 				const id = `${col},${row}`;
 				newIds.add(id);
-				const itemIndex = Math.abs(row * columns + col) % ITEMS.length;
+				const itemIndex =
+					(((row * columns + col) % ITEMS.length) + ITEMS.length) %
+					ITEMS.length;
 
 				if (!s.visibleItemIds.has(id)) hasChanges = true;
 
@@ -128,8 +122,8 @@ export default function Gallery() {
 					id,
 					col,
 					row,
-					x: col * (itemWidth + itemGap),
-					y: row * (itemHeight + itemGap),
+					x: col * spacingX,
+					y: row * spacingY,
 					data: ITEMS[itemIndex],
 				});
 			}
@@ -291,11 +285,35 @@ export default function Gallery() {
 	// EFFECTS
 	// ---------------------------------------------------------------------------
 
+	// IMAGE PRELOADING
 	useEffect(() => {
+		let loaded = 0;
+		const total = ITEMS.length;
+		const threshold = Math.ceil(total * 0.5);
+		let resolved = false;
+
+		for (const item of ITEMS) {
+			const img = new Image();
+			img.src = item.img;
+			const onDone = () => {
+				loaded++;
+				setLoadProgress(Math.round((loaded / total) * 100));
+				if (loaded >= threshold && !resolved) {
+					resolved = true;
+					setIsLoading(false);
+				}
+			};
+			img.onload = onDone;
+			img.onerror = onDone;
+		}
+	}, []);
+
+	useEffect(() => {
+		if (isLoading) return;
+
 		setMounted(true);
 		CustomEase.create("hop", "0.9, 0, 0.1, 1");
 
-		// --- NEW: INITIAL OPENING ANIMATION ---
 		if (wrapperRef.current) {
 			gsap.to(wrapperRef.current, {
 				opacity: 1,
@@ -318,7 +336,14 @@ export default function Gallery() {
 			if (rafId.current) cancelAnimationFrame(rafId.current);
 			if (splitTitleRef.current) splitTitleRef.current.revert();
 		};
-	}, [updateGrid, animate, handleResize, handlePointerMove, handlePointerUp]);
+	}, [
+		isLoading,
+		updateGrid,
+		animate,
+		handleResize,
+		handlePointerMove,
+		handlePointerUp,
+	]);
 
 	// TITLE ANIMATION
 	useEffect(() => {
@@ -361,6 +386,24 @@ export default function Gallery() {
 
 	return (
 		<>
+			{/* LOADING SCREEN */}
+			{isLoading && (
+				<div className="fixed inset-0 z-100 flex flex-col items-center justify-center bg-background">
+					<p className="font-mirage text-2xl text-foreground tracking-tighter mb-4">
+						Galeri
+					</p>
+					<div className="w-48 h-0.5 bg-foreground/20 rounded-full overflow-hidden">
+						<div
+							className="h-full bg-foreground transition-all duration-300 ease-out"
+							style={{ width: `${loadProgress}%` }}
+						/>
+					</div>
+					<p className="mt-2 text-sm text-foreground/60 font-mono">
+						{loadProgress}%
+					</p>
+				</div>
+			)}
+
 			{/* PARENT ELEMENT WRAPPER FOR INITIAL FADE-IN */}
 			<div ref={wrapperRef} className="opacity-0">
 				<div
@@ -394,6 +437,8 @@ export default function Gallery() {
 									alt={item.data.name}
 									className="w-full h-full object-cover pointer-events-none"
 									draggable={false}
+									loading="lazy"
+									decoding="async"
 								/>
 							</div>
 						))}
@@ -522,7 +567,7 @@ function ExpandedView({
 			<div
 				ref={elRef}
 				onClick={handleClose}
-				className="fixed z-70 top-0 left-0 bg-[#e3e3db] overflow-hidden cursor-pointer shadow-2xl opacity-0"
+				className="fixed z-70 top-0 left-0 bg-foreground overflow-hidden cursor-pointer shadow-2xl opacity-0"
 			>
 				{/** biome-ignore lint/performance/noImgElement: static */}
 				<img
