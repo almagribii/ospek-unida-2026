@@ -23,6 +23,7 @@ export function UKMSection(): JSX.Element {
 
 	useLayoutEffect(() => {
 		genderRef.current = activeGender;
+		setActiveIndex(0);
 	}, [activeGender]);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: activeGender is necessary to reinitialize animations when displayed cards change

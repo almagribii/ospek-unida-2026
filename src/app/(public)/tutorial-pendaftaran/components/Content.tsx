@@ -6,7 +6,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { useRef } from "react";
 import { PanduanCard } from "./PanduanCard";
-import { SupportSection } from "./SupportSection";
 import { tutorialStepsData } from "./tutorialData";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
@@ -64,13 +63,12 @@ export const Content: React.FC = () => {
 					</p>
 				</div>
 
-				<div className="space-y-6 sm:space-y-10">
-					{tutorialStepsData.map((data) => (
-						<PanduanCard key={data.steps[0].step} {...data} />
+				<div className="space-y-8 md:space-y-16">
+					{tutorialStepsData.map((data, index) => (
+						<PanduanCard key={data.title} {...data} stepNumber={index + 1} />
 					))}
 				</div>
 
-				<SupportSection />
 			</div>
 		</section>
 	);

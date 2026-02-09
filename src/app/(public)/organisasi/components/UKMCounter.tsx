@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ScrollDown } from "@/app/(home)/components/ScrollDown";
 import Shuffle from "@/components/Shuffle";
 import type { dataUkm } from "./ukm-data";
@@ -12,6 +12,16 @@ interface UKMCounterProps {
 
 export function UKMCounter({ activeIndex, members }: UKMCounterProps) {
 	const [showScrollDown, setShowScrollDown] = useState(true);
+	const [animationTrigger, setAnimationTrigger] = useState(0);
+	const prevTitleRef = useRef<string | undefined>(undefined);
+
+	useEffect(() => {
+		const currentTitle = members[activeIndex]?.title;
+		if (currentTitle !== prevTitleRef.current) {
+			prevTitleRef.current = currentTitle;
+			setAnimationTrigger((prev) => prev + 1);
+		}
+	}, [activeIndex, members]);
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -52,7 +62,7 @@ export function UKMCounter({ activeIndex, members }: UKMCounterProps) {
 					<ScrollDown />
 				</div>
 				<Shuffle
-					key={activeIndex}
+					key={animationTrigger}
 					text={members[activeIndex]?.title || "UKM"}
 					shuffleDirection="right"
 					duration={0.35}
