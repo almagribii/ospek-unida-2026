@@ -343,7 +343,7 @@ export default function Gallery() {
 			const instance = new SplitType(el, { types: "words" });
 			splitTitleRef.current = instance as unknown as SplitTypeInstance;
 
-			gsap.set(instance.words, { y: "120%" });
+			gsap.set(instance.words, { y: "140%" });
 
 			gsap.to(instance.words, {
 				y: "0%",
