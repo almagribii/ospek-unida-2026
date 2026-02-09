@@ -6,7 +6,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { useRef } from "react";
 import { PanduanCard } from "./PanduanCard";
-import { SupportSection } from "./SupportSection";
 import { tutorialStepsData } from "./tutorialData";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
@@ -70,7 +69,6 @@ export const Content: React.FC = () => {
 					))}
 				</div>
 
-				<SupportSection />
 			</div>
 		</section>
 	);
