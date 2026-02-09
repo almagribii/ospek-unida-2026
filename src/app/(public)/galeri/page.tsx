@@ -1,3 +1,9 @@
+import Gallery from "./components/Gallery";
+
 export default function Galeri() {
-	return <div>Galeri</div>;
+	return (
+		<div>
+			<Gallery />
+		</div>
+	);
 }
