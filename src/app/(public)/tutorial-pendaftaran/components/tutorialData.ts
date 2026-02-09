@@ -1,118 +1,77 @@
-import {
-	Globe,
-	LogIn,
-	MailCheck,
-	ShoppingCart,
-	UserPlus,
-	Wallet,
-} from "lucide-react";
-import type { StaticImageData } from "next/image";
-import registerForm from "../../../../../public/panduan/4.webp";
-import billingInfo from "../../../../../public/panduan/11.webp";
-import emailActivation from "../../../../../public/panduan/56.webp";
-import loginPage from "../../../../../public/panduan/78.webp";
-import admissionHome from "../../../../../public/panduan/123.webp";
-import purchaseForm from "../../../../../public/panduan/910.webp";
-
-export interface StepItem {
-	step: number;
+export type dataTutorial = {
 	title: string;
-	icon: React.ComponentType<{ size?: number }>;
-}
-
-export interface PanduanCardData {
-	steps: StepItem[];
-	imageSrc: StaticImageData;
-}
-
-export const step1_3Data: PanduanCardData = {
-	steps: [
-		{
-			step: 1,
-			title: "Silahkan Mengunjungi Halaman Web unida.gontor.ac.id/admission/",
-			icon: Globe,
-		},
-		{
-			step: 2,
-			title: "Segala Informasi Terkait Pendaftaran Unida Gontor Ada disini",
-			icon: Globe,
-		},
-		{
-			step: 3,
-			title: "Untuk Mendaftar Silahkan Klik ADMISSION",
-			icon: Globe,
-		},
-	],
-	imageSrc: admissionHome,
+	image: string;
 };
 
-export const step4_5Data: PanduanCardData = {
-	steps: [
-		{
-			step: 4,
-			title: "Buat Akun Pendaftaran",
-			icon: UserPlus,
-		},
-		{
-			step: 5,
-			title: "Verifikasi & Konfirmasi",
-			icon: MailCheck,
-		},
-	],
-	imageSrc: registerForm,
-};
-
-export const step6Data: PanduanCardData = {
-	steps: [
-		{
-			step: 6,
-			title: "Aktivasi Akun via Email",
-			icon: MailCheck,
-		},
-	],
-	imageSrc: emailActivation,
-};
-
-export const step7Data: PanduanCardData = {
-	steps: [
-		{
-			step: 7,
-			title: "Masuk ke Sistem",
-			icon: LogIn,
-		},
-	],
-	imageSrc: loginPage,
-};
-
-export const step8Data: PanduanCardData = {
-	steps: [
-		{
-			step: 8,
-			title: "Pilih Program & Beli Form",
-			icon: ShoppingCart,
-		},
-	],
-	imageSrc: purchaseForm,
-};
-
-export const step9Data: PanduanCardData = {
-	steps: [
-		{
-			step: 9,
-			title: "Lakukan Pembayaran VA",
-			icon: Wallet,
-		},
-	],
-	imageSrc: billingInfo,
-};
-
-export const tutorialStepsData: PanduanCardData[] = [
-	step1_3Data,
-	step4_5Data,
-	step6Data,
-	step7Data,
-	step8Data,
-	step9Data,
+export const tutorialStepsData: dataTutorial[] = [
+	{
+		title: "1",
+		image: "/panduan/1.webp",
+	},
+	{
+		title: "2",
+		image: "/panduan/2.webp",
+	},
+	{
+		title: "3",
+		image: "/panduan/3.webp",
+	},
+	{
+		title: "4",
+		image: "/panduan/4.webp",
+	},
+	{
+		title: "5",
+		image: "/panduan/5.webp",
+	},
+	{
+		title: "6",
+		image: "/panduan/6.webp",
+	},
+	{
+		title: "7",
+		image: "/panduan/7.webp",
+	},
+	{
+		title: "8",
+		image: "/panduan/8.webp",
+	},
+	{
+		title: "9",
+		image: "/panduan/9.webp",
+	},
+	{
+		title: "10",
+		image: "/panduan/10.webp",
+	},
+	{
+		title: "11",
+		image: "/panduan/11.webp",
+	},
+	{
+		title: "12",
+		image: "/panduan/12.webp",
+	},
+	{
+		title: "13",
+		image: "/panduan/13.webp",
+	},
+	{
+		title: "14",
+		image: "/panduan/14.webp",
+	},
+	{
+		title: "15",
+		image: "/panduan/15.webp",
+	},
+	{
+		title: "16",
+		image: "/panduan/16.webp",
+	},
+	{
+		title: "17",
+		image: "/panduan/17.webp",
+	},
 ];
 
 export const heroData = {
