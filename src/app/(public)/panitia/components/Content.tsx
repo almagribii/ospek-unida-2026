@@ -5,10 +5,86 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { panitias } from "./panitia";
 
 gsap.registerPlugin(SplitText, ScrollTrigger);
+
+interface PanitiaProps {
+	name: string;
+	prodi: string;
+	semester: number;
+	img: string;
+}
+
+function PanitiaCard({
+	orang,
+	bagian,
+}: {
+	orang: PanitiaProps;
+	bagian: string;
+}) {
+	const [isFlipped, setIsFlipped] = useState(false);
+
+	return (
+		// biome-ignore lint/a11y/noStaticElementInteractions: exception
+		<div
+			className="group perspective-[1000px] cursor-pointer h-full"
+			onClick={() => setIsFlipped(!isFlipped)}
+			onKeyDown={(e) => e.key === "Enter" && setIsFlipped(!isFlipped)}
+		>
+			<div
+				className={`relative w-full aspect-4/5 transition-all duration-700 transform-3d ${
+					isFlipped ? "transform-[rotateY(180deg)]" : ""
+				}`}
+			>
+				{/* Front */}
+				<div className="absolute inset-0 backface-hidden">
+					<div className="w-full h-full bg-foreground relative overflow-hidden">
+						<Image
+							src={`/panitia/${orang.img}.png`}
+							fill
+							alt={orang.name}
+							className="object-cover duration-500 group-hover:scale-110 group-hover:opacity-75 transition-all"
+							sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+						/>
+						<div className="absolute bottom-0 w-full text-center bg-primary">
+							<p className="text-background text-lg leading-tight py-1">
+								{orang.name}
+							</p>
+						</div>
+					</div>
+				</div>
+
+				{/* Back */}
+				<div className="absolute inset-0 h-full w-full bg-foreground backface-hidden transform-[rotateY(180deg)] border border-foreground/10 overflow-hidden flex flex-col items-center justify-center text-center p-4">
+					<div className="absolute inset-0 flex items-center justify-center -z-10 pointer-events-none">
+						<h3
+							className={`${bagian.length > 8 ? "text-3xl" : "text-4xl"} font-mirage uppercase font-bold text-primary -rotate-45 opacity-50 select-none whitespace-nowrap`}
+						>
+							{bagian === "penerimaan_mahasiswa_baru"
+								? "PMB"
+								: bagian === "penanggung_jawab"
+									? "PJ"
+									: bagian.replace(/_/g, " ")}
+						</h3>
+					</div>
+
+					<div className="z-10 flex flex-col">
+						<h4 className="text-background text-xl font-bold uppercase leading-tight">
+							{orang.name}
+						</h4>
+						<div className="w-10 h-0.5 bg-primary mx-auto my-2" />
+						<p className="font-medium text-background">{orang.prodi}</p>
+						<p className="text-sm text-secondary-muted">
+							Semester {orang.semester}
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+}
 
 export default function Content() {
 	const bagians = Object.keys(panitias);
@@ -64,25 +140,11 @@ export default function Content() {
 							<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
 								{anggota.map((orang) => {
 									return (
-										<div
+										<PanitiaCard
 											key={orang.img}
-											className="flex flex-col gap-2 group overflow-hidden"
-										>
-											<div className="aspect-4/5 bg-foreground relative cursor-pointer overflow-hidden">
-												<Image
-													src={`/panitia/${orang.img}.png`}
-													fill
-													alt={orang.name}
-													className="object-cover duration-500 group-hover:scale-110 group-hover:opacity-75 transition-all"
-													sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-												/>
-												<div className="absolute bottom-0 w-full text-center bg-primary">
-													<p className="text-background text-lg leading-tight ">
-														{orang.name}
-													</p>
-												</div>
-											</div>
-										</div>
+											orang={orang}
+											bagian={bagian}
+										/>
 									);
 								})}
 							</div>
