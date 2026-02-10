@@ -2,7 +2,7 @@ interface Insides {
 	name: string;
 	prodi: string;
 	semester: number;
-	img: string;
+	img?: string;
 }
 
 type Panitias = Record<string, Insides[]>;
@@ -57,7 +57,6 @@ export const panitias: Panitias = {
 			name: "Akmal Fauzi",
 			prodi: "Manajemen",
 			semester: 5,
-			img: "akmal_fauzi",
 		},
 	],
 	bendahara: [

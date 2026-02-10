@@ -14,7 +14,7 @@ interface PanitiaProps {
 	name: string;
 	prodi: string;
 	semester: number;
-	img: string;
+	img?: string;
 }
 
 function PanitiaCard({
@@ -42,7 +42,7 @@ function PanitiaCard({
 				<div className="absolute inset-0 backface-hidden">
 					<div className="w-full h-full bg-foreground relative overflow-hidden">
 						<Image
-							src={`/panitia/${orang.img}.png`}
+							src={`/panitia/${orang.img ? orang.img : "anonymous"}.png`}
 							fill
 							alt={orang.name}
 							className="object-cover duration-500 group-hover:scale-110 group-hover:opacity-75 transition-all"
@@ -115,7 +115,7 @@ function PanitiaSection({ bagian }: { bagian: string }) {
 			<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
 				{anggota.map((orang) => {
 					return (
-						<div key={orang.img} className="h-full overflow-hidden">
+						<div key={orang.name} className="h-full overflow-hidden">
 							<div className="panitia-card-inner h-full">
 								<PanitiaCard orang={orang} bagian={bagian} />
 							</div>
