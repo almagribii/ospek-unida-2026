@@ -29,7 +29,7 @@ function PanitiaCard({
 	return (
 		// biome-ignore lint/a11y/noStaticElementInteractions: exception
 		<div
-			className="group perspective-[1000px] cursor-pointer h-full"
+			className="group perspective-[1000px] cursor-pointer h-full overflow-hidden"
 			onClick={() => setIsFlipped(!isFlipped)}
 			onKeyDown={(e) => e.key === "Enter" && setIsFlipped(!isFlipped)}
 		>
@@ -60,7 +60,7 @@ function PanitiaCard({
 				<div className="absolute inset-0 h-full w-full bg-foreground backface-hidden transform-[rotateY(180deg)] border border-foreground/10 overflow-hidden flex flex-col items-center justify-center text-center p-4">
 					<div className="absolute inset-0 flex items-center justify-center -z-10 pointer-events-none">
 						<h3
-							className={`${bagian.length > 8 ? "text-3xl" : "text-4xl"} font-mirage uppercase font-bold text-primary -rotate-45 opacity-50 select-none whitespace-nowrap`}
+							className={`${bagian.length > 8 ? "lg:text-3xl text-xl" : "lg:text-4xl text-2xl"} font-mirage uppercase font-bold text-primary -rotate-45 opacity-75 select-none whitespace-nowrap`}
 						>
 							{bagian === "penerimaan_mahasiswa_baru"
 								? "PMB"
@@ -81,6 +81,47 @@ function PanitiaCard({
 						</p>
 					</div>
 				</div>
+			</div>
+		</div>
+	);
+}
+
+function PanitiaSection({ bagian }: { bagian: string }) {
+	const containerRef = useRef<HTMLDivElement>(null);
+	const anggota = panitias[bagian];
+
+	useGSAP(
+		() => {
+			gsap.from(".panitia-card-inner", {
+				scrollTrigger: {
+					trigger: containerRef.current,
+					start: "top 80%",
+					toggleActions: "play none none reverse",
+				},
+				yPercent: 500,
+				duration: 1,
+				stagger: 0.1,
+				ease: "expo.out",
+			});
+		},
+		{ scope: containerRef },
+	);
+
+	return (
+		<div ref={containerRef} className="container max-w-5xl mx-auto px-4">
+			<h2 className="text-3xl font-mirage font-medium capitalize mb-6 text-center lg:text-start border-b border-foreground/10 pb-2">
+				{bagian.replace(/_/g, " ")}
+			</h2>
+			<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
+				{anggota.map((orang) => {
+					return (
+						<div key={orang.img} className="h-full overflow-hidden">
+							<div className="panitia-card-inner h-full">
+								<PanitiaCard orang={orang} bagian={bagian} />
+							</div>
+						</div>
+					);
+				})}
 			</div>
 		</div>
 	);
@@ -112,9 +153,12 @@ export default function Content() {
 	);
 
 	return (
-		<section ref={containerRef} className="relative w-full h-full">
+		<section
+			ref={containerRef}
+			className="relative w-full h-full overflow-x-hidden"
+		>
 			{/* Background top */}
-			<div className="h-screen w-screen absolute -z-10 top-0 bg-[linear-gradient(rgba(0,0,0,0.2),rgba(243,243,243,1)),url('/background/white_texture.webp')] bg-cover bg-center"></div>
+			<div className="h-screen w-full absolute -z-10 top-0 bg-[linear-gradient(rgba(0,0,0,0.2),rgba(243,243,243,1)),url('/background/white_texture.webp')] bg-cover bg-center"></div>
 
 			{/* Text Top */}
 			<div className="flex flex-col justify-center items-center px-4 py-2 overflow-hidden gap-2">
@@ -130,26 +174,7 @@ export default function Content() {
 			</div>
 			<div className="w-full flex flex-col justify-center items-center gap-12 pb-20 mt-10">
 				{bagians.map((bagian) => {
-					const anggota = panitias[bagian];
-
-					return (
-						<div key={bagian} className="container max-w-5xl mx-auto px-4">
-							<h2 className="text-3xl font-mirage font-medium capitalize mb-6 text-center lg:text-start border-b border-foreground/10 pb-2">
-								{bagian.replace(/_/g, " ")}
-							</h2>
-							<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
-								{anggota.map((orang) => {
-									return (
-										<PanitiaCard
-											key={orang.img}
-											orang={orang}
-											bagian={bagian}
-										/>
-									);
-								})}
-							</div>
-						</div>
-					);
+					return <PanitiaSection key={bagian} bagian={bagian} />;
 				})}
 			</div>
 		</section>

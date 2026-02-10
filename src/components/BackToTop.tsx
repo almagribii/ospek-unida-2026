@@ -63,7 +63,7 @@ export default function BackToTop({ length }: { length: number }) {
 			type="button"
 			style={{ visibility: "hidden" }}
 			// FIXED: Added z-[999], fixed position syntax, and adjusted size to h-14 (56px)
-			className="fixed z-999 bottom-[5%] lg:right-[2%] lg:left-auto lg:translate-x-0 lg:translate-y-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer h-16 w-16 p-4 bg-primary drop-shadow-lg hover:bg-primary-muted transition-colors text-background rounded-full flex items-center justify-center ease-linear"
+			className="fixed z-100 bottom-[5%] lg:right-[2%] lg:left-auto lg:translate-x-0 lg:translate-y-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer h-16 w-16 p-4 bg-primary drop-shadow-lg hover:bg-primary-muted transition-colors text-background rounded-full flex items-center justify-center ease-linear"
 		>
 			<ArrowUpIcon className="w-6 h-6" />
 		</button>

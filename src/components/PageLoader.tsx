@@ -28,7 +28,7 @@ export default function PageLoader({
 		}, 500);
 
 		return () => clearTimeout(timer);
-	}, []);
+	}, [onComplete]);
 
 	if (!isVisible) return null;
 
