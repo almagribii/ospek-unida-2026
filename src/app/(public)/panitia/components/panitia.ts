@@ -67,7 +67,7 @@ export const panitias: Panitias = {
 			img: "ridho_ilham",
 		},
 		{ name: "Aldhino", prodi: "Manajemen", semester: 5, img: "aldhino" },
-		{ name: "Rafie", prodi: "Manajemen", semester: 5, img: "rafie" },
+		{ name: "Muhammad Rafie", prodi: "Manajemen", semester: 5, img: "rafie" },
 		{
 			name: "Salim Musyafa",
 			prodi: "Hubungan Internasional",
@@ -86,7 +86,6 @@ export const panitias: Panitias = {
 			name: "Sidiq",
 			prodi: "Pendidikan Bahasa Arab",
 			semester: 5,
-			img: "sidiq",
 		},
 		{
 			name: "Fauzan Hibaturrahman",
@@ -98,7 +97,6 @@ export const panitias: Panitias = {
 			name: "Zaki Su'aidi",
 			prodi: "Ekonomi Islam",
 			semester: 5,
-			img: "zaki_suaidi",
 		},
 		{
 			name: "Ilham Ramadhan",
@@ -113,34 +111,31 @@ export const panitias: Panitias = {
 			img: "arifa_bintang",
 		},
 		{
-			name: "Firmannuril",
+			name: "Firman Nurin",
 			prodi: "Studi Agama-Agama",
 			semester: 5,
-			img: "firmannuril",
+			img: "firman_nurin",
 		},
 		{
 			name: "Andhika Dzakwan",
 			prodi: "Manajemen",
 			semester: 5,
-			img: "andhika_dzakwan",
 		},
 		{
 			name: "Nandhika",
 			prodi: "Hubungan Internasional",
 			semester: 5,
-			img: "nandhika",
 		},
 		{
-			name: "Hanif",
+			name: "Ahmad Hanif",
 			prodi: "Pendidikan Bahasa Arab",
 			semester: 5,
-			img: "hanif",
+			img: "ahmad_hanif",
 		},
 		{
 			name: "Naufal Dzaki",
 			prodi: "Hubungan Internasional",
 			semester: 5,
-			img: "naufal_dzaki",
 		},
 		{
 			name: "Dimitri Ulung",
@@ -158,13 +153,11 @@ export const panitias: Panitias = {
 			name: "Brilliant Daffa",
 			prodi: "Keselamatan & Kesehatan Kerja",
 			semester: 5,
-			img: "brilliant_daffa",
 		},
 		{
 			name: "Aditya Al aziz",
 			prodi: "Pendidikan Agama Islam",
 			semester: 3,
-			img: "aditya_al_aziz",
 		},
 	],
 	designer: [
