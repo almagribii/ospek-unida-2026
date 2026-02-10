@@ -3,7 +3,11 @@
 import gsap from "gsap";
 import { useEffect, useRef, useState } from "react";
 
-export default function PageLoader() {
+export default function PageLoader({
+	onComplete,
+}: {
+	onComplete?: () => void;
+}) {
 	const loaderRef = useRef<HTMLDivElement>(null);
 	const [isVisible, setIsVisible] = useState(true);
 
@@ -15,7 +19,10 @@ export default function PageLoader() {
 					yPercent: -100,
 					duration: 0.8,
 					ease: "power3.inOut",
-					onComplete: () => setIsVisible(false),
+					onComplete: () => {
+						setIsVisible(false);
+						if (onComplete) onComplete();
+					},
 				});
 			}
 		}, 500);

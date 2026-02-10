@@ -1,3 +1,9 @@
+import Content from "./components/Content";
+
 export default function Panitia() {
-	return <div>Panitia</div>;
+	return (
+		<>
+			<Content />
+		</>
+	);
 }

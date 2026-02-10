@@ -3,7 +3,7 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ReactLenis } from "lenis/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import PageLoader from "@/components/PageLoader";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -15,6 +15,7 @@ export default function Layout({
 }>) {
 	// biome-ignore lint/suspicious/noExplicitAny: for gsap
 	const lenisRef = useRef<any>(null);
+	const [isLoaded, setIsLoaded] = useState(false);
 
 	useEffect(() => {
 		let rafId = 0;
@@ -54,9 +55,9 @@ export default function Layout({
 	}, []);
 	return (
 		<main>
-			<PageLoader />
+			<PageLoader onComplete={() => setIsLoaded(true)} />
 			<ReactLenis root ref={lenisRef} autoRaf={false} />
-			{children}
+			{isLoaded && children}
 		</main>
 	);
 }
