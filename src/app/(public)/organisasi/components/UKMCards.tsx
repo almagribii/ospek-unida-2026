@@ -41,7 +41,6 @@ export function UKMCards({ activeGender }: UKMCardsProps) {
 
 								<div className="absolute inset-0 bg-linear-to-t from-black/40 via-black/10 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
 
-								<div className="absolute inset-0 bg-linear-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
 
 								<div className="absolute top-0 left-0 w-12 h-12 border-t-2 border-l-2 border-white/20 group-hover:border-white/70 transition-all duration-500" />
 								<div className="absolute bottom-0 right-0 w-12 h-12 border-b-2 border-r-2 border-white/20 group-hover:border-white/70 transition-all duration-500" />
