@@ -32,11 +32,11 @@ export const dataUkmPutra: dataUkm[] = [
 
 	{
 		title: "UKM Dzikrussalam",
-		image: "/timeline/awal_kedatangan.png",
+		image: "/ukm/dzikru.webp",
 	},
 	{
 		title: "UKM Futsal",
-		image: "/timeline/awal_kedatangan.png",
+		image: "/ukm/futsal.webp",
 	},
 	{
 		title: "UKM Dimensi Band",
@@ -56,7 +56,7 @@ export const dataUkmPutra: dataUkm[] = [
 	},
 	{
 		title: "UKM Luqmanul Hakim",
-		image: "/timeline/awal_kedatangan.png",
+		image: "/ukm/luqman.webp",
 	},
 	{
 		title: "UKM Resimen Mahasiswa",

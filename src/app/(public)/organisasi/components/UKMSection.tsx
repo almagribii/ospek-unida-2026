@@ -5,7 +5,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { type JSX, useLayoutEffect, useRef, useState } from "react";
 import { UKMCards } from "./UKMCards";
 import { UKMCounter } from "./UKMCounter";
-import { UKMTabs } from "./UKMTabs";
 import { dataUkmPutra, dataUkmPutri } from "./ukm-data";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -101,7 +100,7 @@ export function UKMSection(): JSX.Element {
 
 							gsap.set(card, {
 								left: centerX,
-								top: centerY + radius,
+								top: centerY - 50 + radius,
 								xPercent: -50,
 								yPercent: -50,
 								x: x,
@@ -199,11 +198,12 @@ export function UKMSection(): JSX.Element {
 	return (
 		<>
 			<section className="team" ref={sectionRef}>
-				<UKMTabs activeGender={activeGender} onGenderChange={setActiveGender} />
 				<UKMCards activeGender={activeGender} />
 			</section>
 			<UKMCounter
 				activeIndex={activeIndex}
+				activeGender={activeGender}
+				onGenderChange={setActiveGender}
 				members={activeGender === "mahasiswa" ? dataUkmPutra : dataUkmPutri}
 			/>
 		</>
