@@ -29,7 +29,7 @@ function PanitiaCard({
 	return (
 		// biome-ignore lint/a11y/noStaticElementInteractions: exception
 		<div
-			className="group perspective-[1000px] cursor-pointer h-full overflow-hidden"
+			className="group perspective-[1000px] cursor-pointer h-full py-4 overflow-hidden"
 			onClick={() => setIsFlipped(!isFlipped)}
 			onKeyDown={(e) => e.key === "Enter" && setIsFlipped(!isFlipped)}
 		>
