@@ -57,11 +57,7 @@ export default function Slide5({ isActive }: SlideProps) {
 								yang tidak langsung terlihat.
 							</p>
 
-							<p className="text-sm sm:text-base md:text-lg leading-relaxed md:px-6 text-justify font-bold">
-								Dengan demikian, pena menjadi inti makna: simbol kesungguhan
-								intelektual yang jernih, dalam, dan berorientasi pada pencarian
-								hikmah.
-							</p>
+							
 						</div>
 					</div>
 				</div>
