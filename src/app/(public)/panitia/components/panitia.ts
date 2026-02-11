@@ -455,10 +455,10 @@ export const panitias: Panitias = {
 			img: "saddam_maulana",
 		},
 		{
-			name: "Nurul Huda",
+			name: "Huda Fauzan",
 			prodi: "Hubungan Internasional",
 			semester: 5,
-			img: "nurul_huda",
+			img: "huda_fauzan",
 		},
 		{
 			name: "Nur Hakim",
@@ -467,10 +467,10 @@ export const panitias: Panitias = {
 			img: "nur_hakim",
 		},
 		{
-			name: "Azka Nasution",
+			name: "Azka Hadian",
 			prodi: "Pendidikan Bahasa Arab",
 			semester: 5,
-			img: "azka_nasution",
+			img: "azka_hadian",
 		},
 		{
 			name: "Ahmada Shulton",
@@ -478,20 +478,19 @@ export const panitias: Panitias = {
 			semester: 5,
 			img: "ahmada_shulton",
 		},
-		{ name: "Valdeze", prodi: "", semester: 3, img: "valdeze" },
+		{ name: "Valdeze", prodi: "", semester: 3 },
 	],
 	perlengkapan: [
 		{
-			name: "Fauzan",
+			name: "Fauzan Syahrul",
 			prodi: "Ilmu Qur'an dan Tafsir",
 			semester: 5,
-			img: "fauzan",
+			img: "fauzan_syahrul",
 		},
 		{
 			name: "Ilham Aqila",
 			prodi: "Ilmu Qur'an dan Tafsir",
 			semester: 5,
-			img: "ilham_aqila",
 		},
 		{
 			name: "Irwin Rizkillah",
@@ -527,25 +526,22 @@ export const panitias: Panitias = {
 			name: "Bayu Saputra",
 			prodi: "Teknik Informatika",
 			semester: 5,
-			img: "bayu_saputra",
 		},
 		{
-			name: "Aidil Saputra",
+			name: "Aydil Saputra",
 			prodi: "Ilmu Qur'an dan Tafsir",
 			semester: 5,
-			img: "aidil_saputra",
+			img: "aydil_saputra",
 		},
 		{
 			name: "Ashim Hanif",
 			prodi: "Ekonomi Islam",
 			semester: 5,
-			img: "ashim_hanif",
 		},
 		{
 			name: "Syahan Syah",
 			prodi: "Teknik Informatika",
 			semester: 5,
-			img: "syahan_syah",
 		},
 		{
 			name: "Wafa Al Faiz",
@@ -557,31 +553,27 @@ export const panitias: Panitias = {
 			name: "Afif Aufarozi",
 			prodi: "Manajemen",
 			semester: 5,
-			img: "afif_aufarozi",
 		},
 		{
 			name: "Fadhil Muhammad Hasan",
 			prodi: "Keselamatan & Kesehatan Kerja",
 			semester: 5,
-			img: "fadhil_muhammad",
 		},
 		{
-			name: "Haidar Hilmi Habibi",
+			name: "Haidar Hylmi Habibi",
 			prodi: "Pendidikan Agama Islam",
 			semester: 5,
-			img: "haidar_hilmi",
+			img: "haidar_hylmi",
 		},
 		{
 			name: "Akbar Satyatama",
 			prodi: "Manajemen",
 			semester: 3,
-			img: "akbar_satyatama",
 		},
 		{
 			name: "Fatih Machael",
 			prodi: "Manajemen",
 			semester: 3,
-			img: "fatih_machael",
 		},
 	],
 	konsumsi: [
@@ -598,16 +590,15 @@ export const panitias: Panitias = {
 			img: "lucky_fathul",
 		},
 		{
-			name: "Faysal Yahya",
+			name: "Faisal Yahya",
 			prodi: "Pendidikan Bahasa Arab",
 			semester: 5,
-			img: "faysal_yahya",
+			img: "faisal_yahya",
 		},
 		{
 			name: "Ramadan Chairul",
 			prodi: "Ilmu Qur'an dan Tafsir",
 			semester: 5,
-			img: "ramadan_chairul",
 		},
 		{
 			name: "Afif Alhakim",
@@ -628,10 +619,10 @@ export const panitias: Panitias = {
 			img: "fikri_rahmat",
 		},
 		{
-			name: "Lutfil Mulki",
+			name: "Lutfi Mulki",
 			prodi: "Pendidikan Agama Islam",
 			semester: 5,
-			img: "lutfil_mulki",
+			img: "lutfi_mulki",
 		},
 	],
 	bazzar: [
@@ -657,13 +648,11 @@ export const panitias: Panitias = {
 			name: "Labiq Alfahrozi",
 			prodi: "Aqidah Filsafat Islam",
 			semester: 5,
-			img: "labiq_alfahrozi",
 		},
 		{
 			name: "Galih Alfariski",
 			prodi: "Teknik Informatika",
 			semester: 5,
-			img: "galih_alfariski",
 		},
 		{
 			name: "Malik Adnan",
@@ -681,7 +670,6 @@ export const panitias: Panitias = {
 			name: "Imam Ihsan",
 			prodi: "Hubungan Internasional",
 			semester: 5,
-			img: "imam_ihsan",
 		},
 		{
 			name: "Rafli Ikmal",
@@ -699,7 +687,6 @@ export const panitias: Panitias = {
 			name: "Salman Albani",
 			prodi: "Ilmu Komunikasi",
 			semester: 5,
-			img: "salman_albani",
 		},
 	],
 	humas: [
@@ -743,7 +730,6 @@ export const panitias: Panitias = {
 			name: "Riski Cahya",
 			prodi: "Perbandingan Madzhab dan Hukum",
 			semester: 5,
-			img: "riski_cahya",
 		},
 		{
 			name: "Andra Alijza",
@@ -761,7 +747,6 @@ export const panitias: Panitias = {
 			name: "Zidhan Panji",
 			prodi: "Hubungan Internasional",
 			semester: 3,
-			img: "zidhan_panji",
 		},
 	],
 	kesehatan: [
@@ -775,19 +760,16 @@ export const panitias: Panitias = {
 			name: "Salman Alfarizi",
 			prodi: "Keselamatan & Kesehatan Kerja",
 			semester: 5,
-			img: "salman_alfarizi",
 		},
 		{
 			name: "Wafi Saif Azzam",
 			prodi: "Keselamatan & Kesehatan Kerja",
 			semester: 5,
-			img: "wafi_saif",
 		},
 		{
 			name: "Rafly Husein",
 			prodi: "Hubungan Internasional",
 			semester: 5,
-			img: "rafly_husein",
 		},
 	],
 	keilmuan: [
@@ -795,7 +777,6 @@ export const panitias: Panitias = {
 			name: "Reyhan Alfinata",
 			prodi: "Hubungan Internasional",
 			semester: 5,
-			img: "reyhan_alfinata",
 		},
 		{
 			name: "Fatih Khalil",
@@ -816,16 +797,15 @@ export const panitias: Panitias = {
 			img: "fahri_rabbani",
 		},
 		{
-			name: "Nabil Taqqiy",
+			name: "Nabil Taqiy",
 			prodi: "Keselamatan & Kesehatan Kerja",
 			semester: 5,
-			img: "nabil_taqqiy",
+			img: "nabil_taqiy",
 		},
 		{
 			name: "Hendi Arya",
 			prodi: "Hubungan Internasional",
 			semester: 5,
-			img: "hendi_arya",
 		},
 	],
 	penerimaan_mahasiswa_baru: [
