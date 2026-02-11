@@ -58,6 +58,8 @@ export default function Slider() {
 	const isAnimating = useRef(false);
 	const [isCowo, setIsCowo] = useState(true);
 
+	const activeImageYPercent = isCowo ? 15 : 5;
+
 	// Helper to handle cyclic indices
 	const getIndex = (index: number) => {
 		return (
@@ -158,8 +160,8 @@ export default function Slider() {
 				if (img)
 					gsap.set(img, {
 						rotation: -config.rotation,
-						scale: 1.2,
-						yPercent: isActive ? 15 : 0,
+						scale: isCowo ? 1.2 : 1,
+						yPercent: isActive && isCowo ? 15 : isActive && !isCowo ? 5 : 0,
 					});
 			});
 
@@ -307,8 +309,8 @@ export default function Slider() {
 					if (img) {
 						gsap.set(img, {
 							rotation: 0,
-							scale: 1.2,
-							yPercent: 15,
+							scale: isCowo ? 1.2 : 1,
+							yPercent: activeImageYPercent,
 						});
 					}
 
@@ -435,8 +437,8 @@ export default function Slider() {
 						if (img) {
 							gsap.set(img, {
 								rotation: -pos.rotation,
-								scale: 1.2,
-								yPercent: isActive ? 15 : 0,
+								scale: isCowo ? 1.2 : 1,
+								yPercent: isActive && isCowo ? 15 : isActive && !isCowo ? 5 : 0,
 							});
 						}
 					});
@@ -518,7 +520,12 @@ export default function Slider() {
 
 				const img = incomingSlide.querySelector("img");
 				if (img) {
-					gsap.to(img, { rotation: 0, yPercent: 15, duration: 2, ease: "hop" });
+					gsap.to(img, {
+						rotation: 0,
+						yPercent: activeImageYPercent,
+						duration: 2,
+						ease: "hop",
+					});
 				}
 			}
 
@@ -577,7 +584,7 @@ export default function Slider() {
 				if (img) {
 					gsap.set(img, {
 						rotation: -slidePositions[newNeighborPos].rotation,
-						scale: 1.2,
+						scale: isCowo ? 1.2 : 1,
 						yPercent: 0,
 					});
 				}
