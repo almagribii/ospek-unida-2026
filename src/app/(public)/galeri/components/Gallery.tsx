@@ -385,7 +385,7 @@ export default function Gallery() {
 				<div
 					ref={containerRef}
 					onPointerDown={handlePointerDown}
-					className="relative w-screen h-screen overflow-hidden cursor-grab touch-none bg-[linear-gradient(rgba(0,0,0,0.2),rgba(243,243,243,1)),url('/background/white_texture.webp')] bg-cover bg-center select-none"
+					className="relative w-full h-screen overflow-hidden cursor-grab touch-none bg-[linear-gradient(rgba(0,0,0,0.2),rgba(243,243,243,1)),url('/background/white_texture.webp')] bg-cover bg-center select-none"
 				>
 					<div
 						ref={canvasRef}
