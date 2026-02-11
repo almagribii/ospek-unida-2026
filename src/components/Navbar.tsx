@@ -76,7 +76,7 @@ export default function Navbar({
 	brandHref = "/",
 }: NavbarProps) {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	const [isFormSectionInView, setIsFormSectionInView] = useState(false);
+	const [isFormSectionInView] = useState(false);
 
 	const { isHidden: ctxHidden, isAtTop: ctxAtTop } = useNavbar();
 	const pathname = usePathname();
@@ -468,7 +468,7 @@ export default function Navbar({
 	return (
 		<div ref={containerRef}>
 			<nav
-				className={`nav fixed top-0 left-0 z-[999] flex w-full flex-row items-stretch justify-between bg-transparent px-6 py-4 transition-opacity duration-200 ease-out ${
+				className={`nav fixed top-0 left-0 z-999 flex w-full flex-row items-stretch justify-between bg-transparent px-6 py-4 transition-opacity duration-200 ease-out ${
 					isHidden ? "opacity-0 pointer-events-none" : "opacity-100"
 				}`}
 			>
@@ -526,7 +526,7 @@ export default function Navbar({
 			{/** biome-ignore lint/a11y/noStaticElementInteractions: ntah lah */}
 			<div
 				ref={overlayRef}
-				className={`fixed top-0 left-0 w-screen h-screen bg-foreground text-[#ffdda1] z-[998] overflow-hidden ${
+				className={`fixed top-0 left-0 w-screen h-screen bg-foreground text-[#ffdda1] z-998 overflow-hidden ${
 					isMenuOpen ? "pointer-events-auto" : "pointer-events-none"
 				}`}
 				style={{ clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)" }} // Initial state

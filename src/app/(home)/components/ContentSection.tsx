@@ -3,6 +3,7 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
 import {
 	BanknoteIcon,
 	CalendarDaysIcon,
@@ -14,7 +15,7 @@ import {
 import Link from "next/link";
 import { type ReactNode, useRef } from "react";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 // ---------------------------------------------------------------------------
 // SLIDE DATA — SECTION 1 (Info slides)
@@ -165,29 +166,6 @@ const PAGE_SLIDES: PageSlideData[] = [
 ];
 
 // ---------------------------------------------------------------------------
-// SPLIT TEXT UTILITY
-// ---------------------------------------------------------------------------
-
-function SplitWords({
-	text,
-	className = "",
-}: {
-	text: string;
-	className?: string;
-}) {
-	return (
-		<span className={className}>
-			{text.split(" ").map((word, i) => (
-				// biome-ignore lint/suspicious/noArrayIndexKey: static list
-				<span key={i} className="inline-block overflow-hidden">
-					<span className="split-word inline-block">{word}&nbsp;</span>
-				</span>
-			))}
-		</span>
-	);
-}
-
-// ---------------------------------------------------------------------------
 // INFO SLIDE (Section 1)
 // ---------------------------------------------------------------------------
 
@@ -199,7 +177,7 @@ function InfoSlide({ data, index }: { data: SlideData; index: number }) {
 
 	return (
 		<div
-			className="info-slide flex h-screen w-screen shrink-0 lg:items-center overflow-hidden"
+			className="info-slide flex h-dvh w-screen shrink-0 lg:items-center overflow-hidden"
 			data-index={index}
 		>
 			<div
@@ -208,13 +186,13 @@ function InfoSlide({ data, index }: { data: SlideData; index: number }) {
 				}`}
 			>
 				{/* Image */}
-				<div className="slide-image relative w-full h-full lg:max-h-full max-h-112.5 overflow-hidden rounded-sm lg:w-1/2">
-					<div className="aspect-square w-full h-full overflow-hidden">
+				<div className="slide-image relative w-full h-full lg:max-h-full max-h-62.5 overflow-hidden rounded-sm lg:w-1/2">
+					<div className="lg:aspect-square w-full h-full lg:max-h-full max-h-62.5 overflow-hidden">
 						{/* biome-ignore lint/performance/noImgElement: static gallery image */}
 						<img
 							src={data.image}
 							alt={data.imageAlt}
-							className="h-full w-full object-cover"
+							className="h-full lg:max-h-full max-h-62.5 w-full object-cover"
 							loading="lazy"
 							decoding="async"
 						/>
@@ -229,14 +207,14 @@ function InfoSlide({ data, index }: { data: SlideData; index: number }) {
 						{data.tag}
 					</p>
 					<h2 className="slide-heading font-mirage text-3xl font-bold leading-tight tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-						<SplitWords text={data.heading} />
+						{data.heading}
 					</h2>
 					<p className="slide-subheading font-mirage text-lg font-medium tracking-tight text-foreground/60 sm:text-xl lg:text-2xl">
-						<SplitWords text={data.subheading} />
+						{data.subheading}
 					</p>
 					<div className={`slide-divider h-0.5 w-12 ${accentBg}`} />
 					<p className="slide-body max-w-lg font-product-sans text-sm leading-relaxed text-foreground/70 sm:text-base lg:text-lg">
-						<SplitWords text={data.body} />
+						{data.body}
 					</p>
 				</div>
 			</div>
@@ -283,7 +261,7 @@ function PageSlide({ data, index }: { data: PageSlideData; index: number }) {
 							isDark ? "text-background" : "text-background"
 						}`}
 					>
-						<SplitWords text={data.title} />
+						{data.title}
 					</h3>
 
 					{/* Description */}
@@ -292,7 +270,7 @@ function PageSlide({ data, index }: { data: PageSlideData; index: number }) {
 							isDark ? "text-background/60" : "text-background/70"
 						}`}
 					>
-						<SplitWords text={data.description} />
+						{data.description}
 					</p>
 
 					{/* Button */}
@@ -328,11 +306,11 @@ function TransitionSlide() {
 					Jelajahi Lebih
 				</p>
 				<h2 className="transition-heading font-mirage text-4xl font-bold leading-tight tracking-tight text-background sm:text-5xl lg:text-7xl">
-					<SplitWords text="Apa Saja yang Tersedia?" />
+					Apa Saja yang Tersedia?
 				</h2>
 				<div className="transition-line mt-4 h-0.5 w-0 bg-secondary" />
 				<p className="transition-sub font-product-sans text-base leading-relaxed text-background/50 sm:text-lg lg:text-xl">
-					<SplitWords text="Swipe terus untuk menjelajahi halaman-halaman AKHYAR 2026." />
+					Swipe terus untuk menjelajahi halaman-halaman AKHYAR 2026.
 				</p>
 			</div>
 		</div>
@@ -351,10 +329,11 @@ function Outro() {
 					AKHYAR 2026
 				</p>
 				<h2 className="outro-heading mb-6 font-mirage text-3xl font-bold leading-tight tracking-tight text-background sm:text-4xl lg:text-5xl">
-					<SplitWords text="Siap Memulai Perjalananmu?" />
+					Siap Memulai Perjalananmu?
 				</h2>
 				<p className="outro-body font-product-sans text-base leading-relaxed text-background/60 sm:text-lg">
-					<SplitWords text="Mari bersama-sama menulis cerita baru di Universitas Darussalam Gontor." />
+					Mari bersama-sama menulis cerita baru di Universitas Darussalam
+					Gontor.
 				</p>
 			</div>
 		</section>
@@ -375,6 +354,17 @@ export function ContentSection() {
 			const track = horizontalRef.current;
 			const wrapper = sectionRef.current;
 			if (!track || !wrapper) return;
+
+			const splitInstances: SplitText[] = [];
+			const splitWords = (element: Element | null) => {
+				if (!element) return null;
+				const split = new SplitText(element, {
+					type: "words",
+					wordsClass: "split-word",
+				});
+				splitInstances.push(split);
+				return split.words;
+			};
 
 			const panelCount = track.querySelectorAll(
 				".info-slide, .transition-slide, .page-slide",
@@ -407,14 +397,12 @@ export function ContentSection() {
 			infoSlides.forEach((slide, i) => {
 				const image = slide.querySelector(".slide-image");
 				const tag = slide.querySelector(".slide-tag");
-				const headingWords = slide.querySelectorAll(
-					".slide-heading .split-word",
-				);
-				const subheadingWords = slide.querySelectorAll(
-					".slide-subheading .split-word",
+				const headingWords = splitWords(slide.querySelector(".slide-heading"));
+				const subheadingWords = splitWords(
+					slide.querySelector(".slide-subheading"),
 				);
 				const divider = slide.querySelector(".slide-divider");
-				const bodyWords = slide.querySelectorAll(".slide-body .split-word");
+				const bodyWords = splitWords(slide.querySelector(".slide-body"));
 
 				// SLIDE 1: Animate on vertical scroll (before pinning)
 				// SLIDE 2+: Animate on horizontal scroll (during pinning)
@@ -460,7 +448,7 @@ export function ContentSection() {
 					);
 				}
 
-				if (headingWords.length > 0) {
+				if (headingWords && headingWords.length > 0) {
 					tl.fromTo(
 						headingWords,
 						{ y: "100%", autoAlpha: 0 },
@@ -475,7 +463,7 @@ export function ContentSection() {
 					);
 				}
 
-				if (subheadingWords.length > 0) {
+				if (subheadingWords && subheadingWords.length > 0) {
 					tl.fromTo(
 						subheadingWords,
 						{ y: "100%", autoAlpha: 0 },
@@ -499,7 +487,7 @@ export function ContentSection() {
 					);
 				}
 
-				if (bodyWords.length > 0) {
+				if (bodyWords && bodyWords.length > 0) {
 					tl.fromTo(
 						bodyWords,
 						{ y: "60%", autoAlpha: 0 },
@@ -520,12 +508,12 @@ export function ContentSection() {
 				containerRef.current?.querySelector(".transition-slide");
 			if (transSlide) {
 				const transTag = transSlide.querySelector(".transition-tag");
-				const transHeadingWords = transSlide.querySelectorAll(
-					".transition-heading .split-word",
+				const transHeadingWords = splitWords(
+					transSlide.querySelector(".transition-heading"),
 				);
 				const transLine = transSlide.querySelector(".transition-line");
-				const transSubWords = transSlide.querySelectorAll(
-					".transition-sub .split-word",
+				const transSubWords = splitWords(
+					transSlide.querySelector(".transition-sub"),
 				);
 
 				const transTl = gsap.timeline({
@@ -547,7 +535,7 @@ export function ContentSection() {
 					);
 				}
 
-				if (transHeadingWords.length > 0) {
+				if (transHeadingWords && transHeadingWords.length > 0) {
 					transTl.fromTo(
 						transHeadingWords,
 						{ y: "120%", autoAlpha: 0 },
@@ -570,7 +558,7 @@ export function ContentSection() {
 					);
 				}
 
-				if (transSubWords.length > 0) {
+				if (transSubWords && transSubWords.length > 0) {
 					transTl.fromTo(
 						transSubWords,
 						{ y: "80%", autoAlpha: 0 },
@@ -591,12 +579,8 @@ export function ContentSection() {
 			for (const slide of pageSlides) {
 				const number = slide.querySelector(".page-slide-number");
 				const icon = slide.querySelector(".page-slide-icon");
-				const titleWords = slide.querySelectorAll(
-					".page-slide-title .split-word",
-				);
-				const descWords = slide.querySelectorAll(
-					".page-slide-desc .split-word",
-				);
+				const titleWords = splitWords(slide.querySelector(".page-slide-title"));
+				const descWords = splitWords(slide.querySelector(".page-slide-desc"));
 				const btn = slide.querySelector(".page-slide-btn");
 
 				const tl = gsap.timeline({
@@ -639,7 +623,7 @@ export function ContentSection() {
 					);
 				}
 
-				if (titleWords.length > 0) {
+				if (titleWords && titleWords.length > 0) {
 					tl.fromTo(
 						titleWords,
 						{ y: "100%", autoAlpha: 0 },
@@ -654,7 +638,7 @@ export function ContentSection() {
 					);
 				}
 
-				if (descWords.length > 0) {
+				if (descWords && descWords.length > 0) {
 					tl.fromTo(
 						descWords,
 						{ y: "60%", autoAlpha: 0 },
@@ -683,12 +667,10 @@ export function ContentSection() {
 			const outro = containerRef.current?.querySelector(".content-outro");
 			if (outro) {
 				const outroTag = outro.querySelector(".outro-tag");
-				const outroHeadingWords = outro.querySelectorAll(
-					".outro-heading .split-word",
+				const outroHeadingWords = splitWords(
+					outro.querySelector(".outro-heading"),
 				);
-				const outroBodyWords = outro.querySelectorAll(
-					".outro-body .split-word",
-				);
+				const outroBodyWords = splitWords(outro.querySelector(".outro-body"));
 
 				const outroTl = gsap.timeline({
 					scrollTrigger: {
@@ -708,7 +690,7 @@ export function ContentSection() {
 					);
 				}
 
-				if (outroHeadingWords.length > 0) {
+				if (outroHeadingWords && outroHeadingWords.length > 0) {
 					outroTl.fromTo(
 						outroHeadingWords,
 						{ y: "100%", autoAlpha: 0 },
@@ -723,7 +705,7 @@ export function ContentSection() {
 					);
 				}
 
-				if (outroBodyWords.length > 0) {
+				if (outroBodyWords && outroBodyWords.length > 0) {
 					outroTl.fromTo(
 						outroBodyWords,
 						{ y: "60%", autoAlpha: 0 },
@@ -738,6 +720,10 @@ export function ContentSection() {
 					);
 				}
 			}
+			return () => {
+				// biome-ignore lint/suspicious/useIterableCallbackReturn: why not
+				splitInstances.forEach((instance) => instance.revert());
+			};
 		},
 		{ scope: containerRef },
 	);

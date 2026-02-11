@@ -33,7 +33,7 @@ const TimelineItem = React.forwardRef<
 		>
 			{/* Vertical Line for Mobile (Hidden on Desktop) */}
 			{/* Placed absolute behind the dot. Dot is w-12 (3rem), so center is left-6 (1.5rem). */}
-			<div className="absolute left-6 top-12 bottom-[-2rem] w-0.5 bg-primary/50 -z-0 md:hidden last:bottom-0 [.last-item_&]:hidden" />
+			<div className="absolute left-6 top-12 -bottom-8 w-0.5 bg-primary/50 z-0 md:hidden last:bottom-0 in-[.last-item]:hidden" />
 
 			{children}
 		</div>
@@ -61,7 +61,7 @@ const TimelineContent = React.forwardRef<
 		ref={ref}
 		// Mobile: Text left, no margin top.
 		// Desktop: Text center, margin top, fixed max-width.
-		className={`text-left md:text-center space-y-1 md:mt-4 md:max-w-[200px] ${className || ""}`}
+		className={`text-left md:text-center space-y-1 md:mt-4 md:max-w-50 ${className || ""}`}
 		{...props}
 	/>
 ));
@@ -108,7 +108,7 @@ const Timeline = React.forwardRef<HTMLDivElement, TimelineProps>(
 							>
 								{/* Horizontal Connector Line (Desktop Only) */}
 								<div
-									className="hidden md:block absolute top-6 h-0.5 bg-primary-muted/50 -z-0"
+									className="hidden md:block absolute top-6 h-0.5 bg-primary-muted/50 z-0"
 									style={{ left: offset, right: offset }}
 								/>
 
@@ -125,8 +125,12 @@ const Timeline = React.forwardRef<HTMLDivElement, TimelineProps>(
 											{/* We clone the child to inject a class if it's the last item, 
                                                 allowing us to hide the vertical connector line via CSS */}
 											{React.isValidElement(child)
-												? React.cloneElement(child as React.ReactElement<any>, {
-														className: `${(child.props as any).className || ""} ${isLastItem ? "last-item" : ""}`,
+												? // biome-ignore lint/suspicious/noExplicitAny: idk
+													React.cloneElement(child as React.ReactElement<any>, {
+														className: `${
+															// biome-ignore lint/suspicious/noExplicitAny: idk
+															(child.props as any).className || ""
+														} ${isLastItem ? "last-item" : ""}`,
 													})
 												: child}
 										</div>
@@ -171,7 +175,7 @@ function CurveConnector({
 
 	return (
 		<div
-			className={`absolute top-6 h-[calc(100%+0.2rem)] border-primary-muted/50 -z-0 ${classes}`}
+			className={`absolute top-6 h-[calc(100%+0.2rem)] border-primary-muted/50 z-0 ${classes}`}
 			style={{
 				width: width,
 			}}
