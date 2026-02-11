@@ -1,5 +1,6 @@
 import { NavbarProvider } from "@/context/NavbarContext";
 import "./globals.css";
+import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 
 const nonEmpty = (value: string | undefined) => {
@@ -84,6 +85,7 @@ export default function RootLayout({
 						<Navbar />
 					</header>
 					{children}
+					<Footer />
 				</NavbarProvider>
 			</body>
 		</html>
