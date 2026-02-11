@@ -57,7 +57,7 @@ const CONTACT = [
 
 export default function Footer() {
 	return (
-		<footer className="w-full bg-foreground text-background pt-20 pb-10 px-6 sm:px-10 lg:px-20 overflow-hidden relative font-sans -mt-10 z-50">
+		<footer className="w-full bg-foreground text-background pt-20 pb-10 px-6 sm:px-10 lg:px-20 overflow-hidden relative font-sans z-50">
 			<div className="max-w-7xl mx-auto flex flex-col gap-16 relative z-10">
 				{/* Top Section */}
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
