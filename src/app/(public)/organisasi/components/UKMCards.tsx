@@ -1,11 +1,12 @@
 import Image from "next/image";
-import { dataUkmPutra, dataUkmPutri } from "./ukm-data";
+import { type dataUkm, dataUkmPutra, dataUkmPutri } from "./ukm-data";
 
 interface UKMCardsProps {
 	activeGender: "mahasiswa" | "mahasiswi";
+	onSelectUKM: (ukm: dataUkm) => void;
 }
 
-export function UKMCards({ activeGender }: UKMCardsProps) {
+export function UKMCards({ activeGender, onSelectUKM }: UKMCardsProps) {
 	const members = activeGender === "mahasiswa" ? dataUkmPutra : dataUkmPutri;
 
 	return (
@@ -16,9 +17,12 @@ export function UKMCards({ activeGender }: UKMCardsProps) {
 				</h2>
 			</div>
 			{members.map((member) => (
-				<div
-					className="card pointer-events-auto group opacity-0 transform-gpu"
+				<button
+					className="card pointer-events-auto group opacity-0 transform-gpu cursor-pointer"
 					key={member.title}
+					onClick={() => onSelectUKM(member)}
+					type="button"
+					aria-label={`Buka detail ${member.title}`}
 				>
 					<div className="relative flex flex-col">
 						<div className="absolute -inset-0.5 bg-linear-to-r from-blue-500/60 via-purple-500/60 to-pink-500/60 rounded-3xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 hidden lg:block" />
@@ -41,7 +45,6 @@ export function UKMCards({ activeGender }: UKMCardsProps) {
 
 								<div className="absolute inset-0 bg-linear-to-t from-black/40 via-black/10 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
 
-
 								<div className="absolute top-0 left-0 w-12 h-12 border-t-2 border-l-2 border-white/20 group-hover:border-white/70 transition-all duration-500" />
 								<div className="absolute bottom-0 right-0 w-12 h-12 border-b-2 border-r-2 border-white/20 group-hover:border-white/70 transition-all duration-500" />
 							</div>
@@ -49,7 +52,7 @@ export function UKMCards({ activeGender }: UKMCardsProps) {
 
 						<div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 w-40 h-20 bg-linear-to-r from-blue-500/40 via-purple-500/40 to-pink-500/40 rounded-full blur-3xl opacity-0 group-hover:opacity-70 transition-all duration-500 pointer-events-none hidden lg:block" />
 					</div>
-				</div>
+				</button>
 			))}
 		</div>
 	);
