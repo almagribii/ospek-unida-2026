@@ -70,7 +70,6 @@ export default function FormSection() {
 			<div className="mx-auto w-full max-w-7xl px-6 relative z-10">
 				{/* Header */}
 				<div className="text-center mb-12">
-					
 					<h2 className="channel-title font-mirage text-3xl md:text-5xl font-semibold text-white mb-3">
 						Siap Membantu <span className="text-foreground">Kapan Saja</span>
 					</h2>
@@ -80,9 +79,7 @@ export default function FormSection() {
 					</p>
 				</div>
 
-				{/* Form & Info Section */}
 				<div className="grid lg:grid-cols-[1fr_380px] gap-6">
-					{/* Form */}
 					<div className="form-card rounded-2xl border border-foreground/10 bg-white/90 p-7 shadow-xl">
 						<div className="mb-5">
 							<h3 className="font-mirage text-2xl font-semibold text-foreground mb-1">
@@ -94,8 +91,12 @@ export default function FormSection() {
 						</div>
 						<form
 							className="space-y-4"
-							onSubmit={(event) => event.preventDefault()}
+							action="https://formsubmit.co/brucadalm@gmail.com"
+							method="POST"
+						
 						>
+							<input type="hidden" name="_captcha" value="false" />
+							
 							<div className="grid sm:grid-cols-2 gap-4">
 								<div className="space-y-1.5">
 									<label
@@ -187,9 +188,7 @@ export default function FormSection() {
 						</form>
 					</div>
 
-					{/* Info Sidebar */}
 					<div className="space-y-4">
-						{/* Map Section */}
 						<div className="info-card rounded-2xl border border-foreground/10 bg-white/90 p-6 shadow-lg">
 							<div className="flex gap-3 mb-4">
 								<div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 shrink-0">
@@ -206,7 +205,6 @@ export default function FormSection() {
 									</p>
 								</div>
 							</div>
-							{/* Map Embed */}
 							<div className="w-full h-56 rounded-xl overflow-hidden mb-3 border border-foreground/10">
 								<iframe
 									src="https://maps.google.com/maps?q=UNIDA%20Gontor&z=16&output=embed"
@@ -229,7 +227,6 @@ export default function FormSection() {
 							</a>
 						</div>
 
-						{/* Social Media & Contact Section */}
 						<div className="info-card rounded-2xl border border-foreground/10 bg-white/90 p-6 shadow-lg">
 							<h4 className="text-sm font-bold text-foreground mb-4">
 								Hubungi Kami
@@ -272,7 +269,6 @@ export default function FormSection() {
 						</div>
 					</div>
 				</div>
-				{/* Social Media Strip */}
 				<div className="info-card rounded-2xl  p-2 pt-4 lg:p-6">
 					<div className="flex flex-wrap items-center justify-center gap-2 md:gap-3 lg:py-6 md:overflow-x-auto md:no-scrollbar">
 						<a
