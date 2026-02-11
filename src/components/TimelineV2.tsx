@@ -33,7 +33,7 @@ const TimelineItem = React.forwardRef<
 		>
 			{/* Vertical Line for Mobile (Hidden on Desktop) */}
 			{/* Placed absolute behind the dot. Dot is w-12 (3rem), so center is left-6 (1.5rem). */}
-			<div className="absolute left-6 top-12 bottom-[-2rem] w-0.5 bg-secondary-muted/50 -z-0 md:hidden last:bottom-0 [.last-item_&]:hidden" />
+			<div className="absolute left-6 top-12 bottom-[-2rem] w-0.5 bg-primary/50 -z-0 md:hidden last:bottom-0 [.last-item_&]:hidden" />
 
 			{children}
 		</div>
@@ -47,7 +47,7 @@ const TimelineDot = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<div
 		ref={ref}
-		className={`z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-secondary text-foreground border-4 border-secondary ${className || ""}`}
+		className={`z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary text-foreground border-4 border-primary ${className || ""}`}
 		{...props}
 	/>
 ));
@@ -108,7 +108,7 @@ const Timeline = React.forwardRef<HTMLDivElement, TimelineProps>(
 							>
 								{/* Horizontal Connector Line (Desktop Only) */}
 								<div
-									className="hidden md:block absolute top-6 h-0.5 bg-secondary-muted/50 -z-0"
+									className="hidden md:block absolute top-6 h-0.5 bg-primary-muted/50 -z-0"
 									style={{ left: offset, right: offset }}
 								/>
 
@@ -171,7 +171,7 @@ function CurveConnector({
 
 	return (
 		<div
-			className={`absolute top-6 h-[calc(100%+0.2rem)] border-secondary-muted/50 -z-0 ${classes}`}
+			className={`absolute top-6 h-[calc(100%+0.2rem)] border-primary-muted/50 -z-0 ${classes}`}
 			style={{
 				width: width,
 			}}

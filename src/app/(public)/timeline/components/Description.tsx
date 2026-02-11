@@ -63,7 +63,7 @@ export default function Description() {
 			<div className="bg-foreground relative p-6 md:p-10 rounded-xl overflow-hidden">
 				<div
 					ref={timelineRef}
-					className="absolute hidden lg:flex flex-col items-center justify-center left-5 h-full max-h-72 w-full max-w-20 bg-secondary text-foreground text-2xl font-mirage font-semibold"
+					className="absolute hidden lg:flex flex-col items-center justify-center left-5 h-full max-h-72 w-full max-w-20 bg-primary text-foreground text-2xl font-mirage font-semibold"
 				>
 					<div className="flex flex-col items-center h-full justify-center">
 						<span className="overflow-hidden">T</span>
@@ -83,7 +83,7 @@ export default function Description() {
 								<TimelineItem key={`${item.title}-${index}`}>
 									<TimelineDot>{index + 1}</TimelineDot>
 									<TimelineContent className="flex flex-col">
-										<span className="text-secondary-muted">{item.date}</span>
+										<span className="text-primary-muted">{item.date}</span>
 										<span className="text-background">{item.title}</span>
 									</TimelineContent>
 								</TimelineItem>
