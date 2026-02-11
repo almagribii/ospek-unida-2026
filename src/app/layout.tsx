@@ -36,7 +36,8 @@ export const metadata = {
 	metadataBase,
 	openGraph: {
 		title: "Akhyar - OSPEK UNIDA Gontor 2026 ",
-		description: "The official Akhyar Website,",
+		description:
+			"OSPEK Akhyar 2026 adalah orientasi kampus Universitas Darussalam Gontor. Temukan info jadwal, kegiatan, dan tata cara OSPEK 2026 di sini.",
 		url: metadataBase,
 		siteName: "Akhyar",
 		images: [
@@ -53,7 +54,8 @@ export const metadata = {
 	twitter: {
 		card: "summary_large_image",
 		title: "Akhyar - OSPEK UNIDA Gontor 2026",
-		description: "The official Akhyar Website",
+		description:
+			"OSPEK Akhyar 2026 adalah orientasi kampus Universitas Darussalam Gontor. Temukan info jadwal, kegiatan, dan tata cara OSPEK 2026 di sini.",
 		images: ["/opengraph-image.png"],
 	},
 	icons: {

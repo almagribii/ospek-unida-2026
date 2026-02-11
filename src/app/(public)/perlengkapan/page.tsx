@@ -8,9 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function Perlengkapan() {
-	return (
-		<>
-			<Slider />
-		</>
-	);
+	return <Slider />;
 }

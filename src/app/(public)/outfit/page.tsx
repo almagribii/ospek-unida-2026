@@ -8,9 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function Outfit() {
-	return (
-		<>
-			<Slider />
-		</>
-	);
+	return <Slider />;
 }

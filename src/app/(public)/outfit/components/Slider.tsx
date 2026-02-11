@@ -653,7 +653,7 @@ export default function Slider() {
 		<div key={isCowo ? "cowo" : "cewe"} className="contents">
 			<div
 				ref={containerRef}
-				className="relative w-screen lg:h-screen h-dvh overflow-hidden bg-[linear-gradient(rgba(0,0,0,0.2),rgba(243,243,243,1)),url('/background/white_texture.webp')] bg-cover bg-center"
+				className="relative w-full lg:h-screen h-dvh overflow-hidden bg-[linear-gradient(rgba(0,0,0,0.2),rgba(243,243,243,1)),url('/background/white_texture.webp')] bg-cover bg-center"
 			>
 				{/* Main Slider Area */}
 				{/** biome-ignore lint/a11y/noStaticElementInteractions: Why not */}
