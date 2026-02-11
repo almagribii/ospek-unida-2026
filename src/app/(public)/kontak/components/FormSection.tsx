@@ -91,7 +91,7 @@ export default function FormSection() {
 						</div>
 						<form
 							className="space-y-4"
-							action="https://formsubmit.co/brucadalm@gmail.com"
+							action="https://formsubmit.co/ospek@unida.gontor.ac.id"
 							method="POST"
 						
 						>
