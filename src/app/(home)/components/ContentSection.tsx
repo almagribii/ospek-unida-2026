@@ -199,17 +199,17 @@ function InfoSlide({ data, index }: { data: SlideData; index: number }) {
 
 	return (
 		<div
-			className="info-slide flex h-screen w-screen shrink-0 items-center overflow-hidden"
+			className="info-slide flex h-screen w-screen shrink-0 lg:items-center overflow-hidden"
 			data-index={index}
 		>
 			<div
-				className={`mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 lg:flex-row lg:items-center lg:gap-16 lg:px-12 ${
+				className={`mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 py-10 lg:py-0 lg:flex-row lg:items-center lg:gap-16 lg:px-12 ${
 					isEven ? "" : "lg:flex-row-reverse"
 				}`}
 			>
 				{/* Image */}
-				<div className="slide-image relative w-full overflow-hidden rounded-sm lg:w-1/2">
-					<div className="aspect-4/3 w-full overflow-hidden">
+				<div className="slide-image relative w-full h-full lg:max-h-full max-h-112.5 overflow-hidden rounded-sm lg:w-1/2">
+					<div className="aspect-square w-full h-full overflow-hidden">
 						{/* biome-ignore lint/performance/noImgElement: static gallery image */}
 						<img
 							src={data.image}
