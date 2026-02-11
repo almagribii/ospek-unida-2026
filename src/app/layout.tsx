@@ -2,7 +2,26 @@ import { NavbarProvider } from "@/context/NavbarContext";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 
-const baseUrl: string | undefined = process.env.BASE_URL;
+const nonEmpty = (value: string | undefined) => {
+	const trimmed = value?.trim();
+	return trimmed ? trimmed : undefined;
+};
+
+const withProtocol = (value: string) =>
+	value.startsWith("http://") || value.startsWith("https://")
+		? value
+		: `https://${value}`;
+
+const resolvedBaseUrl: string | undefined =
+	nonEmpty(process.env.BASE_URL) ??
+	nonEmpty(process.env.NEXT_PUBLIC_SITE_URL) ??
+	(nonEmpty(process.env.VERCEL_URL)
+		? `https://${nonEmpty(process.env.VERCEL_URL)}`
+		: undefined);
+
+const metadataBase = new URL(
+	withProtocol(resolvedBaseUrl ?? "http://localhost:3000"),
+);
 
 export const metadata = {
 	title: {
@@ -13,11 +32,11 @@ export const metadata = {
 		"OSPEK Akhyar 2026 adalah orientasi kampus Universitas Darussalam Gontor. Temukan info jadwal, kegiatan, dan tata cara OSPEK 2026 di sini.",
 	applicationName: "Akhyar",
 	authors: [{ name: "UNIDA Gontor", url: "https://unida.gontor.ac.id" }],
-	...(baseUrl && { metadataBase: new URL(baseUrl) }),
+	metadataBase,
 	openGraph: {
 		title: "Akhyar - OSPEK UNIDA Gontor 2026 ",
 		description: "The official Akhyar Website,",
-		...(baseUrl && { url: new URL(baseUrl) }),
+		url: metadataBase,
 		siteName: "Akhyar",
 		images: [
 			{

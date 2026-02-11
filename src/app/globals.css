@@ -1,8 +1,6 @@
-@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Amiri:ital@0;1&display=swap");
 
-@layer base {
-	@import url("https://fonts.googleapis.com/css2?family=Amiri:ital@0;1&display=swap");
-}
+@import "tailwindcss";
 
 /* Mirage Font Family */
 @font-face {
