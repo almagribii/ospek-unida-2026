@@ -213,7 +213,7 @@ export default function Hero({
 		<div className="m-0 p-0">
 			<section
 				ref={heroRef}
-				className="h-[145svh] lg:h-[125svh] bg-[linear-gradient(rgba(0,0,0,0.2),rgba(243,243,243,1)),url('/background/white_texture.webp')] bg-cover bg-center flex flex-col justify-start items-center gap-2 relative overflow-hidden pt-50 m-0 p-0"
+				className="min-h-screen bg-[linear-gradient(rgba(0,0,0,0.2),rgba(243,243,243,1)),url('/background/white_texture.webp')] bg-cover bg-center flex flex-col justify-center items-center gap-2 "
 			>
 				<div className="lg:h-82.5 lg:w-50 h-75.5 w-40">
 					<Image
