@@ -78,6 +78,7 @@ export default function Hero({
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const heroRef = useRef<HTMLDivElement>(null);
 	const contentRef = useRef<HTMLHeadingElement>(null);
+	const scrollDownRef = useRef<HTMLDivElement>(null);
 	const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
 	const materialRef = useRef<THREE.ShaderMaterial | null>(null);
 	const scrollProgressRef = useRef<number>(0);
@@ -161,6 +162,10 @@ export default function Hero({
 			invalidateOnRefresh: true,
 			onUpdate: (self) => {
 				scrollProgressRef.current = Math.min(self.progress * speed, 1.1);
+				
+				if (scrollDownRef.current) {
+					scrollDownRef.current.style.opacity = self.progress > 0.01 ? "0" : "1";
+				}
 			},
 		});
 
@@ -236,9 +241,6 @@ export default function Hero({
 					<h2 id="desc" className="text-center text-lg">
 						Universitas Darussalam Gontor
 					</h2>
-					<div id="scroll-down" className="flex justify-center pb-3">
-						<ScrollDown />
-					</div>
 				</div>
 
 				<canvas
@@ -246,6 +248,13 @@ export default function Hero({
 					className="absolute inset-0 h-[145svh] lg:h-[125svh] w-full pointer-events-none"
 				/>
 			</section>
+			<div
+				ref={scrollDownRef}
+				id="scroll-down"
+				className="absolute scale-75 md:scale-100 inset-x-0 lg:bottom-14 bottom-8 z-20 flex justify-center"
+			>
+				<ScrollDown />
+			</div>
 		</div>
 	);
 }
